@@ -1,0 +1,62 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Python cache / tooling
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Logs and local runtime files
+*.log
+*.out
+*.pid
+
+# Build / package artifacts
+build/
+dist/
+*.egg-info/
+
+# Frontend dependencies and caches
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.parcel-cache/
+.turbo/
+.next/
+.vite/
+
+# Local databases generated during development
+*.sqlite
+*.sqlite3
+
+# Keep the checked-in project knowledge base DB unless renamed
+!course_content.db

@@ -1,0 +1,617 @@
+[Course]: {{Ethical Considerations for Generative AI}}
+======================================================
+
+[Lesson1]: {{Ethics in the use of Generative AI}}
+=================================================
+
+[topic]: {{“Principles of Trust and Transparency”}}
+---------------------------------------------------
+
+[content]: {{IBM has established its own point of view on ethics as they relate to technology, creating Principles of Trust and Transparency to help clients understand its values in the conversation about technology, including AI. IBM has three core principles that dictate its approach to data and technology development.
+
+4 What is AI ethics?(opens in a new tab) IBM (article), September 17, 2024.}}
+
+### [topic]: {{1. The purpose of AI is to augment human intelligence.}}
+
+[content]: {{This principle means that IBM does not seek to replace human intelligence with AI, but support it. Because every new technological innovation involves changes to the supply and demand of particular job roles, IBM is committed to supporting workers in this transition by investing in global initiatives to promote skills training around this technology.}}
+
+### [topic]: {{2. Data and insights belong to their creator.}}
+
+[content]: {{IBM clients can be assured that they own their data. IBM doesn’t provide government access to client data, and it remains committed to protecting the privacy of its clients.}}
+
+### [topic]: {{3. New technology, including AI, must be transparent and explainable.}}
+
+[content]: {{IBM believes that technology companies need to be clear about who trains their AI systems, what data was used in that training and, most importantly, what went into the recommendations of their algorithms.}}
+[topic]: {{Pillars of trustworthy AI}}
+
+[content]: {{In addition to the principles, IBM developed five pillars to guide the responsible adoption of technologies, including AI. These five pillars are intended to address the issue of trust. IBM uses the pillars of explainability, fairness, robustness, transparency, and privacy.
+
+Organizations might choose to use these pillars or others such as accountability, accuracy, and data governance to promote trust. A dedicated cross-functional AI ethics team with representation from diverse departments, including AI specialists, ethicists, legal experts, and business leaders, is responsible for developing and maintaining these pillars.
+
+5 What is AI ethics?(opens in a new tab) IBM (article), September 17, 2024.6 Stryker, Cole. What is responsible AI?(opens in a new tab) IBM (article), February 6, 2024.}}
+
+### [topic]: {{Pillar: Explainability}}
+
+[content]: {{An AI should be transparent, particularly about what went into its algorithm’s recommendations, as relevant to a variety of stakeholders with a variety of objectives.}}
+
+### [topic]: {{Pillar: Fairness}}
+
+[content]: {{AI should treat individuals, or groups of individuals, equally. When properly calibrated, AI can assist humans in making fairer choices, countering human biases and promoting inclusivity.}}
+
+### [topic]: {{Pillar: Robustness}}
+
+[content]: {{AI-powered systems must be actively defended from adversarial attacks, minimizing security risks and enabling confidence in AI outcomes.}}
+
+### [topic]: {{Pillar: Transparency}}
+
+[content]: {{To reinforce trust, users must be able to see how the service works, evaluate its functionality, and comprehend its strengths and limitations.}}
+
+### [topic]: {{Pillar: Privacy}}
+
+[content]: {{AI must prioritize and safeguard consumers’ privacy and data rights and provide explicit assurances to users about how their personal data will be used and protected.}}
+[topic]: {{Module Focus: Key Pillars}}
+
+[content]: {{While there are many pillars of ethics, this specific module focuses on the following three:• Transparency• Accountability• Fairness}}
+
+[videoTranscript]: {{Ethical considerations in a generative AI world Generative artificial intelligence is transforming how people create content and communicate. Generative AI can write essays, compose music, debug programs, and generate lifelike images, all with the click of a button. But with this innovation comes ethical considerations. What happens when AI-generated content moves beyond inspiration to plagiarism? Or when AI technologies perpetuates biases or produces harmful misinformation? This is the realm of AI ethics. What is AI ethics? AI ethics is a multidisciplinary field that studies how to optimize the beneficial impacts of AI while reducing risks and adverse outcomes. AI ethics applies in generative AI systems during all phases of development from design to deployment. For example, generative AI systems need to be transparent, accountable, and fair. Let’s explore some of the dilemmas that might arise with the use of generative AI. Alex, a freelance graphic designer, uses generative AI tools to streamline projects. One day, Alex is thrilled when the AI generates a design that perfectly matches her client’s needs. But when Alex looks closely, she discovers that the design closely resembles an image from another artist’s portfolio. Did the AI tool plagiarize the work? Or is it a coincidence? Alex is left questioning the tool’s integrity. Dr. Patel is a physician who uses a healthcare AI system to assist with patient diagnoses. One day, the AI system strongly recommends a treatment plan, but Dr. Patel later discovers the diagnosis and treatment plan were based on incomplete and outdated data. This leads to a delay in the patient’s treatment and raises serious concerns about the reliability of the AI system. Jordan is a hiring manager excited to use an AI tool to streamline the recruitment process. When Jordan reviews the AI’s recommendations, he notices a troubling pattern. Candidates with college degrees are consistently ranked higher, even when candidates without college degrees have equivalent or superior skills and experience. This bias risks unfairly excluding skilled workers and limiting diversity in the hiring pool. Harmful outputs, inaccuracies, and biases in generative AI have far-reaching consequences for individuals, companies, and even entire industries. Addressing these challenges starts with understanding three pillars that form part of an ethical framework for building and using generative AI systems: transparency, accountability, and fairness. Transparency enables users understand how AI works and trust its outputs. Accountability means that people and organizations take responsibility for the outcomes of their AI systems. Fairness prevents biases from distorting results. When developers embrace these pillars in the design and development of AI systems, users like Alex, Dr. Patel, and Jordan can use generative AI responsibly and ethically. Generative AI has the potential to transform industries, unleash creativity, and solve complex problems. Fully realizing these benefits requires aligning AI systems with AI ethics.}}
+[topic]: {{Building trust with transparency}}
+
+[content]: {{Generative AI is a new and unknown technology to most people. The degree to which the outcomes of this technology are trusted depends on transparency.
+
+**Transparency in AI** helps people access information to better understand how an AI system was created and how it makes decisions.7 Jonker, Alexandra, et al. What is AI transparency? (opens in a new tab) IBM (article), September 6, 2024.}}
+[topic]: {{Achieving Transparency through Disclosure}}
+
+[content]: {{It can still be difficult to explain, manage, and regulate AI outcomes because of the technology’s increasing complexity. Transparency helps people better understand AI outcomes and how AI tools make decisions.
+
+AI creators can achieve transparent and trustworthy AI through **disclosure**. They can document and share:
+
+* The underlying AI algorithm’s logic and reasoning.
+
+* The data inputs used to train the tool.
+
+* The methods used for tool evaluation and validation.
+
+* Additional technical documentation regarding system performance.}}
+
+[topic]: {{The Importance of Transparency in High-Stakes Industries}}
+---------------------------------------------------------------------
+
+[content]: {{A growing number of high-stakes industries rely on AI tools for decision-making. Improving people’s understanding of how these tools are trained and how they determine outcomes builds trust in AI decisions and the organizations that use them. Without transparency, inaccurate AI outputs can have severe real-world consequences.}}
+
+### [topic]: {{Industry Example: Healthcare}}
+
+[content]: {{**AI Use Cases**: Disease detection and diagnosis, personalized disease treatment, and medical imaging. **Potential Consequences**: The potential consequences of inaccurate AI outputs are that people can lose years of their lives.
+
+8 What is AI transparency? IBM (article), September 6, 2024.}}
+
+### [topic]: {{Industry Example: Finance}}
+
+[content]: {{**AI Use Cases**: Financial planning for customers and determining a customers’ eligibility for loans. **Potential Consequences**: The potential consequences of inaccurate AI outputs are that people can lose their lifetime of savings.
+
+9 What is AI transparency? IBM (article), September 6, 2024.}}
+
+### [topic]: {{Industry Example: Human Resources (HR)}}
+
+[content]: {{**AI Use Cases**: Recruitment and hiring processes, performance management and assessments, and professional learning and development. **Potential Consequences**: The potential consequences of inaccurate AI outputs are that people can lose career opportunities.
+
+10 What is AI transparency? IBM (article), September 6, 2024.}}
+[topic]: {{Case Study: A Transparent AI Healthcare Tool}}
+
+---------------------------------------------------------
+
+[content]: {{Consider a situation in which doctors use a generative AI healthcare tool to recommend treatment plans for patients.
+
+In a **transparent system**, each treatment plan includes a feature that explains the reasoning behind the recommendation, such as highlighting specific symptoms or factors in the patient’s history. This transparency enables doctors and patients to understand and trust the recommendation. When generative AI tools are transparent, users are assured that they can trust the recommendations and outcomes of the tool.}}
+[topic]: {{Taking responsibility with accountability}}
+
+[content]: {{There is no universal, overarching legislation that regulates AI practices, but many countries and states are working to develop and implement legislation locally. The pillar of accountability in AI ethics addresses who is responsible for unintended, negative consequences of using generative AI.
+
+**Accountability** in AI means that developers and organizations take responsibility for the AI’s outcomes, including any unintended consequences. It assures users and the public that AI tools are not operating unchecked.
+
+11, 12 Accountability. IBM Design for AI (website), accessed January 2025.}}
+[topic]: {{The Human Role in AI Accountability}}
+
+------------------------------------------------
+
+[content]: {{Human judgment plays a role throughout a seemingly objective system of logical decisions. It is humans who:
+
+* Write the algorithms.
+
+* Define what constitutes success or failure.
+
+* Make decisions about the uses of AI tools.
+
+* Are ultimately affected by a tool’s outcomes.
+
+Accountability is promoted when there is oversight in place to address and correct potential issues, ensuring humans remain "in the loop."}}
+[topic]: {{The Risks of Automation and Big Data}}
+
+-------------------------------------------------
+
+[content]: {{With the emergence of big data, companies have increased their focus on driving automation and data-driven decision making. While the intention is to improve business outcomes, companies are experiencing unforeseen consequences due to:
+
+* Poor upfront research design.
+
+* Biased datasets.
+
+14 What is AI ethics? IBM (article), September 17, 2024.}}
+[topic]: {{Unintended Consequences of AI Output}}
+
+-------------------------------------------------
+
+[content]: {{AI applications can produce unforeseen negative results if not properly managed. The following are three primary examples of these unintended consequences.}}
+
+### [topic]: {{Risk: Toxic Output}}
+
+[content]: {{Toxic output occurs when the AI tool produces hateful, abusive, and profane or obscene content. This also includes behaviors such as cyberbullying.
+
+14 Toxic output risk for AI. IBM (website), accessed January 2025.}}
+
+### [topic]: {{Risk: Impact on Human Agency}}
+
+[content]: {{AI can generate false or misleading information that looks real. This can lead to a distorted understanding of the truth. People might experience **reduced agency** because they may use false assumptions generated by the AI to make important life decisions.
+
+15 Impact on human agency risk for AI. IBM (website), accessed January 2025.}}
+
+### [topic]: {{Risk: Revealing Confidential Information (Data Leakage)}}
+
+[content]: {{When confidential information is used in training data, AI tools might reveal that data in the generated output. This is a type of **data leakage**. If not properly secured, the tool might reveal information that was meant to be secret or proprietary.
+
+16 Revealing confidential information risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Case Study: Accountable Chatbot Monitoring}}
+
+-------------------------------------------------------
+
+[content]: {{Consider a customer service department deploying a new AI-powered chatbot. To maintain accountability, the team:
+
+1. Implements processes to **regularly monitor** the tool’s responses.
+
+2. Stays prepared to **adjust or retrain** the tool if feedback shows unhelpful or biased responses.
+
+This ensures the chatbot's actions remain aligned with the company’s ethical standards and that developers take active responsibility for the tool's ongoing performance.}}
+
+Here is the **Fairness** section organized into your RAG-ready template. I have categorized the specific types of bias into sub-topics to ensure your vector database can differentiate between data inputs, algorithmic decisions, and final outputs.
+
+* * *
+
+[Course]: {{Ethical Considerations for Generative AI}}
+======================================================
+
+[Lesson1]: {{Ethics in the use of Generative AI}} (Continued)
+=============================================================
+
+[topic]: {{Promoting fairness and equal treatment}}
+---------------------------------------------------
+
+[content]: {{When instances of bias and discrimination occur because of recommendations that generative AI makes, ethical questions arise. The pillar of fairness addresses how AI creators can safeguard against these issues even when training datasets lend themselves to bias.
+
+**Fair AI tools** are designed to minimize bias and promote inclusive representation. Fairness refers to the equitable treatment of individuals, or groups of individuals, by a generative AI tool. When properly calibrated, AI can assist humans in making fairer choices, countering human biases, and promoting inclusivity.
+
+17 Fairness. IBM Design for AI (website), accessed January 2025.18 What is AI ethics? IBM (article), September 17, 2024.}}
+[topic]: {{The Importance of Safeguarding Against Bias}}
+
+--------------------------------------------------------
+
+[content]: {{While companies typically have well-meaning intentions around their automation efforts, there can be unforeseen consequences of incorporating AI into business processes. AI creators must actively work to safeguard against discrimination, as intelligent systems can easily amplify existing societal prejudices found in training data.
+
+19 What is AI ethics? IBM (article), September 17, 2024.}}
+[topic]: {{Unintended Consequences of AI Output: Bias Types}}
+
+-------------------------------------------------------------
+
+[content]: {{Bias in AI is not a single issue; it can manifest at different stages of the AI lifecycle. Understanding these three types of bias is crucial for developing ethical systems.}}
+
+### [topic]: {{Type 1: Data Bias}}
+
+[content]: {{Training an AI tool using data with bias, such as historical or societal bias, can lead to skewed outputs. This results in the unfair representation of or discrimination against certain groups or individuals.
+
+20 Data bias risk for AI. IBM (website), accessed January 2025.}}
+
+### [topic]: {{Type 2: Decision Bias}}
+
+[content]: {{Decision bias occurs when one group is unfairly advantaged over another because of the AI tool's logic. This can be caused by initial data biases and then amplified by the tool’s training process, harming the persons affected by the tool's decisions.
+
+21 Decision bias risk for AI. IBM (website), accessed January 2025.}}
+
+### [topic]: {{Type 3: Output Bias}}
+
+[content]: {{Generated content might unfairly represent certain groups or individuals. This type of bias can harm users of the AI tools and magnify existing discriminatory behaviors in society.
+
+22 Output bias risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Example: A Company Promotes Fairness in an HR AI Tool}}
+
+------------------------------------------------------------------
+
+[content]: {{Consider an AI tool used by an HR department during the hiring process. To promote fairness, the tool is designed to:
+
+1. **Focus only on job-relevant criteria**, such as specific skills and professional experience.
+
+2. **Exclude demographic information** that could lead to biased outcomes (e.g., age, gender, or ethnicity).
+
+By ignoring these non-relevant factors, the AI tool promotes fair and equal treatment of all applicants, ensuring that human biases regarding demographics do not influence the recruitment process.}}
+
+
+
+## [Lesson2]: {{Managing the ethics of AI inputs for data}}
+
+[topic]: {{Protecting data privacy and confidentiality}}
+--------------------------------------------------------
+
+[content]: {{Organizations use large amounts of consumer data to train and deploy AI tools. **Data privacy and confidentiality** in AI means that any personal or sensitive information included in AI training data is protected and, when possible, anonymized.
+
+New generative AI technologies pose significant challenges because:
+
+* Sensitive data fed into these AIs becomes part of the permanent training data.
+
+* Organizations may lose control over how that data is used once ingested.
+
+* Using data without explicit permission can constitute a privacy violation under certain regulations.
+
+* Without proper development, tools might expose personal information in their generated output.
+
+1 Kosinski, Matthew, and Amber Forrest. What is data privacy? IBM (article), December 19, 2023.2 Personal information in data risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Ways to Protect Data Privacy and Confidentiality}}
+
+-------------------------------------------------------------
+
+[content]: {{Organizations can devise AI privacy approaches to comply with regulations and build trust. There are three primary strategies for protecting data during the training phase.
+
+3 Gomstyn, Alice and Alexandra Jonker. Exploring privacy issues in the age of AI. IBM (article), September 30, 2024.}}
+
+### [topic]: {{Strategy 1: Follow security best practices}}
+
+[content]: {{Organizations should implement standard security protocols to avoid the leakage of data and metadata. These practices include:
+
+* **Cryptography**: Encrypting data at rest and in transit.
+
+* **Anonymization**: Removing or masking identifiable details.
+
+* **Access Control**: Limiting who can interact with or view the training datasets.}}
+
+### [topic]: {{Strategy 2: Enhanced protection for sensitive domains}}
+
+[content]: {{Data from specific "sensitive domains" requires extra protection and should only be used in narrowly defined contexts. These domains include:
+
+* Health and Employment
+
+* Education and Criminal Justice
+
+* Personal Finance
+
+* **Note**: Any data generated by or about children is automatically considered sensitive, regardless of the domain.}}
+
+### [topic]: {{Strategy 3: Limit data collection (Data Minimization)}}
+
+[content]: {{Organizations should only collect training data that is obtained lawfully and is consistent with the expectations of the people involved. Key actions include:
+
+* **Data Minimization**: Limiting collection to only what is necessary for the tool's function.
+
+* **Retention Timelines**: Establishing clear schedules for data deletion to ensure information is not kept longer than required.}}
+
+[topic]: {{Case Study: The Chatbot that Revealed Secrets}}
+----------------------------------------------------------
+
+[content]: {{A company introduced a customer service chatbot trained on actual customer emails without anonymizing the data. During a routine interaction, the chatbot revealed a specific individual's transaction history to another customer by saying, _"Your friend Rakesh recently purchased the same product..."_
+
+**The Violation**: The chatbot exposed identifiable transaction details and personal connections, leading to a serious privacy breach. **The Solution**: Proper anonymization—removing names, personal connections, and identifiable details—would have prevented the tool from linking specific data points to real-world identities, preserving the integrity of the service.}}
+[topic]: {{Promoting fairness and transparency of data sources}}
+
+[content]: {{When fairness and transparency are ignored, AI tools can produce biased or discriminatory outcomes. Because AI tools learn patterns from their training data, biased or unverified data leads to flawed predictions and decisions.
+
+* **Fairness in data**: Selecting diverse, balanced, and representative datasets to avoid biases.
+
+* **Transparency in data**: Ensuring data sources are verified and traceable.
+
+Training an AI tool using data with historical or societal bias can lead to skewed outputs that unfairly discriminate against specific groups.
+
+4 Data bias risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Technique 1: Promote diverse representation}}
+
+--------------------------------------------------------
+
+[content]: {{AI creators must ensure that data collection is representative of a diverse population to minimize human bias embedded in the tools. Creators should:
+
+* Check that training data represents the population the tool is meant to serve.
+
+* Include data inputs from various demographic groups to avoid underrepresentation.
+
+5, 6 IBM AI Ethics guidelines.}}
+[topic]: {{Technique 2: Document sources}}
+
+------------------------------------------
+
+[content]: {{Transparency requires documenting factors related to AI development and deployment. Simply having access to data is insufficient; creators must record:
+
+* How the data was cleaned.
+
+* How the data was modified.
+
+* How the data was generated.Without this documentation, a tool’s behavior is difficult to evaluate, understand, or fix.
+
+7 IBM AI Ethics guidelines.}}
+[topic]: {{Technique 3: Choose a balanced team}}
+
+------------------------------------------------
+
+[content]: {{A varied and inclusive AI team is more likely to recognize bias. Diversity should include:
+
+* Ethnicity, culture, and community.
+
+* Economics and educational levels.
+
+* Gender, age, and accessibility.
+
+* Varied job roles (business innovators, creators, implementers, and consumers).
+
+9 IBM AI Ethics guidelines.}}
+[topic]: {{Technique 4: Monitor continuously}}
+
+[content]: {{No AI tool is permanent. Continuous monitoring and testing with real-world data are required to detect and correct bias before harm occurs. Organizations should consider:
+
+* Ongoing internal testing.
+
+* Assessments by independent teams or trusted third parties.
+
+10 IBM AI Ethics guidelines.}}
+[topic]: {{Case Study: HR Tool Perpetuating Inequality}}
+
+[content]: {{**The Incident**: A company introduced an AI recruiting tool that systematically discriminated against female job applicants. **The Cause**: The tool was trained using resumes from past hires who were predominantly male. **The Consequence**: The AI unfairly favored keywords and characteristics found in men’s resumes, producing biased hiring results.
+
+11 Jonker, Alexandra, and Julie Rogers. What is algorithmic bias? IBM (article), September 20, 2024.}}
+[topic]: {{Case Study: AI Tool Misinforming Users}}
+
+---------------------------------------------------
+
+[content]: {{**The Incident**: An employee realized an AI-generated answer was clearly inaccurate. **The Cause**: The tool was trained using a mix of internal sources and data from unknown, unverified external sources. **The Consequence**: The lack of data transparency and verification compromised the reliability of the entire AI tool.}}
+
+I have organized this final section on **Data Usage Rights** into your template. This completes the "Data Inputs" portion of your course material. I’ve structured the "Ways to Comply" into distinct sub-topics to help your RAG system identify specific legal and ethical mitigation strategies.
+
+* * *
+
+[Course]: {{Ethical Considerations for Generative AI}}
+======================================================
+
+[Lesson2]: {{Ethical Considerations for Data Inputs}} (Continued)
+=================================================================
+
+[topic]: {{Complying with data usage rights}}
+---------------------------------------------
+
+[content]: {{Data usage compliance means respecting intellectual property (IP) rights, licensing requirements, and other legal restrictions related to data.
+
+Not all data can be used to train AI tools. Restrictions often include:
+
+* **Terms of Service**: Specific rules set by data providers.
+
+* **License Compliance**: Legal agreements governing the use of software or content.
+
+* **Intellectual Property Issues**: Rights belonging to the original creators.
+
+Laws regarding AI training are currently unsettled and vary by country, making compliance a significant challenge for global organizations. Failing to comply can lead to legal battles, heavy fines, and severe reputational damage.
+
+12 Data usage rights restrictions risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Ways to Comply with Data Usage Rights}}
+
+--------------------------------------------------
+
+[content]: {{Organizations can make AI more ethical by ensuring their training data respects the ownership of data creators through the following three primary actions.
+
+13, 14, 15 Caballar, Rina. 10 AI dangers and risks and how to manage them. IBM (blog), September 3, 2024.}}
+
+### [topic]: {{Compliance Method 1: Check the law}}
+
+[content]: {{Organizations should implement formal checks to ensure they comply with local and international laws regarding licensed works that might be included in their AI training datasets.}}
+
+### [topic]: {{Compliance Method 2: Avoid exposing intellectual property}}
+
+[content]: {{Organizations must exercise extreme caution when feeding data into algorithms. The goal is to avoid inadvertently exposing the organization’s own internal IP or the protected information of third-party creators to the public or the AI model's parameters.}}
+
+### [topic]: {{Compliance Method 3: Monitor outputs}}
+
+[content]: {{Monitoring should not stop at the data input stage. Organizations must actively monitor the **outputs** generated by AI tools to ensure the generated content does not infringe on the intellectual property rights of others or leak sensitive internal data.}}
+[topic]: {{Case Study: Use of Copyrighted Materials in Training Data}}
+
+----------------------------------------------------------------------
+
+[content]: {{**The Incident**: AI creators used copyrighted content from external sources to train a tool without providing attribution or obtaining permission. **The Usage**: The marketing department used the tool to generate public-facing materials, which inadvertently included fragments of that copyrighted content. **The Consequence**: This created a high risk of IP infringement, potentially resulting in legal action and damaging the company's reputation as a trustworthy organization.
+
+16 Exploring the risks and alternatives of ChatGPT. IBM (article), August 16, 2023.}}
+
+## [Lesson3]: {{Managing the ethics of AI-generated content}}
+
+[topic]: {{Preventing harmful and inaccurate content}}
+------------------------------------------------------
+
+[content]: {{Ethical considerations regarding the outputs of generative AI apply when tools provide inaccurate information or use offensive language. These issues can be categorized into two main types:
+
+* **Harmful content**: Any AI-generated material (text, images, video) that is offensive or causes distress, including hate speech, abusive language, or profanity.
+
+* **Inaccurate content**: Also known as **"hallucinations,"** this refers to incorrect information presented as fact by the AI tool.
+
+Harmful and inaccurate outputs mislead users, damage trust, and can lead to immediate physical harm or the spread of misinformation during public emergencies.
+
+1, 2, 3, 4 IBM AI Ethics articles and websites, 2023–2025.}}
+[topic]: {{Types of Harmful Language}}
+
+--------------------------------------
+
+[content]: {{AI tools can unintentionally generate harmful language. Developers categorize these into three main risks:
+
+* **Hate speech**: Language showing intent to hurt, humiliate, or insult members of a group, or to promote violence/social disorder.
+
+* **Abusive language**: Rude or hurtful language meant to bully, debase, or demean an individual or group.
+
+* **Profanity**: The use of expletives, insults, or sexually explicit language.
+
+5 Jonker, Alexandra and Alice Gomstyn. Purifying AI: HAP filtering. IBM (article), December 20, 2024.}}
+[topic]: {{Techniques to Prevent Harmful and Inaccurate Content}}
+
+-----------------------------------------------------------------
+
+[content]: {{Organizations use several systematic techniques to prevent AI tools from generating unethical outputs.}}
+
+### [topic]: {{Technique 1: Filter and remove (HAP filtering)}}
+
+[content]: {{Systematic filtering of **Hate, Abuse, and Profanity (HAP filtering)** is central to promoting safe and unbiased AI tools. This provides a baseline of safety by removing offensive content before it reaches the user.}}
+
+### [topic]: {{Technique 2: Define the AI tool's purpose and limitations}}
+
+[content]: {{Spelling out the specific use cases and limitations of a tool helps reduce hallucinations. By establishing clear responsibilities, the tool can complete tasks more effectively and minimize irrelevant results.}}
+
+### [topic]: {{Technique 3: Use data templates}}
+
+[content]: {{Data templates provide a predefined format for the AI to follow. This increases the likelihood that the output aligns with prescribed guidelines, promotes consistency, and reduces faulty results.}}
+
+### [topic]: {{Technique 4: Limit responses (Constraints)}}
+
+[content]: {{AI tools often hallucinate because they lack constraints. Defining strict boundaries for the tool's possible outcomes improves overall accuracy and consistency.}}
+
+### [topic]: {{Technique 5: Test and refine the AI tool continually}}
+
+[content]: {{Rigorous testing before deployment and ongoing evaluation are vital. This allows users to adjust and retrain the tool as real-world data evolves over time.}}
+
+### [topic]: {{Technique 6: Rely on human oversight}}
+
+[content]: {{Human validation acts as a final "backstop." Involving human reviewers ensures that if the AI hallucinates, a person with subject matter expertise is available to filter and correct the content for accuracy and relevance.}}
+[topic]: {{Case Study: Chatbot Responding Inappropriately}}
+
+-----------------------------------------------------------
+
+[content]: {{**The Incident**: A customer support chatbot used offensive language during an exchange with a user. **The Impact**: The customer was shocked, and the interaction negatively impacted the customer’s well-being and their perception of the company. **The Solution**: Implementation of HAP filtering and human oversight would have flagged or prevented this output.}}
+[topic]: {{Case Study: News Bot Provides Inaccurate Content}}
+
+-------------------------------------------------------------
+
+[content]: {{**The Incident**: During a developing public emergency, a news bot provided fictional, unverified information as fact. **The Impact**: Citizens made misinformed decisions based on this "hallucination," putting lives at risk. **The Lesson**: This highlights the critical need for factual verification and limiting AI responses to verified data sources during high-stakes situations.}}
+[topic]: {{Managing bias in AI outputs}}
+
+[content]: {{Even if training data is carefully selected to eliminate bias, an AI tool can still generate biased content due to the design of the tool itself. Managing these outputs is essential to promoting AI ethics.
+
+**Bias in AI outputs** (also known as "machine learning bias" or "algorithm bias") occurs when a tool produces responses that unfairly favor one perspective or group over others, even if the input data was balanced. This often stems from human biases that skew the AI algorithm, leading to distorted and potentially harmful outcomes.
+
+11 Holdsworth, James. What is AI bias? IBM (article), December 22, 2023.12 Jonker, Alexandra and Julie Rogers. What is algorithmic bias? IBM (article), September 20, 2024.}}
+[topic]: {{The Stakes of Biased Output}}
+
+----------------------------------------
+
+[content]: {{While biased results in search engines or chatbots may seem low-stakes, the use of biased AI in "life-altering" areas can yield devastating results. High-stakes areas include:
+
+* **Criminal Justice**: Risk assessment and sentencing.
+
+* **Healthcare**: Diagnosis and treatment recommendations.
+
+* **Hiring**: Resume screening and candidate evaluation.
+
+Biased outputs in these fields can propagate stereotypes and lead to systemic unfair treatment.}}
+[topic]: {{Techniques to Manage Bias in AI Outputs}}
+
+----------------------------------------------------
+
+[content]: {{AI creators use several interdisciplinary techniques to identify and mitigate bias during the creation and deployment of generative tools.}}
+
+### [topic]: {{Technique 1: Promote inclusive design and development}}
+
+[content]: {{Inclusive AI starts with a **diverse and interdisciplinary team**. This includes programmers, developers, data scientists, and machine learning engineers who are varied by:
+
+* Race and ethnicity.
+
+* Gender and age.
+
+* Economic and educational levels.
+
+* Job descriptions and demographic metrics.Diversity brings different perspectives that help identify biases that a more homogenous team might overlook.
+
+13 IBM AI Ethics guidelines.}}
+
+### [topic]: {{Technique 2: Perform data processing mindfully}}
+
+[content]: {{Bias can enter the process at any stage, not just during data selection. Businesses must remain vigilant during:
+
+1. **Preprocessing**: Preparing raw data for the model.
+
+2. **In-processing**: The actual training and algorithmic logic.
+
+3. **Postprocessing**: How the model's results are handled and presented.
+
+14 IBM AI Ethics guidelines.}}
+
+### [topic]: {{Technique 3: Detect and mitigate bias continuously}}
+
+[content]: {{No computer system is ever "finished." Continuous monitoring and testing are required to catch biases before they cause real-world problems.
+
+* **Human-in-the-loop (HITL)**: This system requires humans to review AI recommendations before a final decision is made, providing a critical layer of quality assurance.
+
+15 IBM AI Ethics guidelines.}}
+
+### [topic]: {{Technique 4: Promote transparency and interpretability}}
+
+[content]: {{The more people understand how an AI tool arrives at an outcome, the more they can trust its fairness. Transparent tools:
+
+* Document the underlying algorithm's methodology.
+
+* Disclose who trained the model and how it was tuned.Interpretability allows stakeholders to "see inside" the decision-making process to ensure accuracy.
+
+16 IBM AI Ethics guidelines.}}
+[topic]: {{Case Study: Gender Bias in Leadership Traits}}
+
+[content]: {{**The Incident**: A female employee asked an AI tool what qualities make an effective leader. **The Output**: The AI consistently responded with traits traditionally associated only with men. **The Impact**: This type of biased output harms users by reinforcing outdated and harmful stereotypes, potentially affecting career growth and institutional culture.}}
+[topic]: {{Case Study: Unfair Conversational AI}}
+
+[content]: {{**The Incident**: A company discovered its customer service AI was providing different responses based on a customer's perceived demographics. **The Impact**: This led to unequal treatment and service quality, proving that conversational AI can be inherently unfair if not monitored for demographic-based bias.}}
+[topic]: {{Respecting intellectual property and privacy}}
+
+[content]: {{Respecting intellectual property (IP) and user privacy in AI-generated content is critical for maintaining ethical and responsible AI tools.
+
+* **Intellectual Property Respect**: Verifying that generated content does not inadvertently replicate copyrighted material.
+
+* **Privacy**: Addressing the unintentional inclusion of sensitive information in generated content.
+
+Respecting these rights upholds legal standards and user trust, protecting both the creators of the original data and the users of the AI tool.}}
+[topic]: {{Risks of Copyright Infringement and Data Leakage}}
+
+[content]: {{AI tools pose two primary risks during the output phase:
+
+1. **Copyright Infringement**: An AI tool might generate content identical or highly similar to existing work protected by copyright. This results in legal consequences and reputational damage.
+
+2. **Data Leakage**: When personally identifiable information (PII) or sensitive personal information is used in training, fine-tuning, or prompts, the tool may reveal that data in its output. This makes individuals more vulnerable and violates privacy rights.
+
+17 Copyright infringement risk for AI. IBM (website), accessed January 2025.18 Exposing personal information risk for AI. IBM (website), accessed January 2025.}}
+[topic]: {{Ways to Respect Intellectual Property and Privacy}}
+
+[content]: {{Organizations can make AI outputs more ethical by establishing governance and technical safeguards.}}
+
+### [topic]: {{Safeguard 1: Establish strong governance}}
+
+[content]: {{Organizations should establish robust data and AI governance practices. This includes:
+
+* Clearly communicating data usage policies.
+
+* Obtaining informed consent from users.
+
+* Complying with regional and international data protection regulations.
+
+19 Stryker, Cole. What is responsible AI? IBM (article), February 6, 2024.}}
+
+### [topic]: {{Safeguard 2: Follow security best practices}}
+
+[content]: {{To avoid the leakage of data and metadata, AI creators should implement:
+
+* **Cryptography**: Encrypting sensitive data.
+
+* **Anonymization**: Masking PII so individuals cannot be identified.
+
+* **Access Control**: Restricting who can view or use specific datasets.}}
+
+### [topic]: {{Safeguard 3: Avoid exposing internal IP in inputs}}
+
+[content]: {{AI creators should exercise extreme caution when feeding data into algorithms to prevent the model from "learning" and potentially revealing the organization’s own intellectual property or the protected information of others.}}
+
+### [topic]: {{Safeguard 4: Monitor AI tool outputs}}
+
+[content]: {{Continuous monitoring of generated content is required to catch instances where the AI might be infringing on external IP rights or leaking internal confidential information before the output reaches a broader audience.}}
+[topic]: {{Case Study: Copyright Infringement in Content Creation}}
+
+[content]: {{**The Incident**: An employee used an AI tool to draft a blog post. Upon review, they discovered the AI had copied large sections of text from a copyrighted article without any attribution. **The Risk**: If published, this would constitute a legal infringement of IP rights, damaging the reputation of both the individual and the company.}}
+[topic]: {{Case Study: Virtual Assistant Data Leakage}}
+
+[content]: {{**The Incident**: A customer entered a query into a virtual assistant, which responded by including identifiable personal information about other individuals in its output. **The Impact**: This unintentional data leakage violated privacy standards and caused immediate personal and legal harm to the individuals whose data was exposed.}}

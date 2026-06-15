@@ -1,0 +1,491 @@
+# 技术栈与系统架构设计
+
+项目名称建议：Logic Fortress: An LLM-powered Ethics Debate Game
+
+## 1. 设计目标
+
+本项目不是普通问答机器人，也不是传统选择题学习平台，而是一个围绕 IBM SkillsBuild 课程内容构建的互动式 AI ethics 辩论游戏。玩家扮演 ethical auditor，通过与 NPC 辩论逐步击破 NPC 的 “Logic Fortress”。
+
+系统设计需要同时满足以下目标：
+
+- 教育可靠性：NPC 的反馈必须基于课程知识，而不是自由发挥。
+- 响应速度：单轮检索与生成链路尽量短，优先保证游戏节奏。
+- 语义完整性：尽量保留 Markdown 原始结构，不把课程内容过早压缩成难以解释的向量。
+- 可解释性：系统必须输出结构化评分、证据引用和错误类型。
+- 低成本：默认不依赖独立向量数据库，不引入高运维负担组件。
+- 易部署：原型阶段应能通过少量服务完成本地运行与部署。
+- 工程化：模块边界清晰，便于测试、替换模型和后续扩展。
+
+## 2. 推荐技术栈
+
+### 前端
+
+| 模块 | 推荐技术 | 理由 |
+|---|---|---|
+| UI 框架 | React + TypeScript + Vite | 开发快，适合单页游戏式界面，类型安全 |
+| 样式 | Tailwind CSS | 快速构建响应式界面 |
+| 状态管理 | Zustand | 轻量，适合保存 session、meter、当前回合状态 |
+| API 请求 | TanStack Query | 适合管理异步请求、缓存与错误状态 |
+| 路由 | React Router | 支持游戏页、报告页、复盘页 |
+| 动画 | Framer Motion | 用于 NPC 状态变化和 Logic Fortress 反馈动画 |
+
+### 后端
+
+| 模块 | 推荐技术 | 理由 |
+|---|---|---|
+| API 服务 | Python 3.12 + FastAPI | 适合 RAG、LLM、评测脚本生态，开发效率高 |
+| 数据校验 | Pydantic v2 | 强制结构化输入输出，便于约束 Evaluator JSON |
+| ORM / 数据访问 | SQLAlchemy 2.x / SQLModel 可选 | 保持数据访问清晰可测 |
+| 数据库 | SQLite（默认） | 单文件、成本低、部署简单，适合当前小数据量 |
+| 全文检索 | SQLite FTS5 | 毫秒级检索，适合 topic/content 结构化知识库 |
+| 可选升级 | PostgreSQL | 后期如需并发、远程部署或更强事务能力再引入 |
+| 后台任务 | FastAPI BackgroundTasks | 原型阶段足够，无需提前引入队列 |
+| 实时输出 | Server-Sent Events 可选 | 如需流式回复，比 WebSocket 更轻 |
+
+### AI / RAG / Evaluation
+
+| 模块 | 推荐技术 | 理由 |
+|---|---|---|
+| 文档源 | Markdown knowledge base | 你已经整理好课程内容，适合结构化导入 |
+| 默认检索 | SQLite FTS5 + BM25 | 工程化程度高，快、便宜、易 debug |
+| 检索增强 | Query expansion / 规则改写 | 弥补纯关键词召回的表达差异 |
+| 可选语义增强 | Embedding rerank 或 hybrid retrieval | 仅在 FTS5 召回不足时加入 |
+| 向量存储 | 默认不启用 | 当前数据量下独立向量库收益不高 |
+| LLM 接入 | Pluggable provider client | Granite、OpenAI、其他 provider 都通过统一接口接入 |
+| 自动评估 | pytest + gold cases，RAGAS 可选 | 工程验证与论文评估兼顾 |
+| Prompt 管理 | YAML / Markdown templates | 便于版本控制与实验对比 |
+
+## 3. 核心选型结论
+
+### 3.1 默认 RAG 路径
+
+默认不使用独立向量数据库。主链路如下：
+
+1. 将 Markdown 按 `Course / Lesson / topic / content` 或更细语义结构导入 SQLite。
+2. 在 `documents` 基表保留原始字段与顺序。
+3. 在 `documents_fts` 上建立 FTS5 索引。
+4. 查询时先走 FTS5 / BM25 检索。
+5. 对候选结果执行轻量重排。
+6. 将命中内容交给 Evaluator Agent。
+
+这种方案的优点：
+
+- 部署简单：不需要额外向量数据库服务。
+- 响应快：全文检索通常比 embedding 检索链路更短。
+- 成本低：不强依赖 embedding 生成与存储。
+- 可解释：命中依据清晰，便于调试课程 grounding。
+- 更适合当前数据量：目前知识库规模较小，专门上向量库没有明显收益。
+
+### 3.2 何时引入 embedding
+
+只有在以下情况出现时，才建议加入 embedding 或 hybrid retrieval：
+
+- 用户问题大量使用同义改写，FTS5 召回明显不足。
+- 知识库增长到大量 chunk，关键词命中不稳定。
+- 需要跨段落语义相似检索，而不仅是 topic/content 精确匹配。
+
+引入顺序建议为：
+
+1. Query expansion
+2. 候选结果 rerank
+3. SQLite 中缓存 embeddings
+4. 再考虑 pgvector 或专用向量库
+
+### 3.3 何时引入向量数据库
+
+默认不引入 ChromaDB、Qdrant、Milvus 等独立向量数据库。只有在下面情形下再升级：
+
+- 知识库扩展到几十万以上 chunk
+- 检索过滤条件复杂且高并发
+- 需要专门的 dense + sparse hybrid 搜索能力
+- 需要独立伸缩检索服务
+
+在此之前，`SQLite FTS5 + 结构化 Markdown + 可选语义增强` 是首选方案。
+
+## 4. 总体架构
+
+```mermaid
+flowchart LR
+    U[Player] --> FE[React Game UI]
+    FE --> API[FastAPI Backend]
+
+    API --> SessionDB[(SQLite)]
+    API --> Orchestrator[Debate Orchestrator]
+
+    Orchestrator --> Retriever[Structured Retriever]
+    Retriever --> KB[(SQLite FTS5)]
+    KB --> MD[Markdown Knowledge Base]
+
+    Orchestrator --> Evaluator[Evaluator Agent]
+    Evaluator --> LLM1[Configurable LLM Provider]
+
+    Orchestrator --> Persona[Persona Agent]
+    Persona --> LLM2[Configurable LLM Provider]
+
+    Evaluator --> Validation[Argument Validation JSON]
+    Validation --> Persona
+    Validation --> SessionDB
+
+    Persona --> API
+    API --> FE
+    FE --> Meter[Logic Fortress Meter]
+```
+
+## 5. 核心模块设计
+
+### 5.1 Frontend Game UI
+
+前端不是简单聊天框，而是游戏界面。建议至少包括：
+
+- NPC 对话区：显示 NPC 立场、状态和回复内容
+- 玩家输入区：提交本轮伦理论证
+- Logic Fortress Meter：显示 NPC 当前防线值
+- Evidence Panel：显示本轮命中的伦理原则和证据引用
+- Progress Panel：显示当前关卡、已识别误区、已获得成就
+- Reflection Report：游戏结束后展示学习反馈和证据来源
+
+前端只负责展示和交互，不负责判断玩家论证是否正确。
+
+### 5.2 Backend API
+
+建议 API：
+
+| Endpoint | 方法 | 功能 |
+|---|---|---|
+| `/api/session/start` | POST | 创建匿名游戏 session |
+| `/api/debate/turn` | POST | 提交一轮论证并返回 NPC 回复与评分 |
+| `/api/session/{id}` | GET | 获取当前进度 |
+| `/api/report/{id}` | GET | 获取最终学习反馈报告 |
+| `/api/evaluation/ragas` | POST | 运行实验性评估任务 |
+
+`/api/debate/turn` 是核心接口，负责：
+
+1. 保存玩家输入
+2. 检索相关课程内容
+3. 调用 Evaluator Agent 输出结构化判断
+4. 更新 Logic Fortress Meter
+5. 调用 Persona Agent 生成 NPC 回复
+6. 返回前端所需的展示数据
+
+### 5.3 Structured Retriever
+
+知识库来源是 IBM SkillsBuild 课程内容。当前优先保留并利用你已整理的 Markdown 结构，例如：
+
+```markdown
+[Course]: {{...}}
+[Lesson1]: {{...}}
+### [topic]: {{...}}
+[content]: {{...}}
+```
+
+推荐检索流程：
+
+1. Markdown importer 将结构化片段导入 SQLite
+2. `documents` 表保留 `course`、`lesson`、`topic`、`content`、`seq_order`
+3. `documents_fts` 为组合后的搜索字段建立 FTS5 索引
+4. 查询时优先按 topic、lesson、content 做 BM25 检索
+5. 对 top-k 结果做去重、相邻片段补全或轻量重排
+6. 把最终 context 传给 Evaluator Agent
+
+如有必要，可追加：
+
+- query rewriting
+- 同义词词典
+- embedding rerank
+- hybrid score fusion
+
+但这些都是增强层，不是默认基础设施。
+
+### 5.4 Evaluator Agent
+
+Evaluator Agent 是系统的学术核心。它不负责表演，只负责判断玩家论证质量。
+
+输入：
+
+- 玩家本轮 argument
+- 当前 debate scenario
+- NPC 当前错误立场
+- Retriever 返回的课程片段
+- 当前游戏状态
+
+输出必须是 JSON，例如：
+
+```json
+{
+  "match_score": 0.78,
+  "score_delta": -22,
+  "verdict": "strong",
+  "identified_principles": ["fairness", "transparency"],
+  "misconceptions_addressed": ["AI output neutrality"],
+  "missing_points": ["accountability of human deployers"],
+  "evidence_refs": ["doc_14", "doc_19"],
+  "reasoning_summary": "The player correctly challenged the assumption that generative AI outputs are neutral and linked bias risk to training data.",
+  "persona_instruction": "NPC should hesitate, partially concede the fairness point, then challenge the player on accountability.",
+  "confidence": 0.86
+}
+```
+
+### 5.5 Persona Agent
+
+Persona Agent 只负责把 Evaluator 的结构化结果转化成游戏体验。
+
+输入：
+
+- Evaluator JSON
+- NPC persona prompt
+- 当前关卡背景
+- 最近几轮对话摘要
+
+输出：
+
+- NPC 自然语言回复
+- NPC 状态，例如 `confident`、`defensive`、`hesitant`
+- 下一轮追问
+
+关键约束：
+
+- 不重新判断事实
+- 不新增未被检索证据支持的课程知识
+- 证据不足时优先追问或要求澄清
+
+### 5.6 Logic Fortress Meter
+
+Meter 是把论证评分游戏化的桥梁。
+
+建议规则：
+
+- 初始值：100
+- weak：减少 0-8
+- partial：减少 8-18
+- strong：减少 18-30
+- off-topic / unsupported：不减少，NPC 反击
+
+示例：
+
+```text
+new_meter = max(0, old_meter + score_delta)
+```
+
+## 6. 数据库设计
+
+### 6.1 知识库表
+
+```text
+documents
+- id
+- course
+- lesson
+- topic
+- content
+- seq_order
+
+documents_fts
+- id
+- search_content
+```
+
+`documents` 保存原始结构化知识单元，`documents_fts` 用于检索。
+
+### 6.2 游戏数据表
+
+```text
+sessions
+- id
+- anonymous_user_id
+- current_level
+- fortress_meter
+- created_at
+- updated_at
+
+turns
+- id
+- session_id
+- player_input
+- retrieved_refs
+- evaluator_json
+- npc_response
+- score_delta
+- meter_before
+- meter_after
+- created_at
+
+achievements
+- id
+- session_id
+- badge_name
+- unlocked_at
+
+final_reports
+- id
+- session_id
+- strengths
+- misconceptions
+- recommended_topics
+- generated_at
+```
+
+### 6.3 可选语义增强表
+
+只有在需要加入 embedding 时，再考虑增加：
+
+```text
+document_embeddings
+- document_id
+- embedding_model
+- embedding_vector
+- updated_at
+```
+
+它应作为增强层，而不是默认依赖。
+
+## 7. 端到端数据流
+
+一轮玩家交互的数据流如下：
+
+1. 玩家在前端输入论证
+2. 前端调用 `/api/debate/turn`
+3. 后端读取 session 与 scenario
+4. Retriever 基于 SQLite FTS5 检索相关课程片段
+5. 必要时执行 query expansion 或 rerank
+6. Evaluator Agent 基于检索内容生成结构化 JSON
+7. 后端使用 Pydantic 校验 JSON，失败则 retry 或 fallback
+8. 后端更新 Logic Fortress Meter
+9. Persona Agent 基于 Evaluator 结果生成 NPC 回复
+10. 后端保存 turn 数据并返回前端
+
+## 8. 可靠性与反幻觉策略
+
+建议在报告中明确以下控制措施：
+
+- RAG grounding：Evaluator 只能使用检索到的课程片段
+- Structured output：Evaluator 必须输出 JSON
+- Evidence references：高分判断必须附带 `evidence_refs`
+- Persona isolation：Persona Agent 不做事实判断
+- Schema validation：拒绝格式错误或缺少关键字段的结果
+- Temperature control：Evaluator 低温度，Persona 可稍高
+- Low-confidence fallback：检索不足时返回澄清而不是编造结论
+- Retrieval first：先检索再评估，不能跳过 grounding
+
+## 9. Evaluation 方案
+
+### 9.1 检索质量
+
+优先评估：
+
+- hit rate
+- top-k relevance
+- evidence coverage
+- latency
+
+如需论文指标，可追加：
+
+- context precision
+- context recall
+- faithfulness
+- answer relevance
+
+### 9.2 Argument Validation System 质量
+
+建立小型 gold standard：
+
+- 输入：玩家 argument
+- 人工标注：strong / partial / weak / off-topic
+- 系统输出：`match_score`、`verdict`、`evidence_refs`
+- 指标：Accuracy、Weighted F1、agreement rate
+
+### 9.3 用户体验
+
+可通过：
+
+- pre-test / post-test
+- engagement survey
+- qualitative comments
+
+评估学习效果与交互体验。
+
+## 10. 推荐项目目录结构
+
+```text
+project-root/
+  frontend/
+    src/
+      components/
+      pages/
+      stores/
+      api/
+      styles/
+      types/
+  backend/
+    app/
+      main.py
+      api/
+      services/
+        debate_orchestrator.py
+        retriever.py
+        evaluator_agent.py
+        persona_agent.py
+        meter_service.py
+      models/
+      schemas/
+      db/
+      prompts/
+        evaluator.yaml
+        persona.yaml
+    tests/
+  knowledge_base/
+    skillsbuild_ethics/
+  scripts/
+    import_markdown_to_sqlite.py
+  evaluation/
+    gold_standard/
+    ragas_tests/
+  data/
+    logic_fortress.db
+  docker-compose.yml
+  README.md
+```
+
+## 11. MVP 范围
+
+MVP 优先实现：
+
+1. 一个完整 debate scenario
+2. Markdown 导入 SQLite
+3. SQLite FTS5 检索
+4. Evaluator Agent 结构化评分
+5. Persona Agent NPC 回复
+6. Logic Fortress Meter
+7. Final feedback report
+8. 至少 20-30 条 gold cases
+
+后续扩展：
+
+- 多关卡剧情
+- query expansion 策略
+- embedding rerank
+- 多模型对比实验
+- PostgreSQL 部署版
+
+## 12. 最终建议
+
+推荐采用：
+
+`React + FastAPI + SQLite FTS5 + Configurable LLM Provider + pytest / RAGAS`
+
+这套方案最符合当前项目目标：
+
+- 比独立向量数据库更轻
+- 比纯聊天系统更可解释
+- 比直接全量塞上下文更工程化
+- 比默认上 embedding / vector DB 更低成本、更好部署
+
+本项目最值得强调的架构点仍然是双层 LLM：
+
+- Evaluator Agent 保证教育正确性和可验证性
+- Persona Agent 保证游戏沉浸感和对话自然度
+
+而在检索层，默认路线应明确为：
+
+`结构化 Markdown -> SQLite -> FTS5/BM25 -> 可选增强 -> Evaluator`
+
+这比一开始引入 ChromaDB 或其他独立向量库，更适合当前数据规模与工程目标。
