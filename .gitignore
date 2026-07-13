@@ -57,6 +57,7 @@ node_modules/
 # Local databases generated during development
 *.sqlite
 *.sqlite3
+logic_fortress_app.db
 
 # Keep the checked-in project knowledge base DB unless renamed
 !course_content.db

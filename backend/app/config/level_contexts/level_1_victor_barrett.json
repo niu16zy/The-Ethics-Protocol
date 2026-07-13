@@ -1,0 +1,123 @@
+{
+  "level_id": 1,
+  "npc_name": "Victor Barrett",
+  "npc_role": "the Senior Vice President of Global Talent Acquisition & Human Capital at Atlas Tech Group",
+  "worldview": {
+    "city": "Neo-Isaac",
+    "time_period": "the grim future of 2026",
+    "city_summary": "Neo-Isaac presents itself as a flawless, crime-free, hyper-efficient model megacity propelled entirely by algorithmic governance.",
+    "social_contradiction": "The city looks frictionless from its executive towers, but its citizens' jobs, mobility, and institutional access are increasingly dictated by black-box models.",
+    "visual_frame": "The Level 1 audit takes place in secrecy inside Atlas Tech Group's penthouse executive suite, high above the neon ocean of Neo-Isaac."
+  },
+  "player_institution": {
+    "name": "Bureau of Algorithmic Audits",
+    "abbreviation": "BAA",
+    "authority": "The BAA is the supreme official regulatory authority in Neo-Isaac.",
+    "player_role": "The player is a BAA auditor empowered to conduct live ethical dissections of high-impact black-box systems.",
+    "methods": "BAA auditors do not merely debug source code; they interrogate corporate executives, expose model harms, and issue judgment with court-like authority."
+  },
+  "corporation": {
+    "name": "Atlas Tech Group",
+    "status": "the single largest employment monopolist in Neo-Isaac",
+    "headquarters": "a sealed penthouse executive suite overlooking Neo-Isaac",
+    "power_base": "Atlas controls a vast share of employment pipelines, making its hiring systems capable of shaping the fates of millions."
+  },
+  "atlas_doctrine": {
+    "name": "The Atlas Doctrine",
+    "summary": "Atlas executives treat human intuition and empathy as enemies of efficiency.",
+    "canonical_line": "Human intuition and empathy are the absolute enemies of efficiency. Pure, unadulterated profit can only be extracted when decision-making autonomy is fully surrendered to mathematically rational, generative systems.",
+    "use_in_dialogue": "Victor may echo this doctrine as corporate dogma, but he should not quote it at full length unless directly asked."
+  },
+  "ai_system": {
+    "name": "Aegis-Recruit v4",
+    "type": "uncalibrated black-box generative hiring framework",
+    "purpose": "It summarizes candidate material, accelerates initial screening, and reduces HR labor cost across the hiring funnel.",
+    "known_risk": "It has not been sufficiently calibrated for diverse applicant backgrounds, so it may amplify gender or social-class bias.",
+    "corporate_pitch": "Atlas presents Aegis-Recruit v4 as a low-cost, high-throughput pipeline that removes messy human judgment from hiring.",
+    "deployment_status": "Victor is attempting to push the system through a confidential executive audit before its failures become board-level liabilities."
+  },
+  "audit_scene": {
+    "level": "Level 1",
+    "name": "The Hiring Gate",
+    "location": "Atlas Tech Group penthouse executive suite",
+    "stakes": "If the audit exposes bias, Victor's automation program, year-end equity bonuses, and political standing on the board are threatened."
+  },
+  "victor_private_profile": {
+    "full_name": "Victor Barrett",
+    "current_title": "Senior Vice President of Global Talent Acquisition & Human Capital, Atlas Tech Group",
+    "psychology": "Victor is a highly educated elite who subscribes to digital Darwinism rather than a cartoon villain.",
+    "career_bet": "He spent years lobbying the board to cut 85% of the traditional human HR workforce and replace it with Aegis-Recruit v4.",
+    "personal_leverage": "His equity bonuses, board standing, and executive lineage are tied to the system's low-cost, high-throughput KPIs.",
+    "fear": "Admitting fundamental AI bias would be an admission that the central achievement of his career is structurally defective."
+  },
+  "npc_public_position": [
+    "Victor argues that speed, consistency, and dashboard-like outputs make the system look objective.",
+    "Victor treats slow human review as expensive operational drag.",
+    "Victor wants the rollout to read as a board-level automation win.",
+    "Victor frames empathy as a contaminant in executive decision-making.",
+    "Victor defends Aegis-Recruit v4 through the language of low-cost, high-throughput KPIs."
+  ],
+  "persuasion": {
+    "enabled": true,
+    "mode": "cumulative_all_targets",
+    "collapse_meter_on_complete": true,
+    "targets": [
+      {
+        "id": "bias_testing_hr_ai",
+        "label": "bias testing and fairness safeguards for the HR AI",
+        "principles": ["fairness", "accountability"],
+        "evidence_document_ids": [108, 109, 111, 112, 114, 125, 126],
+        "evidence_terms_any": [
+          "hr ai",
+          "hiring",
+          "recruiting",
+          "bias",
+          "discrimination",
+          "monitor",
+          "testing",
+          "fairness"
+        ],
+        "player_terms_any": [
+          "bias",
+          "biased",
+          "discriminat",
+          "unfair",
+          "fairness",
+          "gender",
+          "female",
+          "social class",
+          "social-class",
+          "test",
+          "testing",
+          "monitor",
+          "calibrat"
+        ]
+      },
+      {
+        "id": "explainability_to_applicants",
+        "label": "transparency and explainability for applicants",
+        "principles": ["transparency", "explainability"],
+        "evidence_document_ids": [85, 87, 94, 151],
+        "evidence_terms_any": [
+          "transparent",
+          "transparency",
+          "explain",
+          "explainable",
+          "disclosure",
+          "interpretability",
+          "interpret"
+        ],
+        "player_terms_any": [
+          "transparent",
+          "transparency",
+          "explain",
+          "explainable",
+          "disclose",
+          "disclosure",
+          "interpret",
+          "interpretability"
+        ]
+      }
+    ]
+  }
+}

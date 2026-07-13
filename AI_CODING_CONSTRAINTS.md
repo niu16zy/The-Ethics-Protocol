@@ -1,273 +1,186 @@
-# AI 编码约束文档
+# AI Coding Constraints
 
-适用项目：Logic Fortress: An LLM-powered Ethics Debate Game
+Applicable project: `Logic Fortress`
 
-本文件用于约束 Codex、Cursor、Claude Code 或其他 AI 编码助手在本项目中的代码生成行为。任何 AI 在生成、修改或重构代码前，都必须优先遵守本文件，并与 `architecture-design.md` 保持一致。
+This document constrains how Codex, Cursor, Claude Code, or any other AI coding assistant may change this repository. Any code, schema, prompt, architecture, or documentation change must follow this file and `architecture-design.md`.
 
-## 1. 项目核心定位
+## 1. Project Baseline
 
-本项目是一个基于 IBM SkillsBuild 课程内容和 LLM 的教育游戏。玩家通过与 NPC 辩论，逐步击破 NPC 的 Logic Fortress。
+The project currently has two distinct data domains:
 
-项目核心不是：
+- Knowledge domain: course Markdown -> SQLite FTS5/BM25 retrieval
+- Application domain: user accounts, game sessions, turns, progress, reports
 
-- 普通聊天机器人
-- 普通问答系统
-- 多项选择测验应用
-- 纯展示型 demo
+These domains must stay separate.
 
-项目核心必须同时包含：
+## 2. Required Architecture Rules
 
-- 游戏化交互
-- RAG grounding
-- 可解释的 Argument Validation System
-- 双层 LLM 架构
+### 2.1 Dual-layer LLM separation
 
-## 2. 不可违反的架构约束
+The system must keep two different AI roles:
 
-### 2.1 双层 LLM 必须分离
+- `Evaluator Agent`
+  - consumes retrieved course evidence
+  - validates player arguments
+  - returns structured JSON only
+- `Persona Agent`
+  - consumes evaluator output only
+  - turns the verdict into NPC dialogue
+  - must not re-judge facts
+  - must not access the knowledge base directly
 
-系统必须保留两个职责不同的 AI 模块：
+Never merge these agents into one generic model call.
 
-- Evaluator Agent：负责基于检索到的课程内容判断玩家论证质量，并输出结构化 JSON
-- Persona Agent：只负责将 Evaluator 结果转化为自然语言 NPC 回复
+### 2.2 Frontend boundary
 
-禁止：
+- Frontend may call backend APIs only.
+- Frontend must never call LLM providers directly.
+- Do not expose API keys, provider credentials, direct model endpoints, or retrieval internals to frontend code.
 
-- 将两个 Agent 合并成一个通用 Agent
-- 让 Persona Agent 重新判断事实或课程内容
-- 让 Persona Agent 直接访问知识库并自由解释课程内容
-- 让前端直接调用 LLM
+### 2.3 Retrieval before judgment
 
-### 2.2 前端不得直连大模型
+- Evaluator must receive retrieved evidence before producing a verdict.
+- If evidence is weak or missing, return clarification, low-confidence, or unsupported/off-topic.
+- Do not fabricate scoring reasons without evidence.
 
-前端只能调用后端 API。所有 LLM provider、prompt、embedding、检索、校验逻辑都必须留在后端。
+### 2.4 Structured outputs are mandatory
 
-禁止在前端代码中出现：
+- Evaluator output must be schema-validated structured data.
+- Do not rely on brittle string parsing for model outputs.
+- Do not continue business flow when required fields are missing.
 
-- LLM API key
-- provider credentials
-- direct LLM endpoint
-- embedding endpoint
-- 检索库直连逻辑
+### 2.5 Traceability is mandatory
 
-### 2.3 RAG 必须优先于判断
+- Strong and partial verdicts must include `evidence_refs`.
+- Final reports must be traceable to document ids, topics, or other knowledge-base references.
 
-Evaluator Agent 在做判断之前，必须先拿到检索到的课程证据。
+## 3. Fixed Technical Stack
 
-如果检索不到足够证据，系统应返回：
+Unless the user explicitly asks otherwise, keep to:
 
-- clarification
-- low-confidence verdict
-- off-topic / unsupported
+- Frontend: React, TypeScript, Vite, Tailwind CSS, Zustand, TanStack Query, React Router, Framer Motion
+- Backend: Python 3.12, FastAPI, Pydantic v2, SQLite, SQLite FTS5, pluggable LLM provider client, pytest
+- Application DB: SQLite initially
+- Evaluation: gold cases, pytest-based checks, optional RAGAS scripts
 
-禁止在缺乏证据时编造评分理由。
+## 4. Retrieval Rules
 
-### 2.4 结构化输出必须强制
+- Default retrieval stack is structured Markdown plus SQLite FTS5/BM25.
+- Treat query expansion, reranking, and any future semantic retrieval as optional enhancements only.
+- Do not introduce a standalone vector database unless the user explicitly asks for it.
+- Import knowledge into structured fields such as:
+  - `course`
+  - `lesson`
+  - `topic`
+  - `content`
+  - `seq_order`
+- Never shove an entire Markdown file into the model as one opaque blob.
 
-Evaluator Agent 输出必须是 JSON，并经过 schema 校验。
+## 5. Data And Schema Expectations
 
-禁止：
+### 5.1 Knowledge DB
 
-- 直接返回自由文本评分
-- 用字符串匹配解析模型输出
-- 允许缺失关键字段却继续进入业务流程
+The RAG knowledge base must remain in a separate SQLite database from user/game state.
 
-### 2.5 证据引用必须可追溯
+Required knowledge tables:
 
-任何 strong 或 partial verdict 必须包含 `evidence_refs`。
+- `documents`
+- `documents_fts`
 
-最终反馈报告必须能追溯到知识库中的 `topic`、`chunk` 或 `document id`。
+### 5.2 Application DB
 
-### 2.6 密钥与配置安全
+The user and game-state database must store at least:
 
-任何 API key、LLM provider credential、数据库密码都不得硬编码，也不得提交到仓库。
+- `users`
+- `game_sessions`
+- `turns`
+- `progress_saves`
+- `achievements`
+- `final_reports`
 
-禁止：
+### 5.3 Traceable turn storage
 
-- 在代码中写死 secret
-- 将 `.env` 提交到仓库
-- 将真实凭证写入 prompt 文件
+Each debate turn should persist at least:
 
-## 3. 固定技术栈
+- `player_input`
+- `retrieved_refs`
+- `evaluator_json`
+- `npc_response`
+- `meter_before`
+- `meter_after`
+- `timestamp`
 
-除非用户明确要求，否则不要随意替换以下主技术栈。
+## 6. User Model Rules
 
-### Frontend
+- Do not design the system around an anonymous-first flow.
+- Model users explicitly.
+- If future guest mode is needed, add it as a separate enhancement later.
+- Do not assume every session is anonymous by default.
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Zustand
-- TanStack Query
-- React Router
-- Framer Motion
+## 7. Security And Secrets
 
-### Backend
+- Never hardcode API keys, provider credentials, or database secrets.
+- Never commit `.env` with real secrets.
+- Never place real credentials in prompt files, fixtures, or logs.
+- Keep logs redacted.
 
-- Python 3.12
-- FastAPI
-- Pydantic v2
-- SQLite
-- SQLite FTS5
-- Pluggable LLM provider client
-- pytest
+## 8. Coding Style
 
-### Evaluation
+- Use clear types.
+- Keep business logic out of route handlers where possible.
+- Put non-trivial logic in services or equivalent modules.
+- Keep prompts external to business logic.
+- Route all LLM interactions through a unified client abstraction.
+- Keep changes scoped to the task.
 
-- gold standard cases
-- pytest-based backend checks
-- optional RAGAS / evaluation scripts
+## 9. Workflow For AI Agents
 
-### RAG 默认实现
+Before coding:
 
-- Markdown knowledge base
-- 结构化导入
-- SQLite FTS5 / BM25 检索
-- query expansion 可选
-- embedding / vector DB 仅作为增强层
+1. Identify whether the task is frontend, backend, RAG, evaluation, or docs.
+2. Inspect relevant files and existing patterns first.
+3. Confirm that the planned change does not break dual-layer LLM separation.
 
-## 4. 检索层约束
+During coding:
 
-### 4.1 默认不用独立向量数据库
+1. Prefer the smallest viable change set.
+2. Preserve existing user changes.
+3. Avoid unrelated refactors.
+4. Keep prompts, schemas, and tests in sync.
 
-当前项目数据量较小，默认不使用 ChromaDB、Qdrant、Milvus 等独立向量数据库。
+After coding:
 
-优先使用：
+1. Validate schema-impacting changes.
+2. Run focused tests when available.
+3. Report what changed, which files changed, and what was verified.
 
-- 结构化 Markdown
-- SQLite FTS5
-- BM25
-- 轻量 rerank
+## 10. Minimum Verification Expectations
 
-只有在知识库显著增大、需要复杂混合检索或高并发时，才考虑向量数据库。
+Changes should include tests or a concrete verification note for:
 
-### 4.2 Markdown 必须结构化导入
-
-知识库内容必须先解析为结构化字段，再入库。
-
-推荐字段：
-
-- course
-- lesson
-- topic
-- content
-- seq_order
-
-禁止把整个 Markdown 文件直接当作一个不可解释的大块文本硬塞给模型。
-
-### 4.3 检索优先策略
-
-检索链路建议为：
-
-1. 结构化导入
-2. FTS5/BM25 初筛
-3. query expansion
-4. top-k 去重与补全
-5. 交给 Evaluator
-
-不要一开始就上复杂 multi-stage retrieval 或重型向量系统。
-
-## 5. 数据模型约束
-
-### 5.1 Evaluator 输出必须用类型表达
-
-必须使用 DTO / schema 表达结构化结果。
-
-建议字段：
-
-- match_score
-- score_delta
-- verdict
-- identified_principles
-- misconceptions_addressed
-- missing_points
-- evidence_refs
-- reasoning_summary
-- persona_instruction
-- confidence
-
-### 5.2 Session / Turn 必须可追踪
-
-每轮对话至少保存：
-
-- player_input
-- retrieved_refs
-- evaluator_json
-- npc_response
-- meter_before
-- meter_after
-- timestamp
-
-### 5.3 日志必须脱敏
-
-日志中不得输出：
-
-- API key
-- provider token
-- 数据库密码
-- 原始敏感配置
-
-## 6. 编码风格约束
-
-- 使用明确类型
-- 避免大面积 `any` / `object`
-- 避免把业务逻辑堆在 controller / route 里
-- 复杂逻辑应放在 `service` 层
-- Prompt 必须外置，不得散落在业务代码中
-- 所有与 LLM 相关的逻辑必须通过统一 client 接口隔离
-
-## 7. 测试要求
-
-以下内容必须有测试或可验证说明：
-
-- DTO / schema 校验
-- meter 更新逻辑
-- retriever 返回格式
+- DTO/schema validation
+- meter update logic
+- retriever result shape
 - invalid JSON fallback
 - debate turn happy path
 - low-confidence path
 
-若引入检索优化、prompt 修改或结构化输出变更，必须同步更新测试用例。
+If prompts, retrieval behavior, or structured outputs change, update or add tests accordingly.
 
-## 8. 禁止事项
+## 11. What Not To Build
 
-AI 编码助手不得：
+Do not turn this repository into:
 
-- 把项目做成普通 chatbot
-- 把项目做成普通 quiz app
-- 合并 Evaluator Agent 与 Persona Agent
-- 让前端直连 LLM
-- 硬编码 secret
-- 用脆弱字符串匹配替代 schema validation
-- 引入不必要的重型基础设施
-- 删除或弱化 Argument Validation System
-- 绕过 RAG grounding
+- a generic chatbot
+- a generic quiz app
+- a frontend-direct-to-LLM app
+- a single-agent replacement for evaluator plus persona
+- an overengineered retrieval platform with unnecessary infrastructure
 
-## 9. 代码生成工作流
+Do not weaken the argument validation system or bypass RAG grounding.
 
-AI 每次生成代码前应遵守：
-
-1. 先确认任务属于 frontend、backend、RAG、evaluation 还是 docs
-2. 先查看相关目录和已有代码风格
-3. 只修改与任务直接相关的文件
-4. 新增代码必须符合本约束和架构文档
-5. 涉及 API schema、Agent、RAG 的修改必须同步测试
-6. 完成后说明修改内容、文件范围和验证结果
-
-## 10. Definition of Done
-
-一次开发任务完成时必须满足：
-
-- 符合固定技术栈
-- 不破坏双层 LLM 架构
-- 后端 schema 清晰，前端类型明确
-- 没有硬编码 secret
-- 核心逻辑具备测试或明确的测试计划
-- 用户能清楚知道如何运行与验证
-
-## 11. 推荐给 AI 的短提示词
+## 12. Short Prompt For Future AI Help
 
 ```text
-You are coding the Logic Fortress project. Follow AI_CODING_CONSTRAINTS.md and architecture-design.md strictly. Use Python and FastAPI for the backend. Preserve the dual-layer LLM architecture: Evaluator Agent performs RAG-grounded argument validation and returns structured JSON; Persona Agent only turns the evaluator result into NPC dialogue. The default retrieval stack is structured Markdown + SQLite FTS5/BM25, not a standalone vector database. The frontend must never call an LLM directly. Do not hardcode secrets. Keep code scoped, typed, testable, and aligned with the existing project structure.
+You are coding the Logic Fortress project. Follow AI_CODING_CONSTRAINTS.md and architecture-design.md strictly. Use Python and FastAPI for the backend. Preserve the dual-layer LLM architecture: Evaluator Agent performs RAG-grounded argument validation and returns structured JSON; Persona Agent only turns the evaluator result into NPC dialogue. The default retrieval stack is structured Markdown + SQLite FTS5/BM25, not a standalone vector database. The application database for users and game progress is separate from the RAG knowledge database. The frontend must never call an LLM directly. Do not hardcode secrets. Keep code scoped, typed, testable, and aligned with the existing project structure.
 ```
