@@ -4,6 +4,7 @@ import levelOneDebateBackground from "../assets/levels/level-1/debate-background
 import levelOneNpcAvatar from "../assets/levels/level-1/npc-avatar.png";
 import levelOneNpcThinkingAvatar from "../assets/levels/level-1/npc-thinking-avatar.png";
 import levelOneAegisRecruitIntroduction from "../assets/levels/level-1/aegis-recruit-introduction.jpg";
+import levelOneNpcFail from "../assets/levels/level-1/npcfail.png";
 
 export const levelOne: LevelConfig = {
   levelId: 1,
@@ -21,7 +22,7 @@ export const levelOne: LevelConfig = {
     "The Logic Fortress reaches zero. The glass around Victor's command console goes dark; one by one, Aegis-Recruit's candidate rankings stop refreshing. For the first time tonight, the room is quiet enough to hear him breathe.",
     "Victor Barrett withdraws the rollout order. He will not use the AI system to screen applicants until its bias, transparency, and accountability failures can be answered. He transfers control of Aegis-Recruit to the audit office, then opens a secure line to his superiors: the system is suspended, and the decision is final.",
   ],
-  resolutionImage: null,
+  resolutionImage: levelOneNpcFail,
   debateBackground: levelOneDebateBackground,
   npcName: "Victor Barrett",
   npcAvatar: levelOneNpcAvatar,

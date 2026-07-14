@@ -313,7 +313,7 @@ export function LevelOnePage() {
                   key={clue.id}
                   type="button"
                   onClick={() => setActiveClue(clue)}
-                  className="group w-24 rounded-lg border border-white/15 bg-white/[0.105] p-2 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-150 transition hover:-translate-y-0.5 hover:bg-white/[0.16] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80 sm:w-28"
+                  className="group w-24 rounded-lg border border-white/15 bg-white/[0.105] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-150 transition hover:-translate-y-0.5 hover:bg-white/[0.16] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80 sm:w-28"
                   aria-label={`Open clue: ${clue.title}`}
                 >
                   <img
@@ -321,9 +321,6 @@ export function LevelOnePage() {
                     alt=""
                     className="aspect-[3/4] w-full rounded border border-white/10 object-cover object-top [image-rendering:auto]"
                   />
-                  <span className="mt-2 block truncate font-mono text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/85 group-hover:text-white sm:text-[0.68rem]">
-                    {clue.title}
-                  </span>
                 </button>
               ))}
             </div>
