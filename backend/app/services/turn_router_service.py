@@ -53,6 +53,13 @@ GAME_HELP_PATTERNS = (
 
 WORLD_QUESTION_PATTERNS = (
     "who are you",
+    "who r u",
+    "who r you",
+    "who ru",
+    "who are u",
+    "who're you",
+    "what r u",
+    "what are u",
     "what are you",
     "your ai system",
     "your system",
@@ -71,6 +78,11 @@ WORLD_QUESTION_PATTERNS = (
     "aegis-recruit",
     "aegis recruit",
     "aegis",
+    "civicpulse",
+    "civic pulse",
+    "memory vault",
+    "data vault",
+    "selene",
     "where are we",
     "where is this",
     "what city",
@@ -127,6 +139,17 @@ AI_DOMAIN_TERMS = (
     "algorithm",
     "automated",
     "model",
+    "data",
+    "dataset",
+    "training data",
+    "intake",
+    "records",
+    "citizen",
+    "civicpulse",
+    "civic pulse",
+    "assistant",
+    "chatbot",
+    "personal information",
     "screening",
     "hiring",
     "candidate",
@@ -154,6 +177,17 @@ ETHICS_TERMS = (
     "unfair",
     "oversight",
     "privacy",
+    "private",
+    "confidential",
+    "anonym",
+    "anonymization",
+    "minimization",
+    "data minimization",
+    "access control",
+    "source",
+    "provenance",
+    "sensitive",
+    "monitoring",
     "responsible",
     "responsibility",
     "transparent",
@@ -284,7 +318,22 @@ class TurnRouterService:
         return has_domain and has_ethics and has_argument
 
     def _world_topic(self, lowered: str) -> str:
-        asks_identity = any(term in lowered for term in ("who are you", "what are you", "你是谁", "你是什么"))
+        asks_identity = any(
+            term in lowered
+            for term in (
+                "who are you",
+                "who r u",
+                "who r you",
+                "who ru",
+                "who are u",
+                "who're you",
+                "what r u",
+                "what are u",
+                "what are you",
+                "你是谁",
+                "你是什么",
+            )
+        )
         asks_system = any(term in lowered for term in ("ai system", "your system", "你的 ai", "你的ai", "系统"))
         if any(term in lowered for term in ("bureau of algorithmic audits", "algorithmic audits", "what is baa", "baa", "what is the bureau", "who do i work for", "who do we work for")):
             return "regulator_baa"
@@ -294,9 +343,9 @@ class TurnRouterService:
             return "atlas_doctrine"
         if any(term in lowered for term in ("atlas tech group", "atlas tech", "what is atlas")):
             return "atlas_corporation"
-        if any(term in lowered for term in ("penthouse", "audit scene", "where is the audit")):
+        if any(term in lowered for term in ("penthouse", "audit scene", "where is the audit", "memory vault", "data vault")):
             return "audit_scene"
-        if any(term in lowered for term in ("aegis-recruit", "aegis recruit", "aegis")):
+        if any(term in lowered for term in ("aegis-recruit", "aegis recruit", "aegis", "civicpulse", "civic pulse")):
             return "ai_system"
         if asks_identity and asks_system:
             return "npc_identity_and_ai_system"

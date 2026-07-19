@@ -4,7 +4,11 @@ import json
 
 import pytest
 
-from backend.app.services.llm_client import GroqChatCompletionsClient, LLMClientError
+from backend.app.services.llm_client import (
+    FoxResponsesClient,
+    GroqChatCompletionsClient,
+    LLMClientError,
+)
 
 
 def test_groq_generate_timeout_is_wrapped(monkeypatch):
@@ -63,3 +67,56 @@ def test_groq_generate_sends_max_tokens(monkeypatch):
     assert captured_payload["max_tokens"] == 512
     assert captured_payload["model"] == "llama-3.3-70b-versatile"
     assert captured_user_agent == "logic-fortress/0.1"
+
+
+def test_fox_generate_sends_responses_payload(monkeypatch):
+    captured_payload: dict[str, object] = {}
+    captured_url = ""
+    captured_authorization = ""
+
+    class FakeResponse:
+        def __enter__(self) -> "FakeResponse":
+            return self
+
+        def __exit__(self, exc_type, exc, traceback) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps({"output_text": "{\"ok\": true}"}).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        nonlocal captured_payload
+        nonlocal captured_url
+        nonlocal captured_authorization
+        captured_payload = json.loads(request.data.decode("utf-8"))
+        captured_url = request.full_url
+        captured_authorization = request.get_header("Authorization")
+        return FakeResponse()
+
+    monkeypatch.setattr("urllib.request.urlopen", fake_urlopen)
+    client = FoxResponsesClient(
+        api_key="fox-key",
+        model="gpt-5.5",
+        base_url="https://code.newcli.com/codex/v1/",
+        max_output_tokens=300,
+        reasoning_effort="high",
+        disable_response_storage=True,
+    )
+
+    assert (
+        client.generate_text(
+            "Return JSON.",
+            temperature=0.7,
+            response_mime_type="application/json",
+        )
+        == "{\"ok\": true}"
+    )
+    assert captured_url == "https://code.newcli.com/codex/v1/responses"
+    assert captured_authorization == "Bearer fox-key"
+    assert captured_payload["model"] == "gpt-5.5"
+    assert captured_payload["input"] == "Return JSON."
+    assert captured_payload["max_output_tokens"] == 300
+    assert captured_payload["store"] is False
+    assert captured_payload["reasoning"] == {"effort": "high"}
+    assert captured_payload["text"] == {"format": {"type": "json_object"}}
+    assert "temperature" not in captured_payload

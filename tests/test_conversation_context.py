@@ -17,7 +17,7 @@ def _persist_prior_turn(app_repository: AppRepository, session_id: int) -> None:
     ]
     evaluator = EvaluatorResult(
         match_score=0.62,
-        score_delta=-12,
+        score_delta=-20,
         verdict="partial",
         identified_principles=["fairness"],
         misconceptions_addressed=[],
@@ -35,7 +35,7 @@ def _persist_prior_turn(app_repository: AppRepository, session_id: int) -> None:
         evaluator=evaluator,
         npc_response="Make the accountability link sharper.",
         meter_before=100,
-        meter_after=88,
+        meter_after=80,
     )
 
 

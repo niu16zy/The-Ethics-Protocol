@@ -5,16 +5,29 @@ interface FortressMeterProps {
   delta?: number;
 }
 
-export function FortressMeter({ current, before, after, delta }: FortressMeterProps) {
+function meterStateLabel(value: number): string {
+  const bounded = Math.max(0, Math.min(100, value));
+  if (bounded <= 0) {
+    return "Breached";
+  }
+  if (bounded <= 25) {
+    return "Critical";
+  }
+  if (bounded <= 55) {
+    return "Unstable";
+  }
+  if (bounded <= 80) {
+    return "Pressured";
+  }
+  return "Fortified";
+}
+
+export function FortressMeter({ current }: FortressMeterProps) {
   const bounded = Math.max(0, Math.min(100, current));
-  const deltaText = delta === undefined ? "Awaiting first argument" : `${delta >= 0 ? "+" : ""}${delta}`;
+  const status = meterStateLabel(bounded);
 
   return (
     <section className="border border-fortress-line bg-fortress-panel p-4">
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="text-sm uppercase tracking-[0.24em] text-fortress-muted">Logic Fortress Meter</h2>
-        <span className="font-display text-2xl text-fortress-text">{bounded}</span>
-      </div>
       <div className="mt-4 h-4 border border-fortress-line bg-fortress-black">
         <div
           className="h-full bg-gradient-to-r from-fortress-red via-fortress-amber to-fortress-blue transition-[width] duration-500"
@@ -22,9 +35,9 @@ export function FortressMeter({ current, before, after, delta }: FortressMeterPr
         />
       </div>
       <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-fortress-muted">
-        <span>Before: {before ?? current}</span>
-        <span>After: {after ?? current}</span>
-        <span>Delta: {deltaText}</span>
+        <span>Holding</span>
+        <span>Cracking</span>
+        <span>Collapse</span>
       </div>
     </section>
   );

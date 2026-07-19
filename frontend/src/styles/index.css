@@ -168,6 +168,75 @@ textarea:focus-visible {
       transparent 23% 49%,
       rgba(5, 5, 16, 0.46) 49% 55%,
       transparent 55% 100%
-    );
+  );
   animation: resolution-signal-shift 5s ease-in-out infinite alternate;
+}
+
+.level-art-placeholder,
+.level-portrait-placeholder,
+.level-clue-placeholder {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(82, 209, 197, 0.18), transparent 42%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08) 0 1px,
+      transparent 1px 9px
+    ),
+    linear-gradient(135deg, #071416 0%, #0b1e22 48%, #020607 100%);
+}
+
+.level-art-placeholder::before,
+.level-portrait-placeholder::before,
+.level-clue-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 1rem;
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(255, 255, 255, 0.16) 49% 51%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(255, 255, 255, 0.16) 49% 51%, transparent 51%);
+  opacity: 0.62;
+}
+
+.level-art-placeholder::after,
+.level-portrait-placeholder::after,
+.level-clue-placeholder::after {
+  content: attr(data-placeholder);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  max-width: calc(100% - 2rem);
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(2, 6, 7, 0.7);
+  padding: 0.65rem 0.8rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(0.62rem, 1.8vw, 0.82rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.level-portrait-placeholder::before {
+  inset: 1.25rem;
+  border-radius: 999px 999px 18px 18px;
+}
+
+.level-clue-placeholder::before {
+  inset: 0.55rem;
+}
+
+.level-clue-placeholder::after {
+  max-width: calc(100% - 0.7rem);
+  padding: 0.35rem 0.4rem;
+  font-size: 0.58rem;
 }

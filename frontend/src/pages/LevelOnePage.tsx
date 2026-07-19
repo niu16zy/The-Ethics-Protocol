@@ -13,11 +13,15 @@ import { ResolutionScene } from "../components/ResolutionScene";
 import { levelOne } from "../config/levels";
 import { useGameStore } from "../stores/gameStore";
 import type { DebateTurnStreamEvent, SessionRead, UserRead } from "../types/api";
-import type { LevelClue } from "../types/level";
+import type { LevelClue, LevelConfig } from "../types/level";
 
 interface InitialGameState {
   user: UserRead;
   session: SessionRead;
+}
+
+interface LevelOnePageProps {
+  level?: LevelConfig;
 }
 
 function messageFromError(error: unknown): string {
@@ -32,7 +36,24 @@ function messageFromError(error: unknown): string {
   return "Unknown error";
 }
 
-async function initializeGame(): Promise<InitialGameState> {
+function meterStateLabel(value: number): string {
+  const bounded = Math.max(0, Math.min(100, value));
+  if (bounded <= 0) {
+    return "Breached";
+  }
+  if (bounded <= 25) {
+    return "Critical";
+  }
+  if (bounded <= 55) {
+    return "Unstable";
+  }
+  if (bounded <= 80) {
+    return "Pressured";
+  }
+  return "Fortified";
+}
+
+async function initializeGame(level: LevelConfig): Promise<InitialGameState> {
   const suffix = crypto.randomUUID().slice(0, 8);
   const createdUser = await createUser({
     username: `lf_player_${suffix}`,
@@ -41,14 +62,14 @@ async function initializeGame(): Promise<InitialGameState> {
   const user = await getUser(createdUser.id);
   const createdSession = await createSession({
     user_id: user.id,
-    current_level: levelOne.levelId,
+    current_level: level.levelId,
   });
   const session = await getSession(createdSession.id);
 
   return { user, session };
 }
 
-export function LevelOnePage() {
+export function LevelOnePage({ level = levelOne }: LevelOnePageProps) {
   const [playerInput, setPlayerInput] = useState("");
   const [turnError, setTurnError] = useState<string | null>(null);
   const [streamPhase, setStreamPhase] = useState<string | null>(null);
@@ -69,7 +90,7 @@ export function LevelOnePage() {
   } = useGameStore();
 
   const initializeMutation = useMutation({
-    mutationFn: initializeGame,
+    mutationFn: () => initializeGame(level),
     onSuccess: ({ user: createdUser, session: createdSession }) => {
       setUser(createdUser);
       setSession(createdSession);
@@ -141,19 +162,20 @@ export function LevelOnePage() {
   const npcDialogue =
     streamTargetDialogue.length > 0
       ? visibleStreamDialogue
-      : lastTurn?.npc_response ?? levelOne.npcInitialDialogue;
+      : lastTurn?.npc_response ?? level.npcInitialDialogue;
   const currentMeter = pendingMeter ?? lastTurn?.meter_after ?? session?.fortress_meter ?? 50;
   const canSubmitArgument =
     Boolean(session) && playerInput.trim().length > 0 && !isSubmittingTurn;
   const isAwaitingPersonaStream = isSubmittingTurn && streamTargetDialogue.length === 0;
   const npcPortrait =
-    isAwaitingPersonaStream && levelOne.npcThinkingAvatar
-      ? levelOne.npcThinkingAvatar
-      : levelOne.npcAvatar;
+    isAwaitingPersonaStream && level.npcThinkingAvatar
+      ? level.npcThinkingAvatar
+      : level.npcAvatar;
   const pendingDialogueText =
     streamPhase === "persona"
-      ? "Victor Barrett is choosing his words..."
-      : "The audit lens is testing your claim against the case record...";
+      ? `${level.npcName} is choosing a response...`
+      : "The audit lens is reviewing the case record...";
+  const currentMeterLabel = meterStateLabel(currentMeter);
 
   const handleStreamEvent = (event: DebateTurnStreamEvent) => {
     if (event.event === "phase") {
@@ -229,7 +251,7 @@ export function LevelOnePage() {
   if (stage === "intro") {
     return (
       <IntroScene
-        level={levelOne}
+        level={level}
         isInitializing={initializeMutation.isPending}
         initializationError={initializationError}
         canEnter={Boolean(user && session)}
@@ -240,21 +262,32 @@ export function LevelOnePage() {
   }
 
   if (stage === "resolution") {
-    return <ResolutionScene level={levelOne} />;
+    return <ResolutionScene level={level} />;
   }
 
   return (
-    <main className="min-h-screen bg-[#090013] p-3 text-white sm:p-5">
+    <main
+      className="min-h-screen p-3 text-white sm:p-5"
+      style={{
+        background:
+          `radial-gradient(circle at 50% -10%, ${level.theme.accentSoft}, transparent 34rem), ${level.theme.backdrop}`,
+      }}
+    >
       <section className="mx-auto flex min-h-[calc(100vh-1.5rem)] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:min-h-[calc(100vh-2.5rem)]">
         <div className="relative min-h-[60vh] flex-1 overflow-hidden bg-[#111122] sm:min-h-[64vh]">
-          {levelOne.debateBackground ? (
+          {level.debateBackground ? (
             <img
-              src={levelOne.debateBackground}
+              src={level.debateBackground}
               alt=""
               className="absolute inset-0 h-full w-full object-cover"
             />
           ) : (
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,#15152b_0%,#080814_50%,#18182f_100%)]" />
+            <div
+              role="img"
+              aria-label={`${level.title} debate background placeholder`}
+              className="level-art-placeholder absolute inset-0"
+              data-placeholder={`${level.title} background`}
+            />
           )}
           <div className="absolute inset-0 bg-black/15" />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:100%_6px]" />
@@ -265,25 +298,23 @@ export function LevelOnePage() {
                 {npcPortrait ? (
                   <img
                     src={npcPortrait}
-                    alt={levelOne.npcName}
+                    alt={level.npcName}
                     className="h-full w-full object-cover object-top"
                   />
                 ) : (
-                  <div className="relative h-52 w-28">
-                    <div className="absolute left-1/2 top-0 h-20 w-20 -translate-x-1/2 rounded-full border-[3px] border-white/85 shadow-[0_0_10px_rgba(255,255,255,0.35)]" />
-                    <div className="absolute left-1/2 top-20 h-24 w-1 -translate-x-1/2 bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)]" />
-                    <div className="absolute left-1/2 top-28 h-1 w-28 -translate-x-1/2 rotate-[32deg] bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)]" />
-                    <div className="absolute left-2 top-32 h-1 w-28 -rotate-[50deg] bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)]" />
-                    <div className="absolute left-8 top-40 h-1 w-20 -rotate-[58deg] bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)]" />
-                    <div className="absolute left-12 top-40 h-1 w-20 rotate-[76deg] bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)]" />
-                  </div>
+                  <div
+                    role="img"
+                    aria-label={`${level.npcName} portrait placeholder`}
+                    className="level-portrait-placeholder h-full w-full"
+                    data-placeholder={`${level.npcName} portrait`}
+                  />
                 )}
               </div>
             </div>
 
             <div className="mt-3 w-full rounded-xl border border-white/15 bg-white/[0.115] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_18px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-150 sm:mt-4 sm:px-5 sm:py-4">
               <p className="font-mono text-lg font-semibold uppercase tracking-[0.12em] text-white/90 sm:text-2xl">
-                {levelOne.npcName}
+                {level.npcName}
               </p>
               <p className="mt-2 max-h-[24vh] min-h-20 overflow-y-auto whitespace-pre-wrap break-words font-mono text-base font-semibold leading-7 text-white/90 sm:text-lg sm:leading-8">
                 {streamPhase && streamTargetDialogue.length === 0
@@ -294,21 +325,20 @@ export function LevelOnePage() {
           </div>
 
           <div className="absolute right-4 top-4 z-20 w-[calc(100vw-12rem)] min-w-32 max-w-[14rem] rounded-xl border border-white/10 bg-white/[0.055] p-3 text-xs text-slate-300 shadow-[0_14px_40px_rgba(0,0,0,0.25)] backdrop-blur-md sm:right-6 sm:top-6 sm:w-72 sm:max-w-72 lg:right-8 lg:top-8">
-            <div className="flex items-center justify-between gap-4">
-              <span>Meter</span>
-              <span className="font-mono text-xl text-white/90">{currentMeter}</span>
-            </div>
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
               <div
-                className="h-full rounded-full bg-white/85 shadow-[0_0_8px_rgba(255,255,255,0.32)] transition-[width] duration-500"
-                style={{ width: `${Math.max(0, Math.min(100, currentMeter))}%` }}
+                className="h-full rounded-full shadow-[0_0_8px_rgba(255,255,255,0.32)] transition-[width] duration-500"
+                style={{
+                  width: `${Math.max(0, Math.min(100, currentMeter))}%`,
+                  backgroundColor: currentMeter <= 25 ? level.theme.meterWarn : level.theme.meterGood,
+                }}
               />
             </div>
           </div>
 
-          {levelOne.clues?.length ? (
+          {level.clues?.length ? (
             <div className="absolute right-4 top-28 z-30 flex flex-col gap-3 sm:right-6 sm:top-32 lg:right-8">
-              {levelOne.clues.map((clue) => (
+              {level.clues.map((clue) => (
                 <button
                   key={clue.id}
                   type="button"
@@ -316,11 +346,19 @@ export function LevelOnePage() {
                   className="group w-24 rounded-lg border border-white/15 bg-white/[0.105] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_14px_34px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-150 transition hover:-translate-y-0.5 hover:bg-white/[0.16] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80 sm:w-28"
                   aria-label={`Open clue: ${clue.title}`}
                 >
-                  <img
-                    src={clue.image}
-                    alt=""
-                    className="aspect-[3/4] w-full rounded border border-white/10 object-cover object-top [image-rendering:auto]"
-                  />
+                  {clue.image ? (
+                    <img
+                      src={clue.image}
+                      alt=""
+                      className="aspect-[3/4] w-full rounded border border-white/10 object-cover object-top [image-rendering:auto]"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="level-clue-placeholder aspect-[3/4] w-full rounded border border-white/10"
+                      data-placeholder={clue.title}
+                    />
+                  )}
                 </button>
               ))}
             </div>
@@ -328,17 +366,17 @@ export function LevelOnePage() {
 
         </div>
 
-        <section className="border-t border-white/10 bg-[#090013]/75 p-4 backdrop-blur-xl sm:p-6">
+        <section className="border-t border-white/10 bg-[#090013]/75 p-3 backdrop-blur-xl sm:p-4">
           {turnError ? (
             <div className="mb-3 rounded-xl border border-white/10 bg-white/[0.055] p-3 text-sm text-white/90 backdrop-blur-md">
               {turnError}
             </div>
           ) : null}
 
-          <div className="mt-4">
+          <div className="mt-2">
             <label className="block">
               <span className="text-xs uppercase tracking-[0.22em] text-slate-300">
-                Your argument
+                Your response
               </span>
               <div className="relative mt-2">
                 <textarea
@@ -346,10 +384,10 @@ export function LevelOnePage() {
                   onChange={(event) => setPlayerInput(event.target.value)}
                   onKeyDown={handleArgumentKeyDown}
                   disabled={!session || isSubmittingTurn}
-                  rows={3}
+                  rows={2}
                   maxLength={4000}
-                  placeholder="Type your grounded ethical argument..."
-                  className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.06] py-3 pl-4 pr-28 pb-14 font-mono text-base leading-7 text-white placeholder:text-slate-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors duration-200 focus:border-white/10 focus:outline-none focus:ring-0 focus-visible:border-white/10 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60 sm:pr-32"
+                  placeholder="Ask, challenge, or make an ethical argument..."
+                  className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.06] py-3 pl-4 pr-28 pb-10 font-mono text-base leading-7 text-white placeholder:text-slate-500 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-colors duration-200 focus:border-white/10 focus:outline-none focus:ring-0 focus-visible:border-white/10 focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60 sm:pr-32"
                 />
                 <button
                   type="button"
@@ -385,11 +423,20 @@ export function LevelOnePage() {
             >
               Close
             </button>
-            <img
-              src={activeClue.image}
-              alt={activeClue.alt}
-              className="max-h-[86vh] max-w-full rounded-lg border border-white/20 bg-white shadow-[0_28px_90px_rgba(0,0,0,0.72)]"
-            />
+            {activeClue.image ? (
+              <img
+                src={activeClue.image}
+                alt={activeClue.alt}
+                className="max-h-[86vh] max-w-full rounded-lg border border-white/20 bg-white shadow-[0_28px_90px_rgba(0,0,0,0.72)]"
+              />
+            ) : (
+              <div
+                role="img"
+                aria-label={activeClue.alt}
+                className="level-clue-placeholder h-[min(86vh,48rem)] w-[min(80vw,36rem)] rounded-lg border border-white/20 shadow-[0_28px_90px_rgba(0,0,0,0.72)]"
+                data-placeholder={activeClue.title}
+              />
+            )}
           </figure>
         </div>
       ) : null}

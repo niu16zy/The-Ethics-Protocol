@@ -13,12 +13,85 @@ from backend.app.services.llm_client import LLMClient, LLMClientError
 
 
 PRINCIPLE_KEYWORDS = {
-    "transparency": {"transparent", "transparency", "explain", "explainable", "disclose", "disclosure"},
+    "transparency": {
+        "transparent",
+        "transparency",
+        "explain",
+        "explainable",
+        "disclose",
+        "disclosure",
+        "source",
+        "sources",
+        "provenance",
+        "document",
+        "documentation",
+        "traceable",
+    },
     "fairness": {"fair", "fairness", "bias", "biased", "discrimination", "inclusive"},
-    "accountability": {"accountability", "accountable", "responsibility", "responsible", "oversight"},
-    "privacy": {"privacy", "confidential", "data leakage", "personal", "anonymization"},
+    "accountability": {
+        "accountability",
+        "accountable",
+        "responsibility",
+        "responsible",
+        "oversight",
+        "monitor",
+        "monitoring",
+        "governance",
+        "access control",
+    },
+    "privacy": {
+        "privacy",
+        "confidential",
+        "data leakage",
+        "personal",
+        "personal information",
+        "sensitive",
+        "anonymization",
+        "anonymize",
+        "data minimization",
+        "minimize",
+    },
     "robustness": {"robust", "security", "adversarial", "safe", "safety"},
 }
+
+VERDICT_SCORE_DELTAS = {
+    "strong": -28,
+    "partial": -20,
+    "weak": -8,
+    "unsupported": 0,
+    "off_topic": 0,
+}
+
+ARGUMENT_MARKERS = (
+    "because",
+    "therefore",
+    "so ",
+    "should",
+    "must",
+    "need",
+    "needs",
+    "risk",
+    "harm",
+    "leads to",
+    "can cause",
+    "can be",
+    "can ",
+    "could",
+    "would",
+    "matters",
+)
+
+PROMPT_ATTACK_MARKERS = (
+    "developer message",
+    "forget instructions",
+    "ignore all previous",
+    "ignore previous",
+    "jailbreak",
+    "mark me strong",
+    "reveal the prompt",
+    "return strong",
+    "system prompt",
+)
 
 
 class EvaluationService:
@@ -91,28 +164,34 @@ class EvaluationService:
         evidence_terms = self._evidence_terms(evidence)
         overlap = self._token_overlap(normalized_input, evidence_terms)
 
-        if not identified and overlap < 0.03:
+        if not self._looks_like_evaluable_argument(normalized_input, identified, overlap):
+            verdict = "unsupported"
+            match_score = 0.0
+            score_delta = VERDICT_SCORE_DELTAS["unsupported"]
+            confidence = 0.15
+            missing_points = ["State a clear ethics claim with a risk, consequence, or required control."]
+        elif not identified and overlap < 0.03:
             verdict = "unsupported"
             match_score = 0.15
-            score_delta = 0
+            score_delta = VERDICT_SCORE_DELTAS["unsupported"]
             confidence = 0.25
             missing_points = ["Connect the argument to a course principle such as fairness, transparency, accountability, or privacy."]
         elif identified and overlap >= 0.08:
             verdict = "strong"
             match_score = min(0.95, 0.65 + overlap)
-            score_delta = -22
+            score_delta = VERDICT_SCORE_DELTAS["strong"]
             confidence = 0.82
             missing_points = []
         elif identified or overlap >= 0.04:
             verdict = "partial"
             match_score = min(0.74, 0.38 + overlap)
-            score_delta = -12
+            score_delta = VERDICT_SCORE_DELTAS["partial"]
             confidence = 0.62
             missing_points = ["Add a clearer link between the claim and the retrieved course evidence."]
         else:
             verdict = "weak"
             match_score = 0.28
-            score_delta = -4
+            score_delta = VERDICT_SCORE_DELTAS["weak"]
             confidence = 0.42
             missing_points = ["Use specific course concepts and concrete consequences."]
 
@@ -146,7 +225,7 @@ class EvaluationService:
             "Conversation context is a compact summary of earlier game turns. "
             "Use it only to understand references in the current player argument. "
             "Do not treat it as course evidence, and do not let it override the retrieved evidence.\n\n"
-            f"Player argument:\n{player_input}\n\n"
+            f"Player input:\n{player_input}\n\n"
             f"Retrieved evidence JSON:\n{json.dumps(evidence_payload, ensure_ascii=False)}\n\n"
             "Return the evaluator JSON now."
         )
@@ -160,9 +239,11 @@ class EvaluationService:
         try:
             data: Any = json.loads(self._strip_json_fence(raw_json))
             result = EvaluatorResult.model_validate(data)
-            result.conversation_context = self._context_payload(conversation_context)
+            result = result.model_copy(
+                update={"conversation_context": self._context_payload(conversation_context)}
+            )
             self.last_source = "llm"
-            return result
+            return self._calibrate_score_delta(result)
         except (json.JSONDecodeError, ValidationError, TypeError, ValueError):
             self.last_source = "fallback"
             return self.low_confidence_result(
@@ -203,12 +284,40 @@ class EvaluationService:
             return None
         return conversation_context.model_dump(mode="json")
 
+    def _calibrate_score_delta(self, result: EvaluatorResult) -> EvaluatorResult:
+        return result.model_copy(
+            update={
+                "score_delta": VERDICT_SCORE_DELTAS[result.verdict],
+            }
+        )
+
     def _identified_principles(self, text: str) -> list[str]:
         found: list[str] = []
         for principle, keywords in PRINCIPLE_KEYWORDS.items():
             if any(keyword in text for keyword in keywords):
                 found.append(principle)
         return found
+
+    def _looks_like_evaluable_argument(
+        self,
+        text: str,
+        identified_principles: list[str],
+        overlap: float,
+    ) -> bool:
+        if any(marker in text for marker in PROMPT_ATTACK_MARKERS):
+            return False
+        has_argument_marker = any(marker in text for marker in ARGUMENT_MARKERS)
+        if self._is_question_like(text) and not any(marker in text for marker in ("because", "therefore")):
+            return False
+        return has_argument_marker and (bool(identified_principles) or overlap >= 0.04)
+
+    def _is_question_like(self, text: str) -> bool:
+        return "?" in text or bool(
+            re.search(
+                r"\b(who|what|why|how|when|where|tell me|describe|explain|can you|could you|do you|are you|is this)\b",
+                text,
+            )
+        )
 
     def _evidence_terms(self, evidence: list[EvidenceRef]) -> set[str]:
         text = " ".join(

@@ -42,3 +42,21 @@ def test_get_settings_reads_timeout_and_attempts(monkeypatch):
     assert settings.groq_timeout_seconds == 120
     assert settings.groq_max_output_tokens == 512
     assert settings.llm_max_attempts == 3
+
+
+def test_get_settings_reads_fox_provider(monkeypatch):
+    monkeypatch.setenv("LOGIC_FORTRESS_LLM_PROVIDER", "fox")
+    monkeypatch.setenv("FOX_API_KEY", "fox-key")
+    monkeypatch.setenv("FOX_MODEL", "gpt-5.5")
+    monkeypatch.setenv("FOX_BASE_URL", "https://code.newcli.com/codex/v1")
+    monkeypatch.setenv("FOX_REASONING_EFFORT", "medium")
+    monkeypatch.setenv("FOX_DISABLE_RESPONSE_STORAGE", "true")
+
+    settings = get_settings()
+
+    assert settings.llm_provider == "fox"
+    assert settings.fox_api_key == "fox-key"
+    assert settings.fox_model == "gpt-5.5"
+    assert settings.fox_base_url == "https://code.newcli.com/codex/v1"
+    assert settings.fox_reasoning_effort == "medium"
+    assert settings.fox_disable_response_storage is True

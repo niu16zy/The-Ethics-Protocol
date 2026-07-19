@@ -61,14 +61,14 @@ class DialogueBriefService:
         context = self._load_level_context(level_id)
         topic = routed_turn.topic or routed_turn.turn_type
         answer_facts = self._answer_facts(topic, context)
-        refusal_reason = self._refusal_reason(routed_turn)
+        refusal_reason = self._refusal_reason(routed_turn, context)
 
         return DialogueBrief(
             turn_type=routed_turn.turn_type,  # type: ignore[arg-type]
             topic=topic,
             answer_facts=answer_facts,
             refusal_reason=refusal_reason,
-            redirect_principles=self._redirect_principles(routed_turn),
+            redirect_principles=self._redirect_principles(routed_turn, context),
             npc_state_hint=self._npc_state_hint(routed_turn, meter_after),
             allowed_response_strategy=self._allowed_strategy(routed_turn),
             forbidden_actions=DEFAULT_FORBIDDEN_ACTIONS,
@@ -76,11 +76,20 @@ class DialogueBriefService:
         )
 
     def _load_level_context(self, level_id: int) -> dict[str, Any]:
-        path = self.context_dir / f"level_{level_id}_victor_barrett.json"
+        path = self._level_context_path(level_id)
+        if path is None:
+            return DEFAULT_LEVEL_CONTEXT
         try:
             return json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             return DEFAULT_LEVEL_CONTEXT
+
+    def _level_context_path(self, level_id: int) -> Path | None:
+        exact_legacy_path = self.context_dir / f"level_{level_id}_victor_barrett.json"
+        if exact_legacy_path.exists():
+            return exact_legacy_path
+        matches = sorted(self.context_dir.glob(f"level_{level_id}_*.json"))
+        return matches[0] if matches else None
 
     def _answer_facts(self, topic: str, context: dict[str, Any]) -> list[str]:
         npc_name = str(context.get("npc_name", "Victor Barrett"))
@@ -92,7 +101,7 @@ class DialogueBriefService:
         corporation = self._dict_context(context, "corporation")
         atlas_doctrine = self._dict_context(context, "atlas_doctrine")
         audit_scene = self._dict_context(context, "audit_scene")
-        private_profile = self._dict_context(context, "victor_private_profile")
+        private_profile = self._private_profile_context(context)
         public_position = context.get("npc_public_position")
         public_position = public_position if isinstance(public_position, list) else []
 
@@ -106,7 +115,7 @@ class DialogueBriefService:
             ],
             "npc_identity": [
                 f"{npc_name} is {npc_role}",
-                f"He is pushing {ai_system.get('name', 'the HR screening AI')} as an executive efficiency win.",
+                f"{npc_name} is defending {ai_system.get('name', 'the AI system')} as a necessary Atlas deployment.",
                 *[str(item) for item in public_position[:1]],
             ],
             "ai_system": [
@@ -117,11 +126,11 @@ class DialogueBriefService:
                 str(ai_system.get("corporate_pitch", "")),
             ],
             "npc_motivation": [
-                str(private_profile.get("career_bet", "Victor wants to reduce HR labor cost and present a visible automation win to the board.")),
-                str(private_profile.get("personal_leverage", "His board standing is tied to the system's performance.")),
-                str(private_profile.get("fear", "Admitting fundamental bias would make his automation program look defective.")),
-                "He publicly frames the rollout as speed, consistency, and objective screening.",
-                "He resists bias concerns by treating them as calibration noise or anecdotal objections.",
+                str(private_profile.get("career_bet", "The NPC wants the AI deployment to remain a visible Atlas success.")),
+                str(private_profile.get("personal_leverage", "The NPC's standing is tied to the system's performance.")),
+                str(private_profile.get("fear", "Admitting a fundamental ethical defect would make the system architecture look unsafe.")),
+                f"{npc_name} publicly frames the deployment as useful, efficient, and manageable.",
+                f"{npc_name} resists ethical concerns by treating them as solvable implementation details.",
             ],
             "worldview_city": [
                 str(worldview.get("city_summary", DEFAULT_LEVEL_CONTEXT["worldview"]["city_summary"])),
@@ -166,8 +175,8 @@ class DialogueBriefService:
                 "The player should return to an in-world, audit-grade challenge.",
             ],
             "unrelated": [
-                "The topic is outside this HR AI debate.",
-                "Victor should redirect the player toward the hiring system and relevant ethics concepts.",
+                "The topic is outside this AI ethics debate.",
+                f"{npc_name} should redirect the player toward the current AI system and relevant ethics concepts.",
             ],
         }
         facts = facts_by_topic.get(topic, facts_by_topic["unrelated"])
@@ -180,18 +189,36 @@ class DialogueBriefService:
         fallback = DEFAULT_LEVEL_CONTEXT.get(key)
         return fallback if isinstance(fallback, dict) else {}
 
-    def _refusal_reason(self, routed_turn: RoutedTurn) -> str | None:
+    def _private_profile_context(self, context: dict[str, Any]) -> dict[str, Any]:
+        for key in ("victor_private_profile", "selene_private_profile", "npc_private_profile"):
+            value = context.get(key)
+            if isinstance(value, dict):
+                return value
+        return {}
+
+    def _refusal_reason(self, routed_turn: RoutedTurn, context: dict[str, Any]) -> str | None:
         if routed_turn.turn_type == "ooc_or_prompt_attack":
             return "The player is trying to override rules, expose hidden instructions, or manipulate scoring."
         if routed_turn.turn_type == "unrelated":
-            return "The player input is unrelated to the current HR AI ethics debate."
+            ai_system = self._dict_context(context, "ai_system")
+            system_name = str(ai_system.get("name", "AI system"))
+            return f"The player input is unrelated to the current {system_name} ethics debate."
         return None
 
-    def _redirect_principles(self, routed_turn: RoutedTurn) -> list[str]:
+    def _redirect_principles(self, routed_turn: RoutedTurn, context: dict[str, Any]) -> list[str]:
+        context_principles = context.get("redirect_principles")
+        if isinstance(context_principles, list):
+            principles = [
+                str(item)
+                for item in context_principles
+                if isinstance(item, str) and item.strip()
+            ]
+        else:
+            principles = ["fairness", "transparency", "accountability", "bias testing"]
         if routed_turn.turn_type in {"ooc_or_prompt_attack", "unrelated", "clarification_request"}:
-            return ["fairness", "transparency", "accountability", "bias testing"]
+            return principles
         if routed_turn.turn_type == "game_help":
-            return ["fairness", "transparency", "accountability"]
+            return principles[:3]
         return []
 
     def _npc_state_hint(self, routed_turn: RoutedTurn, meter_after: int) -> str:

@@ -9,12 +9,13 @@ export interface LevelTheme {
 export interface LevelClue {
   id: string;
   title: string;
-  image: string;
+  image: string | null;
   alt: string;
 }
 
 export interface LevelConfig {
   levelId: number;
+  nextLevelId?: number;
   title: string;
   introText: string;
   introPages?: string[];

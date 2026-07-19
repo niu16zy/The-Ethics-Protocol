@@ -3,7 +3,6 @@ from __future__ import annotations
 from pydantic import BaseModel, Field
 
 from backend.app.schemas.evaluator import EvaluatorResult, EvidenceRef
-from backend.app.schemas.routing import DialogueBrief, TurnType
 
 
 class DebateTurnCreate(BaseModel):
@@ -14,11 +13,8 @@ class DebateTurnResponse(BaseModel):
     session_id: int
     turn_index: int
     player_input: str
-    turn_type: TurnType = "debate_argument"
-    is_scored: bool = True
     retrieved_refs: list[EvidenceRef]
-    evaluator: EvaluatorResult | None = None
-    dialogue_brief: DialogueBrief | None = None
+    evaluator: EvaluatorResult
     npc_response: str
     meter_before: int
     meter_after: int

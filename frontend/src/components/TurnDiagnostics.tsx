@@ -20,27 +20,6 @@ export function TurnDiagnostics({ turn }: TurnDiagnosticsProps) {
     );
   }
 
-  if (!turn.evaluator) {
-    return (
-      <section className="border border-fortress-line bg-fortress-panel p-4">
-        <h2 className="text-sm uppercase tracking-[0.24em] text-fortress-muted">Verdict Diagnostics</h2>
-        <div className="mt-4 grid gap-3 text-sm text-fortress-text sm:grid-cols-2">
-          <div>
-            <p className="text-fortress-muted">Turn Type</p>
-            <p className="mt-1 font-display text-xl capitalize">{turn.turn_type.replace("_", " ")}</p>
-          </div>
-          <div>
-            <p className="text-fortress-muted">Persona Source</p>
-            <p className="mt-1 uppercase tracking-[0.18em]">{turn.persona_source ?? "unknown"}</p>
-          </div>
-        </div>
-        <p className="mt-4 break-words text-sm leading-6 text-fortress-text">
-          This was an in-world dialogue turn, so the evaluator did not score it and the meter did not change.
-        </p>
-      </section>
-    );
-  }
-
   return (
     <section className="border border-fortress-line bg-fortress-panel p-4">
       <h2 className="text-sm uppercase tracking-[0.24em] text-fortress-muted">Verdict Diagnostics</h2>

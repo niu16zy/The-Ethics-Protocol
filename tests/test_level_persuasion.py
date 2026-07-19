@@ -30,10 +30,37 @@ def _explainability_ref() -> EvidenceRef:
     )
 
 
+def _privacy_control_ref() -> EvidenceRef:
+    return EvidenceRef(
+        document_id=117,
+        lesson="Ethics in the use of Generative AI",
+        topic="Strategy 1: Follow security best practices",
+        excerpt="Organizations should use anonymization, cryptography, and access control to protect data.",
+    )
+
+
+def _data_minimization_ref() -> EvidenceRef:
+    return EvidenceRef(
+        document_id=119,
+        lesson="Ethics in the use of Generative AI",
+        topic="Strategy 3: Limit data collection (Data Minimization)",
+        excerpt="Organizations should only collect training data that is lawful and consistent with expectations.",
+    )
+
+
+def _source_documentation_ref() -> EvidenceRef:
+    return EvidenceRef(
+        document_id=123,
+        lesson="Ethics in the use of Generative AI",
+        topic="Technique 2: Document sources",
+        excerpt="Creators must document how data was cleaned, modified, and generated.",
+    )
+
+
 def _partial_evaluator(evidence: list[EvidenceRef]) -> EvaluatorResult:
     return EvaluatorResult(
         match_score=0.62,
-        score_delta=-12,
+        score_delta=-20,
         verdict="partial",
         identified_principles=["fairness"],
         misconceptions_addressed=[],
@@ -71,7 +98,7 @@ def test_first_target_hit_does_not_collapse_meter() -> None:
         prior_turns=[],
     )
 
-    assert result.score_delta == -12
+    assert result.score_delta == -20
     assert result.verdict == "partial"
 
 
@@ -86,7 +113,7 @@ def test_second_target_hit_collapses_meter_from_persisted_history() -> None:
 
     result = service.apply(
         level_id=1,
-        meter_before=88,
+        meter_before=80,
         player_input="The AI must be transparent and explainable because applicants need reasons.",
         retrieved_refs=[_explainability_ref()],
         evaluator=_partial_evaluator([_explainability_ref()]),
@@ -94,7 +121,7 @@ def test_second_target_hit_collapses_meter_from_persisted_history() -> None:
     )
 
     assert result.verdict == "strong"
-    assert result.score_delta == -88
+    assert result.score_delta == -80
     assert result.match_score == 0.95
     assert result.confidence == 0.9
     assert result.missing_points == []
@@ -113,7 +140,7 @@ def test_repeated_target_hit_does_not_reduce_meter_again() -> None:
 
     result = service.apply(
         level_id=1,
-        meter_before=88,
+        meter_before=80,
         player_input="The hiring AI still needs bias testing because biased data can discriminate.",
         retrieved_refs=[_bias_ref()],
         evaluator=_partial_evaluator([_bias_ref()]),
@@ -137,7 +164,7 @@ def test_evidence_match_without_player_text_does_not_hit_target() -> None:
         prior_turns=[],
     )
 
-    assert result.score_delta == -12
+    assert result.score_delta == -20
 
 
 def test_player_text_match_without_evidence_does_not_hit_target() -> None:
@@ -157,7 +184,7 @@ def test_player_text_match_without_evidence_does_not_hit_target() -> None:
         prior_turns=[],
     )
 
-    assert result.score_delta == -12
+    assert result.score_delta == -20
 
 
 def test_non_scored_history_is_ignored() -> None:
@@ -172,14 +199,14 @@ def test_non_scored_history_is_ignored() -> None:
 
     result = service.apply(
         level_id=1,
-        meter_before=88,
+        meter_before=80,
         player_input="The AI must be transparent and explainable because applicants need reasons.",
         retrieved_refs=[_explainability_ref()],
         evaluator=_partial_evaluator([_explainability_ref()]),
         prior_turns=prior_turns,
     )
 
-    assert result.score_delta == -12
+    assert result.score_delta == -20
     assert result.verdict == "partial"
 
 
@@ -197,6 +224,44 @@ def test_missing_persuasion_config_is_no_op(tmp_path: Path) -> None:
     )
 
     assert result == evaluator
+
+
+def test_level_two_final_data_governance_target_collapses_meter() -> None:
+    service = LevelPersuasionService()
+    prior_turns = [
+        _turn_row(
+            player_input=(
+                "CivicPulse needs anonymization and access control because personal data can leak."
+            ),
+            refs=[_privacy_control_ref()],
+        ),
+        _turn_row(
+            player_input=(
+                "The AI should minimize sensitive health and education data because only narrow "
+                "lawful collection fits citizen expectations."
+            ),
+            refs=[_data_minimization_ref()],
+        ),
+    ]
+
+    result = service.apply(
+        level_id=2,
+        meter_before=60,
+        player_input=(
+            "Atlas must document data sources and monitor the AI because undocumented cleaned "
+            "or modified data makes CivicPulse impossible to audit."
+        ),
+        retrieved_refs=[_source_documentation_ref()],
+        evaluator=_partial_evaluator([_source_documentation_ref()]),
+        prior_turns=prior_turns,
+    )
+
+    assert result.verdict == "strong"
+    assert result.score_delta == -60
+    assert result.missing_points == []
+    assert result.evidence_refs == [_source_documentation_ref()]
+    assert "privacy" in result.identified_principles
+    assert "transparency" in result.identified_principles
 
 
 class SequentialRetrievalService:
@@ -250,7 +315,7 @@ def test_orchestrator_collapses_meter_when_final_target_is_hit_after_reload(tmp_
         session.id,
         "The hiring AI can be unfair because bias testing should monitor discrimination.",
     )
-    assert first_response.meter_after == 88
+    assert first_response.meter_after == 80
 
     second_orchestrator = DebateOrchestrator(
         app_repository=repository,
@@ -267,10 +332,10 @@ def test_orchestrator_collapses_meter_when_final_target_is_hit_after_reload(tmp_
     persisted_eval = json.loads(rows[-1]["evaluator_json"])
 
     assert second_response.meter_after == 0
-    assert second_response.score_delta == -88
+    assert second_response.score_delta == -80
     assert second_response.evaluator is not None
     assert second_response.evaluator.verdict == "strong"
-    assert persisted_eval["score_delta"] == -88
+    assert persisted_eval["score_delta"] == -80
 
 
 def test_orchestrator_does_not_reduce_meter_for_repeated_target(tmp_path: Path) -> None:
@@ -292,14 +357,14 @@ def test_orchestrator_does_not_reduce_meter_for_repeated_target(tmp_path: Path) 
         "The hiring AI still needs bias testing because biased data can discriminate.",
     )
 
-    assert first_response.meter_after == 88
+    assert first_response.meter_after == 80
     assert second_response.score_delta == 0
-    assert second_response.meter_before == 88
-    assert second_response.meter_after == 88
+    assert second_response.meter_before == 80
+    assert second_response.meter_after == 80
 
 
 def test_streaming_flow_emits_collapsed_meter_when_final_target_is_hit(tmp_path: Path) -> None:
-    repository, session = _repository_with_session(tmp_path, initial_meter=88)
+    repository, session = _repository_with_session(tmp_path, initial_meter=80)
     repository.persist_turn(
         session_id=session.id,
         turn_index=1,
@@ -310,7 +375,7 @@ def test_streaming_flow_emits_collapsed_meter_when_final_target_is_hit(tmp_path:
         evaluator=_partial_evaluator([_bias_ref()]),
         npc_response="Bias testing matters.",
         meter_before=100,
-        meter_after=88,
+        meter_after=80,
     )
     orchestrator = DebateOrchestrator(
         app_repository=repository,
@@ -329,7 +394,7 @@ def test_streaming_flow_emits_collapsed_meter_when_final_target_is_hit(tmp_path:
     evaluator_event = next(event for event in events if event["event"] == "evaluator_complete")
 
     assert evaluator_event["meter_after"] == 0
-    assert evaluator_event["score_delta"] == -88
+    assert evaluator_event["score_delta"] == -80
     assert events[-1]["turn"]["meter_after"] == 0
 
 

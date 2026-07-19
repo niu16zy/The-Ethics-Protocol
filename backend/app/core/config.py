@@ -16,6 +16,11 @@ class Settings:
     groq_timeout_seconds: int
     llm_max_attempts: int
     groq_max_output_tokens: int = 700
+    fox_api_key: str | None = None
+    fox_model: str = "gpt-5.5"
+    fox_base_url: str = "https://code.newcli.com/codex/v1"
+    fox_reasoning_effort: str = "high"
+    fox_disable_response_storage: bool = True
     default_top_k: int = 3
     initial_fortress_meter: int = 100
 
@@ -44,8 +49,12 @@ def get_settings() -> Settings:
         os.getenv("LOGIC_FORTRESS_APP_DB", project_root / "logic_fortress_app.db")
     )
     groq_api_key = os.getenv("GROQ_API_KEY")
+    fox_api_key = os.getenv("FOX_API_KEY") or os.getenv("OPENAI_API_KEY")
     configured_provider = os.getenv("LOGIC_FORTRESS_LLM_PROVIDER")
-    llm_provider = (configured_provider or ("groq" if groq_api_key else "rules")).lower()
+    llm_provider = (
+        configured_provider
+        or ("groq" if groq_api_key else "fox" if fox_api_key else "rules")
+    ).lower()
     return Settings(
         project_root=project_root,
         knowledge_db_path=knowledge_db_path,
@@ -56,6 +65,11 @@ def get_settings() -> Settings:
         groq_timeout_seconds=_int_env("GROQ_TIMEOUT_SECONDS", 90),
         llm_max_attempts=_int_env("LOGIC_FORTRESS_LLM_MAX_ATTEMPTS", 2),
         groq_max_output_tokens=_int_env("GROQ_MAX_OUTPUT_TOKENS", 700),
+        fox_api_key=fox_api_key,
+        fox_model=os.getenv("FOX_MODEL", "gpt-5.5"),
+        fox_base_url=os.getenv("FOX_BASE_URL", "https://code.newcli.com/codex/v1"),
+        fox_reasoning_effort=os.getenv("FOX_REASONING_EFFORT", "high").lower(),
+        fox_disable_response_storage=_bool_env("FOX_DISABLE_RESPONSE_STORAGE", True),
     )
 
 
@@ -68,3 +82,10 @@ def _int_env(name: str, default: int) -> int:
     except ValueError:
         return default
     return max(1, value)
+
+
+def _bool_env(name: str, default: bool) -> bool:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    return raw_value.strip().lower() in {"1", "true", "yes", "on"}

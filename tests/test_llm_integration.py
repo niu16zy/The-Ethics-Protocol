@@ -300,7 +300,12 @@ def test_persona_uses_llm_without_needing_knowledge_access():
         [
             json.dumps(
                 {
-                    "npc_response": "You cracked part of the wall, but prove accountability next.",
+                    "npc_response": (
+                        "You cracked part of the wall, but prove accountability next. I can "
+                        "survive a fairness complaint if no one owns the outcome; make Atlas "
+                        "responsible for the screening decision, and my clean efficiency story "
+                        "starts sounding like board liability instead of polished progress."
+                    ),
                     "npc_state": "defensive",
                     "follow_up_prompt": "Who is responsible for the AI outcome?",
                 }

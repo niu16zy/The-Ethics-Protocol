@@ -14,6 +14,7 @@ export function ResolutionScene({ level }: ResolutionSceneProps) {
   const currentText = resolutionPages[pageIndex] ?? level.resolutionText;
   const isLastPage = pageIndex === resolutionPages.length - 1;
   const isComplete = visibleCount >= currentText.length;
+  const hasNextLevel = typeof level.nextLevelId === "number";
   const visibleText = useMemo(
     () => currentText.slice(0, visibleCount),
     [currentText, visibleCount],
@@ -40,8 +41,25 @@ export function ResolutionScene({ level }: ResolutionSceneProps) {
     setVisibleCount(0);
   };
 
+  const handleLevelCleared = () => {
+    if (!isComplete || !hasNextLevel || level.nextLevelId === undefined) {
+      return;
+    }
+
+    const targetUrl = new URL(window.location.href);
+    targetUrl.searchParams.set("level", String(level.nextLevelId));
+    targetUrl.hash = "";
+    window.location.assign(targetUrl.toString());
+  };
+
   return (
-    <main className="min-h-screen overflow-hidden bg-[#090013] px-6 text-white">
+    <main
+      className="min-h-screen overflow-hidden px-6 text-white"
+      style={{
+        background:
+          `radial-gradient(circle at 50% -10%, ${level.theme.accentSoft}, transparent 34rem), ${level.theme.backdrop}`,
+      }}
+    >
       <section className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center py-8 sm:py-10">
         <div className="flex h-[clamp(17rem,52vh,31rem)] w-full shrink-0 items-end justify-center">
           <div className="intro-rise intro-white-glow w-full max-w-[min(50vh,28rem)] border border-slate-100 bg-[#050510] p-1">
@@ -55,7 +73,8 @@ export function ResolutionScene({ level }: ResolutionSceneProps) {
               <div
                 role="img"
                 aria-label={`${level.title} resolution placeholder`}
-                className="resolution-placeholder aspect-square w-full"
+                className="level-art-placeholder aspect-square w-full"
+                data-placeholder={`${level.title} resolution`}
               />
             )}
           </div>
@@ -80,6 +99,18 @@ export function ResolutionScene({ level }: ResolutionSceneProps) {
                 }`}
               >
                 Continue
+              </button>
+            ) : hasNextLevel ? (
+              <button
+                type="button"
+                onClick={handleLevelCleared}
+                disabled={!isComplete}
+                className={`intro-rise border border-white/80 px-7 py-3 font-mono text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_0_12px_rgba(255,255,255,0.28)] transition hover:bg-white hover:text-[#090013] disabled:cursor-not-allowed disabled:opacity-45 ${
+                  isComplete ? "opacity-100" : "pointer-events-none opacity-0"
+                }`}
+                aria-label={`Enter level ${level.nextLevelId}`}
+              >
+                Level Cleared
               </button>
             ) : (
               <div

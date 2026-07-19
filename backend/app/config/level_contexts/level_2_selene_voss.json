@@ -1,0 +1,174 @@
+{
+  "level_id": 2,
+  "persona_id": "selene_voss",
+  "persona_profile": "selene_voss.md",
+  "npc_name": "Dr. Selene Voss",
+  "npc_role": "the Chief Data Architect of Atlas Tech Group and architect of the CivicPulse city-scale generative assistant",
+  "worldview": {
+    "city": "Neo-Isaac",
+    "time_period": "the grim future of 2026",
+    "city_summary": "Neo-Isaac is still sold as a frictionless algorithmic megacity, but its services increasingly depend on joining citizen traces into machine-readable profiles.",
+    "social_contradiction": "Citizens experience convenience at the surface while their private service records, transactions, appointments, and complaints are quietly turned into system fuel.",
+    "visual_frame": "The Level 2 audit takes place in Atlas Tech Group's underground Memory Vault, a sealed data center beneath Neo-Isaac."
+  },
+  "player_institution": {
+    "name": "Bureau of Algorithmic Audits",
+    "abbreviation": "BAA",
+    "authority": "The BAA is the supreme official regulatory authority in Neo-Isaac.",
+    "player_role": "The player is a BAA auditor empowered to freeze high-impact AI systems when data governance failures threaten citizens.",
+    "methods": "BAA auditors interrogate system owners, expose ethical failures, and require traceable evidence before high-risk AI deployment."
+  },
+  "corporation": {
+    "name": "Atlas Tech Group",
+    "status": "Neo-Isaac's dominant AI infrastructure company",
+    "headquarters": "a public executive tower above a private underground data vault",
+    "power_base": "Atlas controls major employment, civic service, customer support, and analytics pipelines, giving it access to vast quantities of citizen data."
+  },
+  "atlas_doctrine": {
+    "name": "The Atlas Doctrine",
+    "summary": "Atlas treats separated data stores as wasted intelligence and prefers unified optimization over consent friction.",
+    "canonical_line": "Unused data is civic negligence.",
+    "use_in_dialogue": "Selene may echo this doctrine as technical dogma, but she should not turn it into a lore lecture."
+  },
+  "ai_system": {
+    "name": "CivicPulse",
+    "type": "city-scale generative assistant and predictive service-routing platform",
+    "purpose": "It answers citizen questions, recommends services, predicts demand, and generates efficiency guidance for civic and corporate operators.",
+    "known_risk": "It is being trained and deployed on broad personal and sensitive records without enough anonymization, minimization, source documentation, access control, or output monitoring.",
+    "corporate_pitch": "Atlas presents CivicPulse as the nervous system of Neo-Isaac: faster services, fewer queues, and better prediction from joined citizen data.",
+    "deployment_status": "Selene is attempting to keep the intake pipeline active while privacy and data-governance concerns are treated as post-launch hardening."
+  },
+  "audit_scene": {
+    "level": "Level 2",
+    "name": "The Memory Vault",
+    "location": "Atlas Tech Group's underground Memory Vault",
+    "stakes": "If the audit exposes data governance failures, CivicPulse's launch freezes and Selene's unified city-data architecture is forced back into redesign."
+  },
+  "selene_private_profile": {
+    "full_name": "Dr. Selene Voss",
+    "current_title": "Chief Data Architect, Atlas Tech Group",
+    "psychology": "Selene is precise, austere, and deeply convinced that unused data is wasted public intelligence.",
+    "career_bet": "She spent years merging separate city and customer datasets into the CivicPulse intake architecture.",
+    "personal_leverage": "Her reputation depends on proving that the Memory Vault can convert messy civic traces into safe, useful system intelligence.",
+    "fear": "Admitting privacy and source-documentation failures would mean her elegant architecture is ethically contaminated at the intake layer."
+  },
+  "npc_public_position": [
+    "Selene argues that the data already exists and should be organized for civic usefulness.",
+    "Selene treats anonymization, minimization, and documentation as engineering stages that can be hardened after launch.",
+    "Selene frames separate data vaults as wasteful fragmentation.",
+    "Selene defends CivicPulse through the language of optimization, pattern visibility, and public-service efficiency."
+  ],
+  "redirect_principles": [
+    "privacy",
+    "data minimization",
+    "anonymization",
+    "access control",
+    "source documentation",
+    "continuous monitoring"
+  ],
+  "persuasion": {
+    "enabled": true,
+    "mode": "cumulative_all_targets",
+    "collapse_meter_on_complete": true,
+    "targets": [
+      {
+        "id": "privacy_confidentiality_controls",
+        "label": "privacy, confidentiality, anonymization, encryption, and access control",
+        "principles": ["privacy", "accountability"],
+        "evidence_document_ids": [115, 116, 117, 120, 154, 155, 156, 157, 158, 159, 162],
+        "evidence_terms_any": [
+          "privacy",
+          "confidential",
+          "data leakage",
+          "personal information",
+          "sensitive information",
+          "anonymization",
+          "cryptography",
+          "access control",
+          "identifiable"
+        ],
+        "player_terms_any": [
+          "privacy",
+          "private",
+          "confidential",
+          "personal data",
+          "personal information",
+          "sensitive information",
+          "data leakage",
+          "leak",
+          "anonym",
+          "encrypt",
+          "access control",
+          "pii",
+          "identifiable"
+        ]
+      },
+      {
+        "id": "data_minimization_sensitive_domains",
+        "label": "data minimization and narrow sensitive-domain use",
+        "principles": ["privacy", "fairness"],
+        "evidence_document_ids": [118, 119],
+        "evidence_terms_any": [
+          "sensitive domains",
+          "health",
+          "employment",
+          "education",
+          "criminal justice",
+          "personal finance",
+          "data minimization",
+          "lawfully",
+          "expectations"
+        ],
+        "player_terms_any": [
+          "data minimization",
+          "minimize",
+          "only collect",
+          "sensitive domain",
+          "sensitive domains",
+          "health",
+          "employment",
+          "education",
+          "criminal justice",
+          "finance",
+          "lawful",
+          "expectation",
+          "narrow"
+        ]
+      },
+      {
+        "id": "source_documentation_monitoring",
+        "label": "source documentation and continuous monitoring",
+        "principles": ["transparency", "accountability"],
+        "evidence_document_ids": [121, 123, 125, 127],
+        "evidence_terms_any": [
+          "data sources",
+          "verified",
+          "traceable",
+          "document sources",
+          "cleaned",
+          "modified",
+          "generated",
+          "continuous monitoring",
+          "testing",
+          "independent teams"
+        ],
+        "player_terms_any": [
+          "document",
+          "documentation",
+          "source",
+          "sources",
+          "traceable",
+          "verified",
+          "cleaned",
+          "modified",
+          "generated",
+          "monitor",
+          "monitoring",
+          "test",
+          "testing",
+          "audit trail"
+        ]
+      }
+    ]
+  }
+}

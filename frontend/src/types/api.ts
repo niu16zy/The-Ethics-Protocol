@@ -60,38 +60,14 @@ export interface EvaluatorResult {
   confidence: number;
 }
 
-export type TurnType =
-  | "debate_argument"
-  | "in_world_question"
-  | "game_help"
-  | "clarification_request"
-  | "smalltalk_in_character"
-  | "ooc_or_prompt_attack"
-  | "unrelated";
-
-export interface DialogueBrief {
-  turn_type: TurnType;
-  topic: string;
-  answer_facts: string[];
-  refusal_reason?: string | null;
-  redirect_principles: string[];
-  npc_state_hint: "confident" | "defensive" | "hesitant" | "clarifying";
-  allowed_response_strategy: string[];
-  forbidden_actions: string[];
-  should_score: boolean;
-}
-
 export type RuntimeSource = "llm" | "rules" | "fallback" | string;
 
 export interface DebateTurnResponse {
   session_id: number;
   turn_index: number;
   player_input: string;
-  turn_type: TurnType;
-  is_scored: boolean;
   retrieved_refs: EvidenceRef[];
-  evaluator?: EvaluatorResult | null;
-  dialogue_brief?: DialogueBrief | null;
+  evaluator: EvaluatorResult;
   npc_response: string;
   meter_before: number;
   meter_after: number;

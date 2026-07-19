@@ -75,8 +75,14 @@ def test_api_create_user_session_and_turn(tmp_path):
     )
     assert dialogue_response.status_code == 200
     dialogue_body = dialogue_response.json()
-    assert dialogue_body["turn_type"] == "in_world_question"
-    assert dialogue_body["is_scored"] is False
-    assert dialogue_body["evaluator"] is None
-    assert dialogue_body["retrieved_refs"] == []
+    assert "turn_type" not in dialogue_body
+    assert "is_scored" not in dialogue_body
+    assert "dialogue_brief" not in dialogue_body
+    assert dialogue_body["evaluator"]["verdict"] in {
+        "strong",
+        "partial",
+        "weak",
+        "unsupported",
+        "off_topic",
+    }
     assert dialogue_body["score_delta"] == 0

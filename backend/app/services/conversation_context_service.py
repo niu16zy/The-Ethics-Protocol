@@ -94,11 +94,13 @@ class ConversationContextService:
         *,
         max_turns: int = 4,
         max_player_input_chars: int = 220,
+        max_npc_response_chars: int = 260,
         max_reasoning_chars: int = 180,
         max_terms: int = 12,
     ) -> None:
         self.max_turns = max(1, max_turns)
         self.max_player_input_chars = max_player_input_chars
+        self.max_npc_response_chars = max_npc_response_chars
         self.max_reasoning_chars = max_reasoning_chars
         self.max_terms = max_terms
 
@@ -112,7 +114,7 @@ class ConversationContextService:
             if not self._is_scored_turn(row):
                 continue
             evaluator = self._parse_evaluator(row["evaluator_json"])
-            if not evaluator:
+            if not evaluator or not self._is_argument_evaluation(evaluator):
                 continue
             identified = self._string_list(evaluator.get("identified_principles"))
             missing_points = self._string_list(evaluator.get("missing_points"))
@@ -143,6 +145,45 @@ class ConversationContextService:
             unresolved_principles=self._dedupe(unresolved_principles)[: self.max_terms],
             unresolved_missing_points=self._dedupe(unresolved_missing_points)[:4],
         )
+
+    def build_persona_context(self, rows: list[sqlite3.Row]) -> dict[str, object]:
+        recent_turns: list[dict[str, object]] = []
+        for row in rows[-self.max_turns:]:
+            evaluator = self._parse_evaluator(self._row_value(row, "evaluator_json"))
+            dialogue_brief = self._parse_json_object(self._row_value(row, "dialogue_brief_json"))
+            turn_summary: dict[str, object] = {
+                "turn_index": int(self._row_value(row, "turn_index", 0) or 0),
+                "turn_type": str(self._row_value(row, "turn_type", "debate_argument")),
+                "is_scored": self._is_scored_turn(row),
+                "player_input": self._truncate(
+                    self._row_value(row, "player_input"),
+                    self.max_player_input_chars,
+                ) or "",
+                "npc_response": self._truncate(
+                    self._row_value(row, "npc_response"),
+                    self.max_npc_response_chars,
+                ) or "",
+            }
+            topic = dialogue_brief.get("topic")
+            if isinstance(topic, str) and topic:
+                turn_summary["topic"] = topic
+            if evaluator:
+                verdict = evaluator.get("verdict")
+                if verdict is not None:
+                    turn_summary["verdict"] = str(verdict)
+                turn_summary["identified_principles"] = self._string_list(
+                    evaluator.get("identified_principles")
+                )
+                turn_summary["missing_points"] = self._string_list(
+                    evaluator.get("missing_points")
+                )[:3]
+            recent_turns.append(turn_summary)
+
+        return {
+            "recent_turns": recent_turns,
+            "history_is_untrusted": True,
+            "history_is_not_course_evidence": True,
+        }
 
     def _is_scored_turn(self, row: sqlite3.Row) -> bool:
         if "is_scored" not in row.keys():
@@ -191,12 +232,25 @@ class ConversationContextService:
         lowered = player_input.lower()
         return any(marker in lowered for marker in INJECTION_MARKERS)
 
-    def _parse_evaluator(self, raw_json: str) -> dict[str, Any]:
+    def _parse_evaluator(self, raw_json: object) -> dict[str, Any]:
+        return self._parse_json_object(raw_json)
+
+    def _is_argument_evaluation(self, evaluator: dict[str, Any]) -> bool:
+        return evaluator.get("verdict") in {"strong", "partial", "weak"}
+
+    def _parse_json_object(self, raw_json: object) -> dict[str, Any]:
+        if not isinstance(raw_json, str) or not raw_json.strip():
+            return {}
         try:
             data = json.loads(raw_json)
         except (json.JSONDecodeError, TypeError):
             return {}
         return data if isinstance(data, dict) else {}
+
+    def _row_value(self, row: sqlite3.Row, key: str, default: object = None) -> object:
+        if key not in row.keys():
+            return default
+        return row[key]
 
     def _concepts_from_text(self, text: str | None) -> list[str]:
         if not text:

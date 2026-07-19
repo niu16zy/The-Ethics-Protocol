@@ -57,15 +57,30 @@ export function IntroScene({
   const buttonLabel = isLastPage ? "Enter" : "Continue";
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#090013] px-6 text-white">
+    <main
+      className="min-h-screen overflow-hidden px-6 text-white"
+      style={{
+        background:
+          `radial-gradient(circle at 50% -10%, ${level.theme.accentSoft}, transparent 34rem), ${level.theme.backdrop}`,
+      }}
+    >
       <section className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center py-8 sm:py-10">
         <div className="flex h-[clamp(17rem,52vh,31rem)] w-full shrink-0 items-end justify-center">
           <div className="intro-rise intro-white-glow w-full max-w-[min(50vh,28rem)] border border-slate-100 bg-[#050510] p-1">
-            <img
-              src={level.sceneImage ?? ""}
-              alt={`${level.title} scene`}
-              className="aspect-square w-full object-cover [image-rendering:pixelated]"
-            />
+            {level.sceneImage ? (
+              <img
+                src={level.sceneImage}
+                alt={`${level.title} scene`}
+                className="aspect-square w-full object-cover [image-rendering:pixelated]"
+              />
+            ) : (
+              <div
+                role="img"
+                aria-label={`${level.title} scene placeholder`}
+                className="level-art-placeholder aspect-square w-full"
+                data-placeholder={`${level.title} intro scene`}
+              />
+            )}
           </div>
         </div>
 

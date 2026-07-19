@@ -135,13 +135,22 @@ class LevelPersuasionService:
         )
 
     def _load_persuasion_config(self, level_id: int) -> dict[str, Any]:
-        path = self.context_dir / f"level_{level_id}_victor_barrett.json"
+        path = self._level_context_path(level_id)
+        if path is None:
+            return {}
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             return {}
         persuasion = data.get("persuasion")
         return persuasion if isinstance(persuasion, dict) else {}
+
+    def _level_context_path(self, level_id: int) -> Path | None:
+        exact_legacy_path = self.context_dir / f"level_{level_id}_victor_barrett.json"
+        if exact_legacy_path.exists():
+            return exact_legacy_path
+        matches = sorted(self.context_dir.glob(f"level_{level_id}_*.json"))
+        return matches[0] if matches else None
 
     def _targets_from_config(self, persuasion: dict[str, Any]) -> list[PersuasionTarget]:
         raw_targets = persuasion.get("targets")
@@ -177,6 +186,8 @@ class LevelPersuasionService:
         hits: dict[str, PersuasionHit] = {}
         for row in prior_turns:
             if not self._is_scored_turn(row):
+                continue
+            if self._row_evaluator_verdict(row) in {"unsupported", "off_topic"}:
                 continue
             player_input = self._row_value(row, "player_input")
             if not isinstance(player_input, str):
@@ -232,6 +243,19 @@ class LevelPersuasionService:
             except ValueError:
                 continue
         return refs
+
+    def _row_evaluator_verdict(self, row: Any) -> str | None:
+        raw_evaluator = self._row_value(row, "evaluator_json")
+        if not isinstance(raw_evaluator, str):
+            return None
+        try:
+            data = json.loads(raw_evaluator)
+        except json.JSONDecodeError:
+            return None
+        if not isinstance(data, dict):
+            return None
+        verdict = data.get("verdict")
+        return verdict if isinstance(verdict, str) else None
 
     def _is_scored_turn(self, row: Any) -> bool:
         value = self._row_value(row, "is_scored")

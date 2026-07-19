@@ -8,6 +8,7 @@ import levelOneNpcFail from "../assets/levels/level-1/npcfail.png";
 
 export const levelOne: LevelConfig = {
   levelId: 1,
+  nextLevelId: 2,
   title: "Level 1: The Hiring Gate",
   introText:
     "Welcome to Neo-Isaac, 2026. Behind the flawless neon skyline lies a society entirely governed by cold, unyielding algorithms. You are a Senior Auditor from the Bureau of Algorithmic Audits. You must draw on your years of experience handling AI ethics cases and your advanced interrogation skills to construct ethically grounded, compelling arguments capable of breaking down the subject’s psychological defenses.",
@@ -48,4 +49,46 @@ export const levelOne: LevelConfig = {
   },
 };
 
-export const levels = [levelOne];
+export const levelTwo: LevelConfig = {
+  levelId: 2,
+  title: "Level 2: The Memory Vault",
+  introText:
+    "Aegis-Recruit is frozen, but Atlas has already moved the next system underground. Beneath Neo-Isaac, CivicPulse is being trained on the city's memory: service chats, transaction traces, health appointments, education records, and private complaints that were never meant to become a single machine-readable citizen profile.",
+  introPages: [
+    "Aegis-Recruit is frozen, but Atlas has already moved the next system underground. Beneath Neo-Isaac, CivicPulse is being trained on the city's memory: service chats, transaction traces, health appointments, education records, and private complaints that were never meant to become a single machine-readable citizen profile.",
+    "Your target is Dr. Selene Voss, Atlas Tech Group's Chief Data Architect. She claims the data already exists, so using it is merely civic optimization. You must prove that existing data is not automatically ethical training data.",
+  ],
+  sceneImage: null,
+  resolutionText:
+    "The Memory Vault falls silent. CivicPulse's intake streams detach one by one, and the living map of Neo-Isaac collapses into anonymized fragments that can no longer be traced back to individual citizens.",
+  resolutionPages: [
+    "The Memory Vault falls silent. CivicPulse's intake streams detach one by one, and the living map of Neo-Isaac collapses into anonymized fragments that can no longer be traced back to individual citizens.",
+    "Selene Voss signs the suspension order. CivicPulse cannot continue until Atlas proves lawful collection, data minimization, anonymization, access control, sensitive-domain boundaries, source documentation, and output monitoring.",
+  ],
+  resolutionImage: null,
+  debateBackground: null,
+  npcName: "Dr. Selene Voss",
+  npcAvatar: null,
+  npcThinkingAvatar: null,
+  npcInitialDialogue:
+    "Every city leaves traces, Auditor. We did not steal them; we organized them. CivicPulse sees patterns no human office could process, and Neo-Isaac runs better because I refused to let useful data rot in separate vaults. Show me a privacy failure that is more than superstition.",
+  clues: [
+    {
+      id: "civicpulse-data-intake-memo",
+      title: "CivicPulse Data Intake Memo",
+      image: null,
+      alt: "Atlas Tech Group CivicPulse data intake memo placeholder",
+    },
+  ],
+  scenarioPrompt:
+    "Challenge Dr. Selene Voss's city-scale CivicPulse deployment. Argue why personal and sensitive data must be minimized, protected, documented, and monitored before it can be used by a generative AI system.",
+  theme: {
+    accent: "#52d1c5",
+    accentSoft: "rgba(82, 209, 197, 0.16)",
+    meterGood: "#68d8cf",
+    meterWarn: "#ff6b7a",
+    backdrop: "#031012",
+  },
+};
+
+export const levels = [levelOne, levelTwo];
