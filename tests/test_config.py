@@ -20,7 +20,11 @@ def test_load_dotenv_file_does_not_override_existing_env(tmp_path, monkeypatch):
 
 
 def test_get_settings_auto_enables_groq_when_key_is_configured(monkeypatch):
-    monkeypatch.delenv("LOGIC_FORTRESS_LLM_PROVIDER", raising=False)
+    # Set (not delete) to an empty value: load_dotenv_file only fills in keys
+    # absent from os.environ, so this stops the repo's real .env file (which
+    # may pin LOGIC_FORTRESS_LLM_PROVIDER=fox for local dev) from overriding
+    # the auto-detection behaviour under test.
+    monkeypatch.setenv("LOGIC_FORTRESS_LLM_PROVIDER", "")
     monkeypatch.setenv("GROQ_API_KEY", "fake-key")
 
     settings = get_settings()
