@@ -31,6 +31,24 @@ textarea {
   font: inherit;
 }
 
+.logic-response-textarea {
+  appearance: none;
+}
+
+.logic-response-textarea-vault {
+  color-scheme: dark;
+  background-color: rgba(6, 29, 32, 0.94) !important;
+  color: #f0fffd !important;
+  caret-color: #8ee0d8;
+  scrollbar-color: #2a7772 #061d20;
+  -webkit-text-fill-color: #f0fffd;
+}
+
+.logic-response-textarea-vault::placeholder {
+  color: rgba(142, 201, 195, 0.72);
+  -webkit-text-fill-color: rgba(142, 201, 195, 0.72);
+}
+
 button:focus-visible,
 textarea:focus-visible {
   outline: 2px solid #d8b35d;
@@ -75,6 +93,22 @@ textarea:focus-visible {
   }
 }
 
+@keyframes intro-cool-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 4px rgba(82, 120, 131, 0.26),
+      0 0 12px rgba(133, 170, 180, 0.18),
+      0 0 22px rgba(207, 224, 230, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 0 6px rgba(82, 120, 131, 0.34),
+      0 0 16px rgba(133, 170, 180, 0.24),
+      0 0 28px rgba(207, 224, 230, 0.16);
+  }
+}
+
 @keyframes npc-pop-out {
   from {
     opacity: 0;
@@ -110,6 +144,12 @@ textarea:focus-visible {
   animation:
     intro-rise 1.4s ease-out both,
     intro-white-glow 4.6s ease-in-out 1.4s infinite;
+}
+
+.intro-cool-glow {
+  animation:
+    intro-rise 1.4s ease-out both,
+    intro-cool-glow 4.6s ease-in-out 1.4s infinite;
 }
 
 .intro-cursor {
@@ -188,6 +228,28 @@ textarea:focus-visible {
     linear-gradient(135deg, #071416 0%, #0b1e22 48%, #020607 100%);
 }
 
+.level-art-placeholder-light {
+  background:
+    linear-gradient(135deg, rgba(235, 246, 248, 0.62), transparent 42%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(72, 101, 128, 0.1) 0 1px,
+      transparent 1px 9px
+    ),
+    linear-gradient(135deg, #e3eef1 0%, #c8d8df 48%, #9fb6c1 100%);
+}
+
+.level-art-placeholder-vault {
+  background:
+    linear-gradient(135deg, rgba(60, 174, 170, 0.2), transparent 42%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(126, 218, 209, 0.09) 0 1px,
+      transparent 1px 9px
+    ),
+    linear-gradient(135deg, #061416 0%, #092326 48%, #010607 100%);
+}
+
 .level-art-placeholder::before,
 .level-portrait-placeholder::before,
 .level-clue-placeholder::before {
@@ -224,6 +286,34 @@ textarea:focus-visible {
   text-align: center;
   text-transform: uppercase;
   word-break: break-word;
+}
+
+.level-art-placeholder-light::before {
+  border-color: rgba(62, 84, 105, 0.28);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(62, 84, 105, 0.16) 49% 51%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(62, 84, 105, 0.16) 49% 51%, transparent 51%);
+}
+
+.level-art-placeholder-light::after {
+  border-color: rgba(62, 84, 105, 0.22);
+  color: #34495e;
+  background: rgba(226, 239, 242, 0.72);
+  text-shadow: none;
+}
+
+.level-art-placeholder-vault::before {
+  border-color: rgba(126, 218, 209, 0.26);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(126, 218, 209, 0.17) 49% 51%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(126, 218, 209, 0.17) 49% 51%, transparent 51%);
+}
+
+.level-art-placeholder-vault::after {
+  border-color: rgba(126, 218, 209, 0.28);
+  color: rgba(216, 255, 251, 0.92);
+  background: rgba(1, 10, 11, 0.76);
+  text-shadow: 0 0 8px rgba(86, 196, 189, 0.32);
 }
 
 .level-portrait-placeholder::before {

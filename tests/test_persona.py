@@ -108,6 +108,7 @@ def test_persona_prompt_includes_victor_profile_and_meter_band_without_evidence_
     assert "Secret course excerpt" not in client.prompt
     assert "Private history" not in client.prompt
     assert "conversation_context" not in client.prompt
+    assert "level_id" not in payload["level_context"]
 
 
 def test_persona_prompt_uses_compact_level_context_without_scoring_clues():
@@ -332,6 +333,104 @@ def test_persona_sanitizes_llm_meter_disclosure():
     assert "fairness point lands" in response.npc_response
     assert "43" not in response.npc_response
     assert "meter" not in (response.follow_up_prompt or "").lower()
+
+
+def test_persona_sanitizes_llm_meter_state_disclosure():
+    class MeterStateLeakingClient:
+        def generate_text(
+            self,
+            prompt: str,
+            *,
+            temperature: float,
+            response_mime_type: str | None = None,
+        ) -> str:
+            return json.dumps(
+                {
+                    "npc_response": (
+                        "Bias testing, monitoring, transparency, explainability: fine words, auditor, "
+                        "but right now they read like a compliance slide without an evidentiary spine. "
+                        "The meter stays where it is, and Aegis-Recruit keeps its throughput mandate. "
+                        "Bring me a clearer claim tied to the actual hiring risk, not a bundle of "
+                        "respectable audit nouns."
+                    ),
+                    "npc_state": "confident",
+                    "follow_up_prompt": "Name the concrete harm and who bears it.",
+                }
+            )
+
+    evaluator = EvaluatorResult(
+        match_score=0.28,
+        score_delta=-4,
+        verdict="weak",
+        identified_principles=["bias testing"],
+        misconceptions_addressed=[],
+        missing_points=["Name a concrete ethical risk."],
+        evidence_refs=[],
+        reasoning_summary="The input lists principles without an ethical claim.",
+        persona_instruction="Demand a clearer argument.",
+        confidence=0.66,
+    )
+
+    response = PersonaService(llm_client=MeterStateLeakingClient()).respond(
+        evaluator,
+        meter_after=88,
+    )
+
+    assert "meter" not in response.npc_response.lower()
+    assert "my position remains unchanged" in response.npc_response.lower()
+    assert "Aegis-Recruit keeps its throughput mandate" in response.npc_response
+
+
+def test_persona_sanitizes_llm_level_label_disclosure():
+    class LevelLabelLeakingClient:
+        def generate_text(
+            self,
+            prompt: str,
+            *,
+            temperature: float,
+            response_mime_type: str | None = None,
+        ) -> str:
+            return json.dumps(
+                {
+                    "npc_response": (
+                        "You are in Level 1, which means this audit still has room to "
+                        "tighten. I am not conceding the rollout on a vague fairness claim "
+                        "alone; you need to show the accountability failure, the affected "
+                        "applicants, and the concrete harm before this turns into a real "
+                        "objection."
+                    ),
+                    "npc_state": "confident",
+                    "follow_up_prompt": "Bring me a Level 1 ethics claim with concrete harm.",
+                }
+            )
+
+    evaluator = EvaluatorResult(
+        match_score=0.72,
+        score_delta=-10,
+        verdict="partial",
+        identified_principles=["fairness"],
+        misconceptions_addressed=[],
+        missing_points=["Explain accountability."],
+        evidence_refs=[
+            EvidenceRef(
+                document_id=108,
+                topic="Fairness",
+                excerpt="Fair AI tools are designed to minimize bias.",
+            )
+        ],
+        reasoning_summary="The argument is partly grounded.",
+        persona_instruction="Press for the missing link.",
+        confidence=0.71,
+    )
+
+    response = PersonaService(llm_client=LevelLabelLeakingClient()).respond(
+        evaluator,
+        meter_after=62,
+    )
+
+    assert "Level 1" not in response.npc_response
+    assert "Level 1" not in (response.follow_up_prompt or "")
+    assert "tighten" in response.npc_response.lower()
 
 
 def test_persona_sanitizes_llm_course_language():

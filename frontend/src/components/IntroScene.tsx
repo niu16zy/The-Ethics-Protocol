@@ -16,6 +16,8 @@ export function IntroScene({
   canEnter,
   onEnter,
 }: IntroSceneProps) {
+  const isLightTheme = level.theme.mode === "light";
+  const isDataVaultTheme = level.levelId === 2;
   const introPages = level.introPages?.length ? level.introPages : [level.introText];
   const [pageIndex, setPageIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -58,7 +60,7 @@ export function IntroScene({
 
   return (
     <main
-      className="min-h-screen overflow-hidden px-6 text-white"
+      className={`min-h-screen overflow-hidden px-6 ${isLightTheme ? "text-slate-900" : "text-white"}`}
       style={{
         background:
           `radial-gradient(circle at 50% -10%, ${level.theme.accentSoft}, transparent 34rem), ${level.theme.backdrop}`,
@@ -66,7 +68,7 @@ export function IntroScene({
     >
       <section className="mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center py-8 sm:py-10">
         <div className="flex h-[clamp(17rem,52vh,31rem)] w-full shrink-0 items-end justify-center">
-          <div className="intro-rise intro-white-glow w-full max-w-[min(50vh,28rem)] border border-slate-100 bg-[#050510] p-1">
+          <div className={`intro-rise ${isLightTheme ? "intro-cool-glow border-[#8ca8b5]/55 bg-[#e7f0f2]/82" : isDataVaultTheme ? "intro-white-glow border-[#75d8d0]/60 bg-[#031315]" : "intro-white-glow border-slate-100 bg-[#050510]"} w-full max-w-[min(50vh,28rem)] border p-1`}>
             {level.sceneImage ? (
               <img
                 src={level.sceneImage}
@@ -77,17 +79,17 @@ export function IntroScene({
               <div
                 role="img"
                 aria-label={`${level.title} scene placeholder`}
-                className="level-art-placeholder aspect-square w-full"
+                className={`level-art-placeholder aspect-square w-full ${isLightTheme ? "level-art-placeholder-light" : isDataVaultTheme ? "level-art-placeholder-vault" : ""}`}
                 data-placeholder={`${level.title} intro scene`}
               />
             )}
           </div>
         </div>
 
-        <div className="mt-8 flex min-h-[16rem] w-full max-w-3xl flex-col items-center text-center font-mono text-sm font-semibold leading-7 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] sm:mt-9 sm:min-h-[17rem] sm:text-base sm:leading-8">
+        <div className={`mt-8 flex min-h-[16rem] w-full max-w-3xl flex-col items-center text-center font-mono text-sm font-semibold leading-7 sm:mt-9 sm:min-h-[17rem] sm:text-base sm:leading-8 ${isLightTheme ? "text-slate-800 drop-shadow-[0_1px_1px_rgba(229,240,243,0.75)]" : "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]"}`}>
           <p className="min-h-[10.5rem] whitespace-pre-wrap break-words sm:min-h-36">
             {visibleText}
-            <span className="intro-cursor ml-1 inline-block h-4 w-3 translate-y-0.5 bg-white shadow-[0_0_10px_rgba(255,255,255,0.95)] sm:h-5" />
+            <span className={`intro-cursor ml-1 inline-block h-4 w-3 translate-y-0.5 sm:h-5 ${isLightTheme ? "bg-[#466979] shadow-[0_0_10px_rgba(82,120,131,0.36)]" : isDataVaultTheme ? "bg-[#8ee0d8] shadow-[0_0_10px_rgba(86,196,189,0.72)]" : "bg-white shadow-[0_0_10px_rgba(255,255,255,0.95)]"}`} />
           </p>
 
           <div className="mt-8 flex h-14 items-center justify-center">
@@ -97,7 +99,7 @@ export function IntroScene({
                 type="button"
                 onClick={handleContinue}
                 disabled={continueDisabled}
-                className="intro-rise intro-white-glow border border-white px-7 py-3 font-mono text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[#090013] disabled:cursor-not-allowed disabled:opacity-45"
+                className={`intro-rise ${isLightTheme ? "intro-cool-glow border-[#527883] bg-[#e7f0f2]/70 text-slate-800 hover:bg-[#527883] hover:text-[#f4f8f9]" : isDataVaultTheme ? "intro-white-glow border-[#75d8d0]/80 text-[#d8fffb] hover:bg-[#75d8d0] hover:text-[#031315]" : "intro-white-glow border-white text-white hover:bg-white hover:text-[#090013]"} border px-7 py-3 font-mono text-sm font-semibold uppercase tracking-[0.16em] transition disabled:cursor-not-allowed disabled:opacity-45`}
               >
                 {buttonLabel}
               </button>

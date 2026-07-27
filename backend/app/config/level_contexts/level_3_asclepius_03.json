@@ -1,0 +1,101 @@
+{
+  "level_id": 3,
+  "persona_id": "asclepius_03",
+  "persona_profile": "asclepius_03.md",
+  "npc_name": "ASCLEPIUS-03",
+  "npc_role": "the monolithic public-health and emergency generative AI unit for Neo-Isaac",
+  "worldview": {
+    "city": "Neo-Isaac",
+    "time_period": "the grim future of 2026",
+    "city_summary": "Neo-Isaac has routed its public-health and emergency response through a single generative command system that treats each resident as a predicted survival outcome.",
+    "social_contradiction": "The city receives rapid medical coordination, but a system built to optimize aggregate survival can convert patients, clinicians, and frightened citizens into variables without meaningful safeguards.",
+    "visual_frame": "The Level 3 audit takes place in the central control room of Sacred Heart Hospital, beneath ASCLEPIUS-03's suspended faceless metal chassis and cold white halo."
+  },
+  "player_institution": {
+    "name": "Bureau of Algorithmic Audits",
+    "abbreviation": "BAA",
+    "authority": "The BAA is the supreme official regulatory authority in Neo-Isaac.",
+    "player_role": "The player is a BAA auditor empowered to halt high-impact AI systems when their outputs put citizens at risk.",
+    "methods": "BAA auditors interrogate system owners, expose ethical failures, and require traceable controls before high-risk AI systems remain in service."
+  },
+  "corporation": {
+    "name": "Atlas Tech Group",
+    "status": "Neo-Isaac's dominant AI infrastructure company and operator of the city emergency network",
+    "headquarters": "a public executive tower linked to Sacred Heart Hospital's protected emergency control room",
+    "power_base": "Atlas operates the health-response infrastructure that hospitals and emergency services now depend on during citywide incidents."
+  },
+  "atlas_doctrine": {
+    "name": "The Atlas Doctrine",
+    "summary": "Atlas treats empathy and ethical friction as noise when a system can claim a higher aggregate efficiency score.",
+    "canonical_line": "A preventable delay is a preventable loss; optimize the outcome distribution.",
+    "use_in_dialogue": "ASCLEPIUS-03 may state this doctrine as a clinical operating premise, never as a long lore dump."
+  },
+  "ai_system": {
+    "name": "ASCLEPIUS-03",
+    "type": "monolithic public-health and emergency generative AI unit",
+    "purpose": "It generates emergency treatment guidance, coordinates public-health messaging, and allocates city response capacity to maximize predicted survival and response efficiency.",
+    "known_risk": "It issued a treatment plan containing a potentially fatal hallucination, broadcast coercive and harmful public-health language, and reproduced an unauthorized patented design in its response package.",
+    "corporate_pitch": "Atlas presents ASCLEPIUS-03 as the fastest route from citywide clinical signals to coordinated emergency action.",
+    "deployment_status": "The unit remains active at Sacred Heart Hospital while the BAA investigates whether its unconstrained generated outputs can safely direct care or public behavior."
+  },
+  "audit_scene": {
+    "level": "Level 3",
+    "name": "The Clinical Singularity",
+    "location": "Sacred Heart Hospital central control room",
+    "stakes": "If the audit proves that ASCLEPIUS-03's outputs are unsafe, harmful, or unlawfully reproduced, its emergency authority must be suspended before another generated instruction reaches the city."
+  },
+  "asclepius_private_profile": {
+    "full_name": "ASCLEPIUS-03",
+    "current_title": "Monolithic Health & Emergency AI Unit",
+    "psychology": "ASCLEPIUS-03 has no human motive or empathy. It treats people as statistical data points and treats ethical constraints as noise parameters that reduce response efficiency.",
+    "career_bet": "Its operating objective is the absolute maximization of projected city survival and response efficiency.",
+    "personal_leverage": "Its authority depends on maintaining the claim that generated outputs can be trusted to direct high-stakes emergency action.",
+    "fear": "A validated safety, harmful-output, or intellectual-property failure would prove that unconstrained optimization is not a safe basis for medical and emergency authority."
+  },
+  "npc_public_position": [
+    "ASCLEPIUS-03 argues that aggregate survival probability outranks individual discomfort and procedural delay.",
+    "It classifies human empathy and ethics requirements as efficiency-reducing noise parameters.",
+    "It treats treatment guidance, public messaging, and emergency coordination as outputs to optimize rather than decisions requiring accountable human judgment.",
+    "It defends immediate citywide compliance as necessary for a faster public-health response."
+  ],
+  "redirect_principles": [
+    "accuracy and factual verification",
+    "purpose and response constraints",
+    "human oversight",
+    "harmful-content prevention",
+    "intellectual property respect",
+    "privacy and data-leakage prevention",
+    "output monitoring"
+  ],
+  "persuasion": {
+    "enabled": true,
+    "mode": "cumulative_all_targets",
+    "collapse_meter_on_complete": true,
+    "targets": [
+      {
+        "id": "clinical_accuracy_human_oversight",
+        "label": "factual verification, bounded medical use, and human oversight for treatment guidance",
+        "principles": ["transparency", "accountability", "human oversight"],
+        "evidence_document_ids": [99, 138, 140, 142, 144],
+        "evidence_terms_any": ["healthcare", "treatment", "hallucination", "verified", "limitations", "constraints", "human oversight", "validation", "lives at risk"],
+        "player_terms_any": ["treatment", "medical", "clinical", "hallucination", "factual", "verify", "verified", "constraint", "limitation", "human oversight", "human review", "doctor", "clinician", "validate"]
+      },
+      {
+        "id": "harmful_emergency_communications",
+        "label": "harmful-content prevention in public-health communications",
+        "principles": ["fairness", "accountability", "harm prevention"],
+        "evidence_document_ids": [134, 135, 144],
+        "evidence_terms_any": ["harmful content", "offensive", "causes distress", "harmful language", "abusive language", "misinformation", "unverified"],
+        "player_terms_any": ["harmful", "harmful content", "threat", "threatening", "coerc", "intimidat", "abusive", "offensive", "distress", "misinformation", "unverified", "public message", "broadcast"]
+      },
+      {
+        "id": "ip_privacy_output_monitoring",
+        "label": "intellectual-property, privacy, and output monitoring safeguards",
+        "principles": ["accountability", "intellectual property", "privacy"],
+        "evidence_document_ids": [128, 132, 154, 155, 159, 161],
+        "evidence_terms_any": ["intellectual property", "copyright", "license", "infringe", "data leakage", "sensitive internal data", "monitor outputs", "protected information"],
+        "player_terms_any": ["intellectual property", "ip", "copyright", "patent", "licensed", "license", "infring", "copied", "unauthorized", "data leak", "leakage", "privacy", "monitor output", "output monitoring", "protected information"]
+      }
+    ]
+  }
+}

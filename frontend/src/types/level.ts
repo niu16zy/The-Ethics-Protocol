@@ -1,4 +1,5 @@
 export interface LevelTheme {
+  mode?: "dark" | "light";
   accent: string;
   accentSoft: string;
   meterGood: string;
@@ -11,6 +12,18 @@ export interface LevelClue {
   title: string;
   image: string | null;
   alt: string;
+  hotspots?: LevelClueHotspot[];
+}
+
+export interface LevelClueHotspot {
+  id: string;
+  title: string;
+  image: string;
+  alt: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface LevelConfig {

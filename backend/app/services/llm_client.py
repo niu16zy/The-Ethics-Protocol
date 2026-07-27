@@ -166,16 +166,50 @@ class FoxResponsesClient:
         temperature: float,
         response_mime_type: str | None = None,
     ) -> str:
+        return "".join(
+            self._stream_generated_text(
+                prompt,
+                response_mime_type=response_mime_type,
+            )
+        ).strip()
+
+    def stream_text(
+        self,
+        prompt: str,
+        *,
+        temperature: float,
+        response_mime_type: str | None = None,
+    ) -> Iterator[str]:
+        yield from self._stream_generated_text(
+            prompt,
+            response_mime_type=response_mime_type,
+        )
+
+    def _stream_generated_text(
+        self,
+        prompt: str,
+        *,
+        response_mime_type: str | None = None,
+    ) -> Iterator[str]:
         payload: dict[str, object] = {
             "model": self.model,
-            "input": prompt,
+            # Fox mishandles the string shorthand for JSON-only prompts, sometimes
+            # returning a completed response with reasoning but no visible message.
+            "input": [
+                {
+                    "role": "user",
+                    "content": [{"type": "input_text", "text": prompt}],
+                }
+            ],
             "max_output_tokens": self.max_output_tokens,
             "store": not self.disable_response_storage,
+            "stream": True,
         }
         if self.reasoning_effort:
             payload["reasoning"] = {"effort": self.reasoning_effort}
-        if response_mime_type == "application/json":
-            payload["text"] = {"format": {"type": "json_object"}}
+        # The Fox gateway returns HTTP 502 for the Responses API `text.format`
+        # JSON-mode field. Prompts still request JSON and downstream Pydantic
+        # validation remains the source of truth for structured output.
 
         request = urllib.request.Request(
             url=self._responses_endpoint(),
@@ -185,7 +219,35 @@ class FoxResponsesClient:
         )
         try:
             with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
-                response_body = response.read().decode("utf-8")
+                yielded_text = False
+                for raw_line in response:
+                    line = raw_line.decode("utf-8", errors="replace").strip()
+                    if not line.startswith("data:"):
+                        continue
+                    event_payload = line.removeprefix("data:").strip()
+                    if not event_payload or event_payload == "[DONE]":
+                        continue
+                    try:
+                        event = json.loads(event_payload)
+                    except json.JSONDecodeError as exc:
+                        raise LLMClientError("Fox stream contained invalid JSON.") from exc
+
+                    event_type = event.get("type")
+                    if event_type == "response.output_text.delta":
+                        delta = event.get("delta")
+                        if isinstance(delta, str) and delta:
+                            yielded_text = True
+                            yield delta
+                    elif event_type == "response.output_text.done" and not yielded_text:
+                        text = event.get("text")
+                        if isinstance(text, str) and text:
+                            yielded_text = True
+                            yield text
+                    elif event_type in {"error", "response.failed"}:
+                        raise LLMClientError(f"Fox stream failed: {event_payload}")
+
+                if not yielded_text:
+                    raise LLMClientError("Fox stream did not contain generated text.")
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
             raise LLMClientError(f"Fox request failed with HTTP {exc.code}: {detail}") from exc
@@ -196,28 +258,6 @@ class FoxResponsesClient:
         except urllib.error.URLError as exc:
             raise LLMClientError(f"Fox request failed: {exc.reason}") from exc
 
-        try:
-            data = json.loads(response_body)
-        except json.JSONDecodeError as exc:
-            raise LLMClientError("Fox response was not valid JSON.") from exc
-        content = self._text_from_response(data)
-        if not content:
-            raise LLMClientError("Fox response did not contain generated text.")
-        return content.strip()
-
-    def stream_text(
-        self,
-        prompt: str,
-        *,
-        temperature: float,
-        response_mime_type: str | None = None,
-    ) -> Iterator[str]:
-        yield self.generate_text(
-            prompt,
-            temperature=temperature,
-            response_mime_type=response_mime_type,
-        )
-
     def _responses_endpoint(self) -> str:
         return f"{self.base_url.rstrip('/')}/responses"
 
@@ -227,29 +267,6 @@ class FoxResponsesClient:
             "Authorization": f"Bearer {self.api_key}",
             "User-Agent": self.user_agent,
         }
-
-    def _text_from_response(self, data: dict[str, object]) -> str:
-        output_text = data.get("output_text")
-        if isinstance(output_text, str):
-            return output_text
-
-        chunks: list[str] = []
-        output = data.get("output")
-        if isinstance(output, list):
-            for item in output:
-                if not isinstance(item, dict):
-                    continue
-                content = item.get("content")
-                if not isinstance(content, list):
-                    continue
-                for part in content:
-                    if not isinstance(part, dict):
-                        continue
-                    text = part.get("text")
-                    if isinstance(text, str):
-                        chunks.append(text)
-        return "".join(chunks)
-
 
 def create_llm_client(
     *,

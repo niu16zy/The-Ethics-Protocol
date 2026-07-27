@@ -81,8 +81,11 @@ def test_fox_generate_sends_responses_payload(monkeypatch):
         def __exit__(self, exc_type, exc, traceback) -> None:
             return None
 
-        def read(self) -> bytes:
-            return json.dumps({"output_text": "{\"ok\": true}"}).encode("utf-8")
+        def __iter__(self):
+            yield b"event: response.output_text.delta\n"
+            yield b'data: {"type":"response.output_text.delta","delta":"{\\"ok\\":"}\n'
+            yield b'data: {"type":"response.output_text.delta","delta":" true}"}\n'
+            yield b"data: [DONE]\n"
 
     def fake_urlopen(request, timeout):
         nonlocal captured_payload
@@ -114,9 +117,15 @@ def test_fox_generate_sends_responses_payload(monkeypatch):
     assert captured_url == "https://code.newcli.com/codex/v1/responses"
     assert captured_authorization == "Bearer fox-key"
     assert captured_payload["model"] == "gpt-5.5"
-    assert captured_payload["input"] == "Return JSON."
+    assert captured_payload["input"] == [
+        {
+            "role": "user",
+            "content": [{"type": "input_text", "text": "Return JSON."}],
+        }
+    ]
     assert captured_payload["max_output_tokens"] == 300
     assert captured_payload["store"] is False
+    assert captured_payload["stream"] is True
     assert captured_payload["reasoning"] == {"effort": "high"}
-    assert captured_payload["text"] == {"format": {"type": "json_object"}}
+    assert "text" not in captured_payload
     assert "temperature" not in captured_payload

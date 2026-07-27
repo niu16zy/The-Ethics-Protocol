@@ -190,7 +190,12 @@ class DialogueBriefService:
         return fallback if isinstance(fallback, dict) else {}
 
     def _private_profile_context(self, context: dict[str, Any]) -> dict[str, Any]:
-        for key in ("victor_private_profile", "selene_private_profile", "npc_private_profile"):
+        for key in (
+            "victor_private_profile",
+            "selene_private_profile",
+            "asclepius_private_profile",
+            "npc_private_profile",
+        ):
             value = context.get(key)
             if isinstance(value, dict):
                 return value
