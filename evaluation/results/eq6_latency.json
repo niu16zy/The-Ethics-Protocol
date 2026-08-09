@@ -1,0 +1,31 @@
+{
+  "provider": "rules",
+  "runs": 24,
+  "note": "Rule-based paths measure system overhead only; they are not a prediction of latency with a model provider configured.",
+  "phases": {
+    "retrieval": {
+      "median_ms": 1.21,
+      "p95_ms": 3.32,
+      "min_ms": 0.96,
+      "max_ms": 3.46
+    },
+    "evaluation": {
+      "median_ms": 0.07,
+      "p95_ms": 0.15,
+      "min_ms": 0.06,
+      "max_ms": 0.37
+    },
+    "persona": {
+      "median_ms": 0.25,
+      "p95_ms": 0.43,
+      "min_ms": 0.21,
+      "max_ms": 3.88
+    },
+    "total_turn": {
+      "median_ms": 1.55,
+      "p95_ms": 3.82,
+      "min_ms": 1.26,
+      "max_ms": 7.57
+    }
+  }
+}

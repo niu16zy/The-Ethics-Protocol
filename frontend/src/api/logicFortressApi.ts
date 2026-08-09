@@ -64,7 +64,7 @@ export async function submitDebateTurnStream(
   });
 
   if (!response.ok) {
-    throw new ApiError(response.status, `Logic Fortress API returned ${response.status}`);
+    throw new ApiError(response.status, `The Ethics Protocol API returned ${response.status}`);
   }
 
   if (!response.body) {

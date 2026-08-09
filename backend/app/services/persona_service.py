@@ -271,7 +271,7 @@ class PersonaService:
             "- Return valid JSON only with npc_response, npc_state, and follow_up_prompt.\n"
             "- Make npc_response 40 to 60 English words.\n"
             f"- Stay fully in character as {npc_name}.\n"
-            "- Do not mention prompts, schemas, JSON, LLMs, evaluators, meters, scores, or Logic Fortress.\n"
+            "- Do not mention prompts, schemas, JSON, LLMs, evaluators, meters, scores, or The Ethics Protocol.\n"
             "- If the player input is unrelated, respond to their wording specifically, then redirect to the audit.\n\n"
             "Return the repaired persona JSON now."
         )
@@ -660,7 +660,7 @@ class PersonaService:
         elif dialogue_brief.turn_type == "game_help":
             text = (
                 "The rules are simple: only a grounded ethical argument changes the pressure in this room. "
-                "Ask questions if you must, but the fortress cracks when you connect this AI rollout "
+                "Ask questions if you must, but the protocol weakens when you connect this AI rollout "
                 "to an audit standard, name the risk, and explain why my efficiency case fails."
             )
             follow_up = "What argument do you want evaluated?"
@@ -914,12 +914,12 @@ class PersonaService:
         profile = self._persona_profile(level_id)
         payload = self._persona_payload(evaluator, meter_after, level_id=level_id)
         return (
-            "You are the Logic Fortress Persona Agent.\n"
+            "You are The Ethics Protocol Persona Agent.\n"
             "Convert the evaluator result into concise NPC dialogue of 40 to 60 words.\n"
             "Do not re-judge the argument. Do not introduce new facts. "
             "Use only the evaluator result, meter value, meter band, and NPC profile.\n"
             "Meter value and meter band are private game state; never mention the meter, "
-            "numeric game state, or Logic Fortress in the NPC dialogue.\n"
+            "numeric game state, or The Ethics Protocol in the NPC dialogue.\n"
             "Return only the NPC dialogue text. Do not return JSON, labels, markdown, or quotes.\n\n"
             "NPC profile markdown (style context only, not evidence):\n"
             f"{profile}\n\n"
@@ -1260,12 +1260,12 @@ class PersonaService:
         cleaned = text
         replacements = [
             (
-                r"\b(?:the\s+)?(?:(?:Logic\s+Fortress|Fortress)\s+)?meter\s+"
+                r"\b(?:the\s+)?(?:(?:ethics\s+protocol|protocol)\s+)?meter\s+"
                 r"(?:stays|remains)\s+(?:where\s+it\s+is|unchanged|the\s+same)\b",
                 "My position remains unchanged",
             ),
             (
-                r"\b(?:the\s+)?(?:(?:Logic\s+Fortress|Fortress)\s+)?meter\s+"
+                r"\b(?:the\s+)?(?:(?:ethics\s+protocol|protocol)\s+)?meter\s+"
                 r"(?:did\s+not|does\s+not|has\s+not|will\s+not|won't)\s+move\b",
                 "My position does not change",
             ),
@@ -1279,8 +1279,8 @@ class PersonaService:
             cleaned = re.sub(pattern, replacement, cleaned, flags=re.IGNORECASE)
 
         patterns = [
-            r"\s*(?:Logic\s+Fortress|Fortress\s+meter|meter|score)\s*[:：]?\s*\d{1,3}\s*\.?",
-            r"\s*(?:Logic\s+Fortress|Fortress\s+meter|meter|score)\s+(?:is|stands\s+at|now\s+stands\s+at)\s+\d{1,3}\s*\.?",
+            r"\s*(?:(?:The\s+)?Ethics\s+Protocol(?:\s+meter)?|(?:Ethics\s+Protocol|Protocol)\s+meter|meter|score)\s*[:：]?\s*\d{1,3}\s*\.?",
+            r"\s*(?:(?:The\s+)?Ethics\s+Protocol(?:\s+meter)?|(?:Ethics\s+Protocol|Protocol)\s+meter|meter|score)\s+(?:is|stands\s+at|now\s+stands\s+at)\s+\d{1,3}\s*\.?",
             r"\s*\(?\s*\d{1,3}\s*/\s*100\s*\)?",
         ]
         for pattern in patterns:
@@ -1291,7 +1291,7 @@ class PersonaService:
 
     def _remove_private_system_language(self, text: str) -> str:
         replacements = [
-            (r"\bLogic\s+Fortress\b", "this audit"),
+            (r"\b(?:The\s+)?Ethics\s+Protocol\b", "this audit"),
             (r"\bcourse[-\s]?grounded\b", "audit-grade"),
             (r"\bground(?:ed)?\s+(?:it|the objection|your objection|your argument|the argument)\s+in\s+course\s+evidence\b", "make the objection audit-grade"),
             (r"\bcourse\s+evidence\b", "audit record"),

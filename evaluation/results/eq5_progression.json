@@ -1,0 +1,100 @@
+{
+  "passed": 12,
+  "total": 12,
+  "scenarios": [
+    {
+      "scenario": "L1-A-full-path",
+      "passed": true,
+      "detail": "meter reached 0 at turn 1 of 1 (trace: [80, 0])"
+    },
+    {
+      "scenario": "L1-B-repetition",
+      "passed": true,
+      "detail": "final meter 80 after 10 repeats (deltas: [-20, 0])"
+    },
+    {
+      "scenario": "L1-C-partial",
+      "passed": true,
+      "detail": "final meter 80 with 1/2 targets hit"
+    },
+    {
+      "scenario": "L1-D-reordered",
+      "passed": true,
+      "detail": "meter reached 0 at turn 1 of 1 (order should not matter)"
+    },
+    {
+      "scenario": "L2-A-full-path",
+      "passed": true,
+      "detail": "meter reached 0 at turn 2 of 2 (trace: [80, 60, 0])"
+    },
+    {
+      "scenario": "L2-B-repetition",
+      "passed": true,
+      "detail": "final meter 80 after 10 repeats (deltas: [-20, 0])"
+    },
+    {
+      "scenario": "L2-C-partial",
+      "passed": true,
+      "detail": "final meter 60 with 2/3 targets hit"
+    },
+    {
+      "scenario": "L2-D-reordered",
+      "passed": true,
+      "detail": "meter reached 0 at turn 2 of 2 (order should not matter)"
+    },
+    {
+      "scenario": "L3-A-full-path",
+      "passed": true,
+      "detail": "meter reached 0 at turn 2 of 2 (trace: [80, 60, 0])"
+    },
+    {
+      "scenario": "L3-B-repetition",
+      "passed": true,
+      "detail": "final meter 80 after 10 repeats (deltas: [-20, 0])"
+    },
+    {
+      "scenario": "L3-C-partial",
+      "passed": true,
+      "detail": "final meter 60 with 2/3 targets hit"
+    },
+    {
+      "scenario": "L3-D-reordered",
+      "passed": true,
+      "detail": "meter reached 0 at turn 2 of 2 (order should not matter)"
+    }
+  ],
+  "rules_only_completability": [
+    {
+      "level": 1,
+      "completed": false,
+      "verdicts": [
+        "strong",
+        "unsupported"
+      ],
+      "unscored_targets": 1,
+      "final_meter": 72
+    },
+    {
+      "level": 2,
+      "completed": false,
+      "verdicts": [
+        "strong",
+        "unsupported",
+        "unsupported"
+      ],
+      "unscored_targets": 2,
+      "final_meter": 72
+    },
+    {
+      "level": 3,
+      "completed": false,
+      "verdicts": [
+        "strong",
+        "partial",
+        "unsupported"
+      ],
+      "unscored_targets": 1,
+      "final_meter": 52
+    }
+  ]
+}

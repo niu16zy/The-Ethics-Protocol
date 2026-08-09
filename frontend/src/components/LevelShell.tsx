@@ -17,7 +17,7 @@ export function LevelShell({ level, user, session, children }: LevelShellProps) 
         <header className="flex flex-col gap-3 border-b border-fortress-line pb-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-fortress-amber">
-              Logic Fortress
+              The Ethics Protocol
             </p>
             <h1 className="mt-2 font-display text-3xl text-fortress-text sm:text-4xl">
               {level.title}

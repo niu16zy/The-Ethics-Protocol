@@ -225,8 +225,8 @@ def test_victor_rule_fallback_changes_tone_by_meter_for_same_verdict():
     assert low_meter.npc_state == "defensive"
     assert "global hiring pipeline" in high_meter.npc_response
     assert "under pressure" in low_meter.npc_response
-    assert "logic fortress" not in high_meter.npc_response.lower()
-    assert "logic fortress" not in low_meter.npc_response.lower()
+    assert "the ethics protocol" not in high_meter.npc_response.lower()
+    assert "the ethics protocol" not in low_meter.npc_response.lower()
     assert "90" not in high_meter.npc_response
     assert "15" not in low_meter.npc_response
 
@@ -252,11 +252,11 @@ def test_victor_rule_fallback_redirects_off_topic_arguments_in_character():
     assert "clarify" in response.npc_response.lower()
     assert "audit" in response.npc_response.lower()
     assert "course" not in response.npc_response.lower()
-    assert "logic fortress" not in response.npc_response.lower()
+    assert "the ethics protocol" not in response.npc_response.lower()
     assert "30" not in response.npc_response
 
 
-def test_strong_low_meter_fallback_does_not_disclose_logic_fortress_value():
+def test_strong_low_meter_fallback_does_not_disclose_ethics_protocol_value():
     evaluator = EvaluatorResult(
         match_score=0.9,
         score_delta=-22,
@@ -279,7 +279,7 @@ def test_strong_low_meter_fallback_does_not_disclose_logic_fortress_value():
     response = PersonaService().respond(evaluator, meter_after=43)
 
     assert "Enough" in response.npc_response
-    assert "Logic Fortress" not in response.npc_response
+    assert "The Ethics Protocol" not in response.npc_response
     assert "meter" not in response.npc_response.lower()
     assert "43" not in response.npc_response
 
@@ -299,7 +299,7 @@ def test_persona_sanitizes_llm_meter_disclosure():
                         "Fine, the fairness point lands because it exposes a real hiring risk, "
                         "not a vague complaint. I can defend speed and scale, but I cannot pretend "
                         "unchecked bias testing is optional when applicants may be screened unfairly. "
-                        "The board memo now has a problem. Logic Fortress: 43."
+                        "The board memo now has a problem. The Ethics Protocol: 43."
                     ),
                     "npc_state": "hesitant",
                     "follow_up_prompt": "Press the accountability angle next. Meter is 43.",
@@ -766,7 +766,7 @@ def test_dialogue_rule_fallback_does_not_disclose_meter_value():
         meter_after=43,
     )
 
-    assert "Logic Fortress" not in response.npc_response
+    assert "The Ethics Protocol" not in response.npc_response
     assert "meter" not in response.npc_response.lower()
     assert "43" not in response.npc_response
 

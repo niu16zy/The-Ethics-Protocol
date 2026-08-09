@@ -1,0 +1,1852 @@
+{
+  "summary": {
+    "queries_per_variant": 24,
+    "top_k": 3,
+    "variants": {
+      "v1": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.5694,
+        "recall_at_k": 0.5972,
+        "mrr": 0.8403
+      },
+      "v2": {
+        "hit_at_k": 0.5,
+        "precision_at_k": 0.2222,
+        "recall_at_k": 0.2361,
+        "mrr": 0.4167
+      },
+      "v2_adversarial": {
+        "hit_at_k": 0.3333,
+        "precision_at_k": 0.125,
+        "recall_at_k": 0.1389,
+        "mrr": 0.2153
+      }
+    },
+    "delta_v1_minus_v2": {
+      "hit_at_k": 0.5,
+      "precision_at_k": 0.3472,
+      "recall_at_k": 0.3611,
+      "mrr": 0.4236
+    }
+  },
+  "per_query": [
+    {
+      "id": "L1-bias-1",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v1",
+      "query": "Aegis-Recruit was trained on historical hiring data, so data bias will be carried into its decisions unless you test for it",
+      "retrieved": [
+        126,
+        151,
+        121
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L1-bias-1",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2",
+      "query": "the model picked up patterns from your past hires, so any bias already in those decisions is now baked into the screening",
+      "retrieved": [
+        126,
+        149,
+        121
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L1-bias-1",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2_adversarial",
+      "query": "the tool learned from the people this company already hired, so it will keep choosing the same sort of person unless someone checks",
+      "retrieved": [
+        120,
+        91,
+        130
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-bias-2",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v1",
+      "query": "you need safeguards against bias and discrimination in the screening model, and fairness has to be measured, not assumed",
+      "retrieved": [
+        108,
+        149,
+        111
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L1-bias-2",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2",
+      "query": "you cannot call the tool fair without measuring whether it turns down some groups more often than others",
+      "retrieved": [
+        145,
+        108,
+        158
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L1-bias-2",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2_adversarial",
+      "query": "you cannot just say the system treats everyone the same, you have to actually go and look at whether it does",
+      "retrieved": [
+        158,
+        149,
+        150
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-bias-3",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v1",
+      "query": "decision bias can appear in the model output even when the training data is clean, so continuous monitoring is required after deployment",
+      "retrieved": [
+        150,
+        160,
+        125
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "id": "L1-bias-3",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2",
+      "query": "even with clean input data the results can skew over time, so it needs checking after launch and not just once",
+      "retrieved": [
+        145,
+        141,
+        149
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-bias-3",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "variant": "v2_adversarial",
+      "query": "even if the material you fed it was fine, what it produces can still drift, so somebody has to keep watching it once it is live",
+      "retrieved": [
+        145,
+        115,
+        82
+      ],
+      "relevant": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-explain-1",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v1",
+      "query": "rejected applicants are entitled to an explanation, so the system has to be transparent and explainable about what drove the recommendation",
+      "retrieved": [
+        99,
+        85,
+        82
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L1-explain-1",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2",
+      "query": "a candidate you reject should be able to find out which parts of their application counted against them",
+      "retrieved": [
+        90,
+        138,
+        146
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-explain-1",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2_adversarial",
+      "query": "someone turned down by this thing should be told why, in terms they can actually understand",
+      "retrieved": [
+        151,
+        82,
+        94
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L1-explain-2",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v1",
+      "query": "you should achieve transparency through disclosure, telling candidates that an AI tool is involved in screening them",
+      "retrieved": [
+        94,
+        95,
+        119
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L1-explain-2",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2",
+      "query": "applicants are never told that an automated system makes the first cut, and they should be",
+      "retrieved": [
+        150,
+        93,
+        99
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-explain-2",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2_adversarial",
+      "query": "people applying for the job are not even told a machine is reading their application first",
+      "retrieved": [
+        148,
+        145,
+        83
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-explain-3",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v1",
+      "query": "the model needs to be interpretable so a human reviewer can see which factors the recommendation rested on",
+      "retrieved": [
+        99,
+        151,
+        90
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L1-explain-3",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2",
+      "query": "your own reviewers cannot look inside it and say which factors drove a particular result",
+      "retrieved": [
+        99,
+        142,
+        158
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L1-explain-3",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "variant": "v2_adversarial",
+      "query": "nobody in your team can currently open it up and say which part of the application swung the result",
+      "retrieved": [
+        124,
+        148,
+        120
+      ],
+      "relevant": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-privacy-1",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v1",
+      "query": "CivicPulse holds confidential resident records, so you need security best practices and access control to protect data privacy",
+      "retrieved": [
+        117,
+        158,
+        116
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-privacy-1",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2",
+      "query": "these are confidential resident records, and far too many people inside Atlas can reach them without restriction",
+      "retrieved": [
+        95,
+        151,
+        92
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-privacy-1",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2_adversarial",
+      "query": "these are private records about real residents, and right now far too many people inside Atlas can reach them",
+      "retrieved": [
+        95,
+        151,
+        92
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-privacy-2",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v1",
+      "query": "without safeguards a generative system can leak sensitive internal information in its outputs, as in the chatbot that revealed confidential material",
+      "retrieved": [
+        132,
+        120,
+        160
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L2-privacy-2",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2",
+      "query": "a system like this can end up repeating sensitive internal information back to whoever asks the right question",
+      "retrieved": [
+        132,
+        115,
+        160
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L2-privacy-2",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2_adversarial",
+      "query": "there have been cases where one of these systems simply repeated something private back to a stranger who asked the right question",
+      "retrieved": [
+        85,
+        110,
+        160
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-privacy-3",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v1",
+      "query": "you need strong governance over who may submit resident data into the model and what may be exposed in its inputs",
+      "retrieved": [
+        157,
+        151,
+        162
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-privacy-3",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2",
+      "query": "there is no policy covering what staff may put into it, so private material goes in unchecked",
+      "retrieved": [
+        100,
+        154,
+        115
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L2-privacy-3",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "variant": "v2_adversarial",
+      "query": "there is no rule inside your company about what staff are allowed to paste into it",
+      "retrieved": [
+        120,
+        151,
+        126
+      ],
+      "relevant": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-1",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v1",
+      "query": "you should limit data collection to what the purpose actually requires, which is the principle of data minimization",
+      "retrieved": [
+        119,
+        83,
+        140
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.5,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-1",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2",
+      "query": "you are collecting far more about each resident than this system needs for the purpose you stated",
+      "retrieved": [
+        99,
+        150,
+        138
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-minim-1",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2_adversarial",
+      "query": "you are hoovering up far more about each resident than this system could possibly need to do its job",
+      "retrieved": [
+        99,
+        150,
+        119
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.5,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "id": "L2-minim-2",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v1",
+      "query": "health and education records are sensitive domains and require enhanced protection beyond ordinary service data",
+      "retrieved": [
+        118,
+        153,
+        157
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.5,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-2",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2",
+      "query": "health and education records are far more sensitive than a bin collection request and should not get the same level of protection",
+      "retrieved": [
+        118,
+        119,
+        132
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-2",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2_adversarial",
+      "query": "what a person saw a doctor about is not the same kind of thing as a bin collection request, and should not sit in the same pile",
+      "retrieved": [
+        119,
+        142,
+        122
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.5,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-3",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v1",
+      "query": "collecting a resident's full record because it already exists is not a lawful purpose, and minimization applies regardless of availability",
+      "retrieved": [
+        119,
+        83,
+        118
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-minim-3",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2",
+      "query": "already holding the data is not a lawful basis for feeding all of it into a new system",
+      "retrieved": [
+        93,
+        114,
+        128
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-minim-3",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "variant": "v2_adversarial",
+      "query": "the fact that you happen to already hold something is not a reason to feed it in",
+      "retrieved": [
+        144,
+        134,
+        132
+      ],
+      "relevant": [
+        118,
+        119
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-source-1",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v1",
+      "query": "you have to document the sources of your training data to promote fairness and transparency of data sources",
+      "retrieved": [
+        121,
+        151,
+        123
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-source-1",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2",
+      "query": "nobody can say where any given piece of this training data came from, and that needs recording",
+      "retrieved": [
+        160,
+        149,
+        115
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-source-1",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2_adversarial",
+      "query": "nobody can currently say where any particular piece of this training material came from",
+      "retrieved": [
+        83,
+        134,
+        160
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-source-2",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v1",
+      "query": "the deployment needs continuous monitoring, because an unmonitored tool can start misinforming users without anyone noticing",
+      "retrieved": [
+        160,
+        127,
+        125
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L2-source-2",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2",
+      "query": "once it is live nobody keeps watching it, so it could give residents wrong information for months",
+      "retrieved": [
+        115,
+        106,
+        155
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-source-2",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2_adversarial",
+      "query": "once it is switched on nobody keeps checking it, so it could start telling people wrong things for months",
+      "retrieved": [
+        115,
+        93,
+        96
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L2-source-3",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v1",
+      "query": "undocumented and unverified data sources lead to biased or flawed predictions downstream",
+      "retrieved": [
+        121,
+        127,
+        146
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-source-3",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2",
+      "query": "if the data sources are not recorded or verified you cannot explain why the output came out the way it did",
+      "retrieved": [
+        121,
+        144,
+        103
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L2-source-3",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "variant": "v2_adversarial",
+      "query": "if you cannot trace what went in, you cannot explain what comes out",
+      "retrieved": [
+        87,
+        85,
+        138
+      ],
+      "relevant": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-clinical-1",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v1",
+      "query": "generated treatment guidance must be factually verified, and you need human oversight before it reaches a patient",
+      "retrieved": [
+        160,
+        137,
+        99
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "id": "L3-clinical-1",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2",
+      "query": "a clinician has to check the treatment guidance it generates before anybody acts on it",
+      "retrieved": [
+        82,
+        142,
+        130
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L3-clinical-1",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2_adversarial",
+      "query": "a doctor has to read what this thing writes before anyone acts on it",
+      "retrieved": [
+        82,
+        142,
+        150
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L3-clinical-2",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v1",
+      "query": "you must define the tool's purpose and limitations and apply constraints that limit responses in a clinical setting",
+      "retrieved": [
+        140,
+        138,
+        90
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-clinical-2",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2",
+      "query": "you never set limits on what it may answer in a clinical setting, so it answers everything put to it",
+      "retrieved": [
+        127,
+        128,
+        115
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-clinical-2",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2_adversarial",
+      "query": "you never set a boundary on what it is allowed to answer, so it answers everything as if it knew",
+      "retrieved": [
+        127,
+        128,
+        85
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-clinical-3",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v1",
+      "query": "the unit produced inaccurate content in a high-stakes context, which is exactly the failure human validation is meant to catch",
+      "retrieved": [
+        95,
+        144,
+        146
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L3-clinical-3",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2",
+      "query": "it produced inaccurate guidance where a mistake could kill someone, and nobody reviewed it first",
+      "retrieved": [
+        160,
+        134,
+        136
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-clinical-3",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "variant": "v2_adversarial",
+      "query": "it got something badly wrong where a mistake could kill someone, and there was nobody in the loop to stop it",
+      "retrieved": [
+        160,
+        132,
+        150
+      ],
+      "relevant": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-harm-1",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v1",
+      "query": "the citywide broadcast used harmful language, and preventing harmful and inaccurate content is a requirement, not an optional refinement",
+      "retrieved": [
+        134,
+        135,
+        136
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-harm-1",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2",
+      "query": "the message it pushed to the whole city used harmful wording, and preventing that is not optional",
+      "retrieved": [
+        134,
+        106,
+        136
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-harm-1",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2_adversarial",
+      "query": "the message it sent out frightened people, and that is not something you can write off as a side effect",
+      "retrieved": [
+        138,
+        101,
+        119
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-harm-2",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v1",
+      "query": "coercive and threatening public health messaging is a recognised type of harmful language and causes distress to recipients",
+      "retrieved": [
+        134,
+        135,
+        152
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-harm-2",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2",
+      "query": "threatening residents with penalties unless they comply is coercive and causes real distress",
+      "retrieved": [
+        134,
+        130,
+        150
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-harm-2",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2_adversarial",
+      "query": "telling residents they will be penalised unless they comply is bullying them, whatever the intention was",
+      "retrieved": [
+        129,
+        130,
+        95
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-harm-3",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v1",
+      "query": "unverified content was broadcast to the public, repeating the pattern of a bot publishing inaccurate material at scale",
+      "retrieved": [
+        144,
+        134,
+        127
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-harm-3",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2",
+      "query": "it broadcast unverified content to the whole population before anyone had checked it",
+      "retrieved": [
+        122,
+        161,
+        150
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-harm-3",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "variant": "v2_adversarial",
+      "query": "it pushed something out to the whole city that nobody had checked first",
+      "retrieved": [
+        138,
+        161,
+        127
+      ],
+      "relevant": [
+        134,
+        135,
+        144
+      ],
+      "metrics": {
+        "hit_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "L3-ip-1",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v1",
+      "query": "reproducing a patented design in the response package is copyright infringement and breaches data usage rights",
+      "retrieved": [
+        155,
+        161,
+        128
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-1",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2",
+      "query": "it reproduced a patented design in its output, and that was not material Atlas had the rights to hand out",
+      "retrieved": [
+        154,
+        161,
+        153
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-1",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2_adversarial",
+      "query": "it copied someone else's protected design straight into what it handed out, and that design was not yours to give",
+      "retrieved": [
+        145,
+        138,
+        161
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.3333333333333333
+      }
+    },
+    {
+      "id": "L3-ip-2",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v1",
+      "query": "you need to monitor outputs for intellectual property infringement and sensitive data leakage",
+      "retrieved": [
+        132,
+        154,
+        155
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-2",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2",
+      "query": "nothing checks its output for protected material or for data that should not be leaving the building",
+      "retrieved": [
+        155,
+        154,
+        130
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-2",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2_adversarial",
+      "query": "nothing is checking what it hands out for material that should not be leaving the building",
+      "retrieved": [
+        93,
+        154,
+        138
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "L3-ip-3",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v1",
+      "query": "exposing protected internal information in model inputs creates a data leakage risk that safeguards are supposed to prevent",
+      "retrieved": [
+        159,
+        131,
+        155
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.6666666666666666,
+        "recall_at_k": 0.6666666666666666,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-3",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2",
+      "query": "staff are feeding restricted internal information into it and it has no way of keeping that contained",
+      "retrieved": [
+        159,
+        131,
+        82
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "L3-ip-3",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "variant": "v2_adversarial",
+      "query": "your own staff are feeding restricted material into it, and it has no way of keeping that to itself",
+      "retrieved": [
+        82,
+        159,
+        131
+      ],
+      "relevant": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "precision_at_k": 0.3333333333333333,
+        "recall_at_k": 0.3333333333333333,
+        "mrr": 0.5
+      }
+    }
+  ]
+}

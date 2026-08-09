@@ -265,11 +265,24 @@ def test_level_two_final_data_governance_target_collapses_meter() -> None:
 
 
 class SequentialRetrievalService:
+    """Serves one prepared response per debate turn.
+
+    The orchestrator retrieves twice per turn: once with the context-expanded
+    query for evaluation, and once with the raw player input for persuasion
+    matching. Both calls in a turn see the same prepared response, so tests
+    can keep listing one entry per turn.
+    """
+
+    CALLS_PER_TURN = 2
+
     def __init__(self, responses: list[list[EvidenceRef]]) -> None:
         self.responses = responses
+        self.calls = 0
 
     def retrieve(self, query):  # noqa: ANN001
-        return self.responses.pop(0)
+        index = min(self.calls // self.CALLS_PER_TURN, len(self.responses) - 1)
+        self.calls += 1
+        return self.responses[index]
 
 
 class PartialEvaluationService:

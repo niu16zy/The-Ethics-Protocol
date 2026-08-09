@@ -4,6 +4,7 @@ from collections.abc import Iterator
 from typing import Any
 
 from backend.app.repositories.app_repository import AppRepository
+from backend.app.schemas.evaluator import EvidenceRef
 from backend.app.schemas.turn import DebateTurnResponse
 from backend.app.services.conversation_context_service import ConversationContextService
 from backend.app.services.evaluation_service import EvaluationService
@@ -42,11 +43,12 @@ class DebateOrchestrator:
         evaluator_context = self.conversation_context_service.context_for_evaluation(player_input, context)
         evaluator = self.evaluation_service.evaluate(player_input, evidence, evaluator_context)
         evaluator_source = self.evaluation_service.last_source
+        persuasion_refs = self._persuasion_refs(player_input, evidence)
         evaluator = self.level_persuasion_service.apply(
             level_id=session.current_level,
             meter_before=meter_before,
             player_input=player_input,
-            retrieved_refs=evidence,
+            retrieved_refs=persuasion_refs,
             evaluator=evaluator,
             prior_turns=self.app_repository.fetch_turns(session_id),
         )
@@ -64,7 +66,7 @@ class DebateOrchestrator:
             session_id=session_id,
             turn_index=turn_index,
             player_input=player_input,
-            retrieved_refs=evidence,
+            retrieved_refs=persuasion_refs,
             evaluator=evaluator,
             npc_response=persona.npc_response,
             meter_before=meter_before,
@@ -97,11 +99,12 @@ class DebateOrchestrator:
         evaluator_context = self.conversation_context_service.context_for_evaluation(player_input, context)
         evaluator = self.evaluation_service.evaluate(player_input, evidence, evaluator_context)
         evaluator_source = self.evaluation_service.last_source
+        persuasion_refs = self._persuasion_refs(player_input, evidence)
         evaluator = self.level_persuasion_service.apply(
             level_id=session.current_level,
             meter_before=meter_before,
             player_input=player_input,
-            retrieved_refs=evidence,
+            retrieved_refs=persuasion_refs,
             evaluator=evaluator,
             prior_turns=self.app_repository.fetch_turns(session_id),
         )
@@ -135,7 +138,7 @@ class DebateOrchestrator:
             session_id=session_id,
             turn_index=turn_index,
             player_input=player_input,
-            retrieved_refs=evidence,
+            retrieved_refs=persuasion_refs,
             evaluator=evaluator,
             npc_response=npc_response,
             meter_before=meter_before,
@@ -155,6 +158,24 @@ class DebateOrchestrator:
             persona_source=persona_source,
         )
         yield {"event": "complete", "turn": response.model_dump(mode="json")}
+
+    def _persuasion_refs(
+        self, player_input: str, evidence: list[EvidenceRef]
+    ) -> list[EvidenceRef]:
+        """Evidence used for persuasion-target matching.
+
+        Evaluation retrieves with a query expanded from recent turns, which
+        keeps short follow-ups meaningful. That expansion also makes the result
+        depend on what was said earlier, so the same argument can match a
+        target on one turn and miss it on the next. Persuasion progress must
+        not depend on conversation order, so it is matched against a retrieval
+        on the raw input instead. Retrieval is inexpensive relative to the rest
+        of a turn, so running it a second time is cheaper than the alternatives.
+        """
+        raw_refs = self.retrieval_service.retrieve(player_input)
+        merged = {ref.document_id: ref for ref in evidence}
+        merged.update({ref.document_id: ref for ref in raw_refs})
+        return list(merged.values())
 
     def _conversation_context(self, session_id: int):
         recent_turns = self.app_repository.fetch_recent_turns(

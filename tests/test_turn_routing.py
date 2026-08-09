@@ -70,7 +70,9 @@ def test_world_question_uses_unified_evaluator_path_and_simplified_response(tmp_
     body = response.model_dump(mode="json")
     rows = repository.fetch_turns(session.id)
 
-    assert len(retrieval.calls) == 1
+    # Two retrievals per turn: the context-expanded query feeds evaluation, and
+    # a second retrieval on the raw input feeds persuasion-target matching.
+    assert len(retrieval.calls) == 2
     assert len(evaluation.calls) == 1
     assert response.evaluator.verdict == "unsupported"
     assert response.score_delta == 0

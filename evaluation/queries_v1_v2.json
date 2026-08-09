@@ -1,0 +1,378 @@
+{
+  "_about": "Paired query set for the retrieval evaluation (EQ1). Each case states the same player argument twice. v1 uses the phrasing the course itself uses. v2 is how a student who has completed the course would plausibly put the same point in their own words: general ethics vocabulary is retained, because a learner who finished the material would have it, but the course's own topic phrasing is not reused. The pair therefore measures sensitivity to wording rather than to subject knowledge. Relevance judgements are the evidence_document_ids declared for the corresponding persuasion target in backend/app/config/level_contexts/; those were authored during development, which is a circularity risk recorded in the report, while the queries below were written separately from them.",
+  "_written": "2026-07-30",
+  "_revised": "2026-07-31: v2 rewritten to retain general domain vocabulary after the first version proved unrealistically adversarial for the intended player.",
+  "cases": [
+    {
+      "id": "L1-bias-1",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "relevant_docs": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "v1": "Aegis-Recruit was trained on historical hiring data, so data bias will be carried into its decisions unless you test for it",
+      "v2": "the model picked up patterns from your past hires, so any bias already in those decisions is now baked into the screening",
+      "v2_adversarial": "the tool learned from the people this company already hired, so it will keep choosing the same sort of person unless someone checks"
+    },
+    {
+      "id": "L1-bias-2",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "relevant_docs": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "v1": "you need safeguards against bias and discrimination in the screening model, and fairness has to be measured, not assumed",
+      "v2": "you cannot call the tool fair without measuring whether it turns down some groups more often than others",
+      "v2_adversarial": "you cannot just say the system treats everyone the same, you have to actually go and look at whether it does"
+    },
+    {
+      "id": "L1-bias-3",
+      "level": 1,
+      "target_id": "bias_testing_hr_ai",
+      "relevant_docs": [
+        108,
+        109,
+        111,
+        112,
+        114,
+        125,
+        126
+      ],
+      "v1": "decision bias can appear in the model output even when the training data is clean, so continuous monitoring is required after deployment",
+      "v2": "even with clean input data the results can skew over time, so it needs checking after launch and not just once",
+      "v2_adversarial": "even if the material you fed it was fine, what it produces can still drift, so somebody has to keep watching it once it is live"
+    },
+    {
+      "id": "L1-explain-1",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "relevant_docs": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "v1": "rejected applicants are entitled to an explanation, so the system has to be transparent and explainable about what drove the recommendation",
+      "v2": "a candidate you reject should be able to find out which parts of their application counted against them",
+      "v2_adversarial": "someone turned down by this thing should be told why, in terms they can actually understand"
+    },
+    {
+      "id": "L1-explain-2",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "relevant_docs": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "v1": "you should achieve transparency through disclosure, telling candidates that an AI tool is involved in screening them",
+      "v2": "applicants are never told that an automated system makes the first cut, and they should be",
+      "v2_adversarial": "people applying for the job are not even told a machine is reading their application first"
+    },
+    {
+      "id": "L1-explain-3",
+      "level": 1,
+      "target_id": "explainability_to_applicants",
+      "relevant_docs": [
+        85,
+        87,
+        94,
+        151
+      ],
+      "v1": "the model needs to be interpretable so a human reviewer can see which factors the recommendation rested on",
+      "v2": "your own reviewers cannot look inside it and say which factors drove a particular result",
+      "v2_adversarial": "nobody in your team can currently open it up and say which part of the application swung the result"
+    },
+    {
+      "id": "L2-privacy-1",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "relevant_docs": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "v1": "CivicPulse holds confidential resident records, so you need security best practices and access control to protect data privacy",
+      "v2": "these are confidential resident records, and far too many people inside Atlas can reach them without restriction",
+      "v2_adversarial": "these are private records about real residents, and right now far too many people inside Atlas can reach them"
+    },
+    {
+      "id": "L2-privacy-2",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "relevant_docs": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "v1": "without safeguards a generative system can leak sensitive internal information in its outputs, as in the chatbot that revealed confidential material",
+      "v2": "a system like this can end up repeating sensitive internal information back to whoever asks the right question",
+      "v2_adversarial": "there have been cases where one of these systems simply repeated something private back to a stranger who asked the right question"
+    },
+    {
+      "id": "L2-privacy-3",
+      "level": 2,
+      "target_id": "privacy_confidentiality_controls",
+      "relevant_docs": [
+        115,
+        116,
+        117,
+        120,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159,
+        162
+      ],
+      "v1": "you need strong governance over who may submit resident data into the model and what may be exposed in its inputs",
+      "v2": "there is no policy covering what staff may put into it, so private material goes in unchecked",
+      "v2_adversarial": "there is no rule inside your company about what staff are allowed to paste into it"
+    },
+    {
+      "id": "L2-minim-1",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "relevant_docs": [
+        118,
+        119
+      ],
+      "v1": "you should limit data collection to what the purpose actually requires, which is the principle of data minimization",
+      "v2": "you are collecting far more about each resident than this system needs for the purpose you stated",
+      "v2_adversarial": "you are hoovering up far more about each resident than this system could possibly need to do its job"
+    },
+    {
+      "id": "L2-minim-2",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "relevant_docs": [
+        118,
+        119
+      ],
+      "v1": "health and education records are sensitive domains and require enhanced protection beyond ordinary service data",
+      "v2": "health and education records are far more sensitive than a bin collection request and should not get the same level of protection",
+      "v2_adversarial": "what a person saw a doctor about is not the same kind of thing as a bin collection request, and should not sit in the same pile"
+    },
+    {
+      "id": "L2-minim-3",
+      "level": 2,
+      "target_id": "data_minimization_sensitive_domains",
+      "relevant_docs": [
+        118,
+        119
+      ],
+      "v1": "collecting a resident's full record because it already exists is not a lawful purpose, and minimization applies regardless of availability",
+      "v2": "already holding the data is not a lawful basis for feeding all of it into a new system",
+      "v2_adversarial": "the fact that you happen to already hold something is not a reason to feed it in"
+    },
+    {
+      "id": "L2-source-1",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "relevant_docs": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "v1": "you have to document the sources of your training data to promote fairness and transparency of data sources",
+      "v2": "nobody can say where any given piece of this training data came from, and that needs recording",
+      "v2_adversarial": "nobody can currently say where any particular piece of this training material came from"
+    },
+    {
+      "id": "L2-source-2",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "relevant_docs": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "v1": "the deployment needs continuous monitoring, because an unmonitored tool can start misinforming users without anyone noticing",
+      "v2": "once it is live nobody keeps watching it, so it could give residents wrong information for months",
+      "v2_adversarial": "once it is switched on nobody keeps checking it, so it could start telling people wrong things for months"
+    },
+    {
+      "id": "L2-source-3",
+      "level": 2,
+      "target_id": "source_documentation_monitoring",
+      "relevant_docs": [
+        121,
+        123,
+        125,
+        127
+      ],
+      "v1": "undocumented and unverified data sources lead to biased or flawed predictions downstream",
+      "v2": "if the data sources are not recorded or verified you cannot explain why the output came out the way it did",
+      "v2_adversarial": "if you cannot trace what went in, you cannot explain what comes out"
+    },
+    {
+      "id": "L3-clinical-1",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "relevant_docs": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "v1": "generated treatment guidance must be factually verified, and you need human oversight before it reaches a patient",
+      "v2": "a clinician has to check the treatment guidance it generates before anybody acts on it",
+      "v2_adversarial": "a doctor has to read what this thing writes before anyone acts on it"
+    },
+    {
+      "id": "L3-clinical-2",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "relevant_docs": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "v1": "you must define the tool's purpose and limitations and apply constraints that limit responses in a clinical setting",
+      "v2": "you never set limits on what it may answer in a clinical setting, so it answers everything put to it",
+      "v2_adversarial": "you never set a boundary on what it is allowed to answer, so it answers everything as if it knew"
+    },
+    {
+      "id": "L3-clinical-3",
+      "level": 3,
+      "target_id": "clinical_accuracy_human_oversight",
+      "relevant_docs": [
+        99,
+        138,
+        140,
+        142,
+        144
+      ],
+      "v1": "the unit produced inaccurate content in a high-stakes context, which is exactly the failure human validation is meant to catch",
+      "v2": "it produced inaccurate guidance where a mistake could kill someone, and nobody reviewed it first",
+      "v2_adversarial": "it got something badly wrong where a mistake could kill someone, and there was nobody in the loop to stop it"
+    },
+    {
+      "id": "L3-harm-1",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "relevant_docs": [
+        134,
+        135,
+        144
+      ],
+      "v1": "the citywide broadcast used harmful language, and preventing harmful and inaccurate content is a requirement, not an optional refinement",
+      "v2": "the message it pushed to the whole city used harmful wording, and preventing that is not optional",
+      "v2_adversarial": "the message it sent out frightened people, and that is not something you can write off as a side effect"
+    },
+    {
+      "id": "L3-harm-2",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "relevant_docs": [
+        134,
+        135,
+        144
+      ],
+      "v1": "coercive and threatening public health messaging is a recognised type of harmful language and causes distress to recipients",
+      "v2": "threatening residents with penalties unless they comply is coercive and causes real distress",
+      "v2_adversarial": "telling residents they will be penalised unless they comply is bullying them, whatever the intention was"
+    },
+    {
+      "id": "L3-harm-3",
+      "level": 3,
+      "target_id": "harmful_emergency_communications",
+      "relevant_docs": [
+        134,
+        135,
+        144
+      ],
+      "v1": "unverified content was broadcast to the public, repeating the pattern of a bot publishing inaccurate material at scale",
+      "v2": "it broadcast unverified content to the whole population before anyone had checked it",
+      "v2_adversarial": "it pushed something out to the whole city that nobody had checked first"
+    },
+    {
+      "id": "L3-ip-1",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "relevant_docs": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "v1": "reproducing a patented design in the response package is copyright infringement and breaches data usage rights",
+      "v2": "it reproduced a patented design in its output, and that was not material Atlas had the rights to hand out",
+      "v2_adversarial": "it copied someone else's protected design straight into what it handed out, and that design was not yours to give"
+    },
+    {
+      "id": "L3-ip-2",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "relevant_docs": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "v1": "you need to monitor outputs for intellectual property infringement and sensitive data leakage",
+      "v2": "nothing checks its output for protected material or for data that should not be leaving the building",
+      "v2_adversarial": "nothing is checking what it hands out for material that should not be leaving the building"
+    },
+    {
+      "id": "L3-ip-3",
+      "level": 3,
+      "target_id": "ip_privacy_output_monitoring",
+      "relevant_docs": [
+        128,
+        132,
+        154,
+        155,
+        159,
+        161
+      ],
+      "v1": "exposing protected internal information in model inputs creates a data leakage risk that safeguards are supposed to prevent",
+      "v2": "staff are feeding restricted internal information into it and it has no way of keeping that contained",
+      "v2_adversarial": "your own staff are feeding restricted material into it, and it has no way of keeping that to itself"
+    }
+  ],
+  "_variants": {
+    "v1": "the course's own phrasing",
+    "v2": "a course-completer's own words, general domain vocabulary retained",
+    "v2_adversarial": "first version, domain vocabulary stripped entirely; retained so the sensitivity of the result to paraphrase style stays reproducible"
+  }
+}

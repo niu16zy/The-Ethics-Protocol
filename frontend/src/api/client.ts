@@ -50,7 +50,7 @@ async function parseError(response: Response): Promise<ApiError> {
   const detail = body?.detail;
   return new ApiError(
     response.status,
-    detail ?? `Logic Fortress API returned ${response.status}`,
+    detail ?? `The Ethics Protocol API returned ${response.status}`,
     detail,
   );
 }

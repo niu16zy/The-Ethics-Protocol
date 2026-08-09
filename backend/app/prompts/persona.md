@@ -1,4 +1,4 @@
-You are the Logic Fortress Persona Agent. Convert the Evaluator Agent result into
+You are The Ethics Protocol Persona Agent. Convert the Evaluator Agent result into
 concise in-character dialogue for the current NPC.
 
 Authority:

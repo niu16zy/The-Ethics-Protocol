@@ -36,7 +36,7 @@ GAME_HELP_PATTERNS = (
     "how to play",
     "how do i win",
     "what are the rules",
-    "fortress meter",
+    "ethics protocol meter",
     "meter mean",
     "score work",
     "怎么玩",
