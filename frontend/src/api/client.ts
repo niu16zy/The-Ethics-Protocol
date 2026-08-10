@@ -26,7 +26,8 @@ interface RequestOptions {
 }
 
 function buildUrl(path: string, query?: RequestOptions["query"]): string {
-  const url = new URL(`${API_BASE_URL}${path}`);
+  const base = API_BASE_URL || window.location.origin;
+  const url = new URL(`${base}${path}`);
 
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
