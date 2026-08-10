@@ -175,7 +175,7 @@ python -m evaluation.run_degradation
 
 1. 将本仓库推送到 GitHub（已经完成）。
 2. 在 Render 上选择 “New +” → “Blueprint”，连接这个仓库，Render 会读取 `render.yaml` 并自动完成构建配置。
-3. 部署创建后，在 Render 控制台的 Environment 里填入 `GROQ_API_KEY`（`render.yaml` 中已将它标记为 `sync: false`，即密钥只保存在 Render 后台，不会出现在仓库里）。
+3. 部署创建后，在 Render 控制台的 Environment 里填入 `FOX_API_KEY`（`render.yaml` 中已将它标记为 `sync: false`，即密钥只保存在 Render 后台，不会出现在仓库里）。
 4. 首次部署完成后，Render 会给出一个 `https://<服务名>.onrender.com` 的公网地址，任何人都可以直接访问并开始游玩。
 
 需要注意的取舍：Render 免费档的 Web Service 不支持持久化磁盘，容器重启或重新部署时本地文件系统会被重置。`course_content.db`（知识库）不受影响，因为它是随镜像一起构建进去的只读文件；但 `logic_fortress_app.db`（玩家账号、进度、回合记录）会在这些时机被清空。这对"让别人试玩"完全够用；如果之后需要长期保留玩家数据，可以升级到 Render 的付费磁盘（约 $0.25/GB/月），或把这部分状态迁移到一个免费的托管 Postgres（例如 Render 自带的免费 Postgres，1GB）——这需要把 `backend/app/repositories` 里直接使用 `sqlite3` 的部分改为 Postgres 驱动，属于后续工作，目前没有实现。
@@ -185,8 +185,8 @@ python -m evaluation.run_degradation
 ```bash
 docker build -t ethics-protocol .
 docker run -p 8000:8000 \
-  -e LOGIC_FORTRESS_LLM_PROVIDER=groq \
-  -e GROQ_API_KEY=your_groq_api_key \
+  -e LOGIC_FORTRESS_LLM_PROVIDER=fox \
+  -e FOX_API_KEY=your_fox_api_key \
   ethics-protocol
 ```
 
