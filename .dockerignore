@@ -1,0 +1,14 @@
+.git
+.claude
+.agents
+.pytest_cache
+**/__pycache__
+tests
+evaluation
+frontend/node_modules
+frontend/dist
+.env
+.env.*
+!.env.example
+logic_fortress_app.db
+*.md

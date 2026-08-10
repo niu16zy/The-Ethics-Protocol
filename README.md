@@ -162,3 +162,32 @@ python -m evaluation.run_degradation
 ```
 
 结果会写入 `evaluation/results/`。
+
+## 开发说明
+
+- `course_content.db` 是项目随仓库提供的只读知识库；不要在本地调试时覆盖它。
+- `logic_fortress_app.db` 保存本地玩家和回合数据，可在需要重置进度时手动删除；它已被 Git 忽略。
+- 后端 CORS 默认只允许本机 `localhost` 和 `127.0.0.1` 的任意端口访问。
+
+## 部署到服务器
+
+项目已经容器化，`Dockerfile` 会先构建前端静态文件，再由同一个 FastAPI 服务在生产环境下把它们一并托管（前后端同源，因此线上不需要额外配置 CORS）。仓库根目录的 `render.yaml` 是 [Render](https://render.com) 的一键部署配置，免费的 Web Service 额度即可运行：
+
+1. 将本仓库推送到 GitHub（已经完成）。
+2. 在 Render 上选择 “New +” → “Blueprint”，连接这个仓库，Render 会读取 `render.yaml` 并自动完成构建配置。
+3. 部署创建后，在 Render 控制台的 Environment 里填入 `GROQ_API_KEY`（`render.yaml` 中已将它标记为 `sync: false`，即密钥只保存在 Render 后台，不会出现在仓库里）。
+4. 首次部署完成后，Render 会给出一个 `https://<服务名>.onrender.com` 的公网地址，任何人都可以直接访问并开始游玩。
+
+需要注意的取舍：Render 免费档的 Web Service 不支持持久化磁盘，容器重启或重新部署时本地文件系统会被重置。`course_content.db`（知识库）不受影响，因为它是随镜像一起构建进去的只读文件；但 `logic_fortress_app.db`（玩家账号、进度、回合记录）会在这些时机被清空。这对"让别人试玩"完全够用；如果之后需要长期保留玩家数据，可以升级到 Render 的付费磁盘（约 $0.25/GB/月），或把这部分状态迁移到一个免费的托管 Postgres（例如 Render 自带的免费 Postgres，1GB）——这需要把 `backend/app/repositories` 里直接使用 `sqlite3` 的部分改为 Postgres 驱动，属于后续工作，目前没有实现。
+
+如果不使用 `render.yaml` 而是手动在任意支持 Docker 的平台（包括自己的服务器）上部署，流程是一样的：
+
+```bash
+docker build -t ethics-protocol .
+docker run -p 8000:8000 \
+  -e LOGIC_FORTRESS_LLM_PROVIDER=groq \
+  -e GROQ_API_KEY=your_groq_api_key \
+  ethics-protocol
+```
+
+容器启动后访问服务器的 `8000` 端口即可，前端和 API 都由这一个容器提供。
